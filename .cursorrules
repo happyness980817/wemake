@@ -31,3 +31,5 @@ UI and Styling
 - Use Shadcn UI, Radix, and Tailwind for components and styling.
 
 사용자에게는 한국어로 답변하세요.
+
+Radix UI 에서는 아무것도 import 하지 않는다. 항상 shadcn UI 에서 UI component 를 import 한다.

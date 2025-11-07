@@ -10,6 +10,18 @@ import {
   navigationMenuTriggerStyle,
 } from "./navigation-menu";
 import { cn } from "~/lib/utils";
+import { Button } from "./button";
+import {
+  DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuGroup,
+} from "./dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
+import { BarChart3Icon, BellIcon, LogOutIcon, MessageCircleIcon, SettingsIcon, UserIcon } from "lucide-react";
 
 const menus = [
   {
@@ -122,7 +134,15 @@ const menus = [
   },
 ];
 
-export default function Navigation() {
+export default function Navigation({
+  isloggedIn,
+  hasNotifications,
+  hasMessages,
+}: {
+  isloggedIn: boolean;
+  hasNotifications: boolean;
+  hasMessages: boolean;
+}) {
   return (
     <nav className="flex px-20 h-16 items-center justify-between backdrop-blur fixed top-0 left-0 right-0 z-50 bg-background/50">
       <div className="flex items-center">
@@ -153,13 +173,8 @@ export default function Navigation() {
                             ])}
                           >
                             <NavigationMenuLink asChild>
-                              <Link
-                                className="p-3 space-y-1 block leading-none no-underline outline-none"
-                                to={item.to}
-                              >
-                                <span className="text-sm font-medium leading-none">
-                                  {item.name}
-                                </span>
+                              <Link className="p-3 space-y-1 block leading-none no-underline outline-none" to={item.to}>
+                                <span className="text-sm font-medium leading-none">{item.name}</span>
                                 <p className="text-sm leading-snug text-muted-foreground"></p>
                               </Link>
                             </NavigationMenuLink>
@@ -178,6 +193,73 @@ export default function Navigation() {
           </NavigationMenuList>
         </NavigationMenu>
       </div>
+      {isloggedIn ? (
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" size="icon" asChild className="relative">
+            <Link to="/my/notifications">
+              <BellIcon className="size-4" />
+              {hasNotifications && <span className="absolute top-1.5 right-1.5 size-2 bg-red-500 rounded-full" />}
+            </Link>
+          </Button>
+          <Button variant="ghost" size="icon" asChild className="relative">
+            <Link to="/my/messages">
+              <MessageCircleIcon className="size-4" />
+              {hasMessages && <span className="absolute top-1.5 right-1.5 size-2 bg-red-500 rounded-full" />}
+            </Link>
+          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Avatar>
+                <AvatarImage src="https://github.com/happyness980817.png" />
+                <AvatarFallback>U</AvatarFallback>
+              </Avatar>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56">
+              <DropdownMenuLabel className="flex flex-col">
+                <span className="font-medium">Jane Doe</span>
+                <span className="text-xs text-muted-foreground">@username</span>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                <DropdownMenuItem asChild className="cursor-pointer">
+                  <Link to="/my/dashboard">
+                    <BarChart3Icon className="size-4 mr-2" />
+                    Dashboard
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild className="cursor-pointer">
+                  <Link to="/my/profile">
+                    <UserIcon className="size-4 mr-2" />
+                    Profile
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild className="cursor-pointer">
+                  <Link to="/my/settings">
+                    <SettingsIcon className="size-4 mr-2" />
+                    Settings
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild className="cursor-pointer">
+                <Link to="/auth/logout">
+                  <LogOutIcon className="size-4 mr-2" />
+                  Logout
+                </Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      ) : (
+        <div className="flex items-center gap-4">
+          <Button asChild variant="outline">
+            <Link to="/auth/login">Login</Link>
+          </Button>
+          <Button asChild>
+            <Link to="/auth/join">Join</Link>
+          </Button>
+        </div>
+      )}
     </nav>
   );
 }
