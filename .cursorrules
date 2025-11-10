@@ -17,7 +17,7 @@ Naming Conventions
 TypeScript Usage
 
 - Use TypeScript for all code; prefer interfaces over types.
-- Avoid enums,use maps instead.  
+- Avoid enums; use maps instead.  
 - Use functional components with TypeScript interfaces.
 
 Syntax and Formatting
@@ -33,3 +33,19 @@ UI and Styling
 사용자에게는 한국어로 답변하세요.
 
 Radix UI 에서는 아무것도 import 하지 않는다. 항상 shadcn UI 에서 UI component 를 import 한다.
+
+Key Conventions
+
+- Don't import anything from Radix UI. Always import UI componentsfrom Shadcn UI.
+- Don't import anything from Remix. Any @remix-run import should be imported from "react-router".
+- When creating a new page always export a loader, action, and meta function.
+- Route types should be imported like this: `import type { Route } from "./+types/...";`
+- `useLoaderData` does not exist anymore. Instead, components receive Router.ComponentProps type param that contains loaderData.
+- `useActionData` does not exist anymore. Instead, components receive Router.ComponentProps type param that contains actionData.
+- Never use `useLoaderData` or `useActionData` in page components.
+- `loader` function takes a Route.LoaderArgs type param.
+- `action` function takes a Route.ActionArgs type param.
+- `meta` function takes a Route.MetaFunction type param.
+- `meta` returns MetaFunction type.
+- `json` does not exists anymore. Return plain objects i.e `export function loader({ request }: Route.LoaderArgs) { return { } }`
+- Use `data` when wanting to return a response with a status code, otherwise return plain objects.
