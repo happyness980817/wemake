@@ -5,29 +5,17 @@ import { IdeaCard } from "~/features/ideas/components/idea-card";
 import { JobCard } from "~/features/jobs/components/job-card";
 import { TeamCard } from "~/features/teams/components/team-card";
 import { Button } from "../components/ui/button";
-import type { Route } from "./+types/home-page";
 
 export const meta: MetaFunction = () => {
   return [{ title: "Home | Wemake" }, { name: "description", content: "Welcome to Wemake" }];
 };
 
-export const loader = () => {
-  console.log("hello");
-  return {
-    hello: "world",
-  };
-}; // loader is a function that runs on the server (backend) and returns the data for the page
-// loader runs before the page is rendered
-
-export default function HomePage({ loaderData }: Route.ComponentProps) {
-  // loaderData prop is the data returned from the loader function
+export default function HomePage() {
   return (
     <div className="px-20 space-y-20">
       <div className="grid grid-cols-3 gap-4">
         <div>
-          <h2 className="text-5xl font-bold leading-tight tracking-tight">
-            Today's Products {JSON.stringify(loaderData)}
-          </h2>
+          <h2 className="text-5xl font-bold leading-tight tracking-tight">Today's Products</h2>
           <p className="text-xl font-light text-foreground">See the latest products from our community</p>
           <Button variant="link" asChild className="text-lg p-0">
             <Link to="/products/leaderboards">Explore All Products &rarr;</Link>
