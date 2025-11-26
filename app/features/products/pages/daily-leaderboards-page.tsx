@@ -1,7 +1,11 @@
 import { DateTime } from "luxon";
 import type { Route } from "./+types/daily-leaderboards-page";
-import { data, isRouteErrorResponse } from "react-router";
+import { data, isRouteErrorResponse, Link } from "react-router";
 import { z } from "zod";
+import { Hero } from "~/common/components/hero";
+import { ProductCard } from "../components/product-card";
+import { Button } from "~/common/components/ui/button";
+import ProductPagination from "~/common/components/product-pagination";
 
 const paramsSchema = z.object({
   year: z.coerce.number().int().min(2000).max(2100),
@@ -47,12 +51,52 @@ export const loader = ({ params }: Route.LoaderArgs) => {
     );
   }
   return {
-    date,
+    ...parsedData,
   };
 };
 
 export default function DailyLeaderboardsPage({ loaderData }: Route.ComponentProps) {
-  return <div>DailyLeaderboardsPage</div>;
+  const urlDate = DateTime.fromObject({
+    year: loaderData.year,
+    month: loaderData.month,
+    day: loaderData.day,
+  });
+  const previousDay = urlDate.minus({ days: 1 });
+  const nextDay = urlDate.plus({ days: 1 });
+  const isToday = urlDate.equals(DateTime.now().startOf("day"));
+  return (
+    <div className="space-y-10">
+      <Hero title={`The best products of ${urlDate.toLocaleString()}`} />
+      <div className="flex items-center justify-center gap-2">
+        <Button variant="secondary" asChild>
+          <Link to={`/products/leaderboards/daily/${previousDay.year}/${previousDay.month}/${previousDay.day}`}>
+            &larr; {previousDay.toLocaleString()}
+          </Link>
+        </Button>
+        {!isToday ? (
+          <Button variant="secondary" asChild>
+            <Link to={`/products/leaderboards/daily/${nextDay.year}/${nextDay.month}/${nextDay.day}`}>
+              {nextDay.toLocaleString()} &rarr;
+            </Link>
+          </Button>
+        ) : null}
+      </div>
+      <div className="space-y-5 w-full max-w-3xl mx-auto">
+        {Array.from({ length: 11 }).map((_, index) => (
+          <ProductCard
+            key={index}
+            id={`productId-${index}`}
+            name={`Product Name ${index}`}
+            description={`Product Description ${index}`}
+            commentCount={123}
+            viewCount={123}
+            likeCount={123}
+          />
+        ))}
+      </div>
+      <ProductPagination totalPages={10} />
+    </div>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
