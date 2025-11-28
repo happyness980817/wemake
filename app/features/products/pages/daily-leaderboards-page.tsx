@@ -8,9 +8,9 @@ import { Button } from "~/common/components/ui/button";
 import ProductPagination from "~/common/components/product-pagination";
 
 const paramsSchema = z.object({
-  year: z.coerce.number().int().min(2000).max(2100),
-  month: z.coerce.number().int().min(1).max(12),
-  day: z.coerce.number().int().min(1).max(31),
+  year: z.coerce.number(),
+  month: z.coerce.number(),
+  day: z.coerce.number(),
 });
 
 export const loader = ({ params }: Route.LoaderArgs) => {
