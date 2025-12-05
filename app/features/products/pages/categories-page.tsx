@@ -1,26 +1,25 @@
+import { CategoryCard } from "../components/category-card";
 import type { Route } from "./+types/categories-page";
+import { Hero } from "~/common/components/hero";
 
-export function meta({}: Route.MetaArgs) {
+export const meta: Route.MetaFunction = ({}: Route.MetaArgs) => {
   return [{ title: "Categories - WeMake" }, { name: "description", content: "Browse product categories" }];
-}
+};
 
-export function loader({ request }: Route.LoaderArgs) {
-  return {
-    categories: [],
-  };
-}
-
-export function action({ request }: Route.ActionArgs) {
-  return {
-    success: true,
-  };
-}
-
-export default function CategoriesPage({ loaderData }: Route.ComponentProps) {
+export default function CategoriesPage() {
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold mb-4">Categories</h1>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">{/* Categories list */}</div>
+    <div className="space-y-10">
+      <Hero title="Categories" subtitle="Browse products by categories" />
+      <div className="grid grid-cols-4 gap-10">
+        {Array.from({ length: 10 }).map((_, index) => (
+          <CategoryCard
+            key={index}
+            id={`categoryId-${index}`}
+            name={`Category Name ${index}`}
+            description={`Category Description ${index}`}
+          />
+        ))}
+      </div>
     </div>
   );
 }

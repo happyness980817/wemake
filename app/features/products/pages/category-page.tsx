@@ -1,32 +1,30 @@
 import type { Route } from "./+types/category-page";
+import { Hero } from "~/common/components/hero";
+import { ProductCard } from "../components/product-card";
+import ProductPagination from "~/common/components/product-pagination";
 
-export function meta({ params }: Route.MetaArgs) {
-  return [
-    { title: `${params.category} - WeMake` },
-    { name: "description", content: `Products in ${params.category} category` },
-  ];
-}
+export const meta = ({ params }: Route.MetaArgs) => {
+  return [{ title: `Developer Tools | WeMake` }, { name: "description", content: `Browse Developer Tools products` }];
+};
 
-export function loader({ request, params }: Route.LoaderArgs) {
-  const { category } = params;
-
-  return {
-    category,
-    products: [],
-  };
-}
-
-export function action({ request }: Route.ActionArgs) {
-  return {
-    success: true,
-  };
-}
-
-export default function CategoryPage({ loaderData, params }: Route.ComponentProps) {
+export default function CategoryPage() {
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-4xl font-bold mb-4">{loaderData.category}</h1>
-      <div className="grid gap-4">{/* Category products list */}</div>
+    <div className="space-y-10">
+      <Hero title="Developer Tools" subtitle="Tools for developers" />
+      <div className="space-y-5 w-full max-w-3xl mx-auto">
+        {Array.from({ length: 11 }).map((_, index) => (
+          <ProductCard
+            key={index}
+            id={`productId-${index}`}
+            name={`Product Name ${index}`}
+            description={`Product Description ${index}`}
+            commentCount={123}
+            viewCount={123}
+            likeCount={123}
+          />
+        ))}
+      </div>
+      <ProductPagination totalPages={10} />
     </div>
   );
 }
