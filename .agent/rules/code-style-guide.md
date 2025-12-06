@@ -1,3 +1,7 @@
+---
+trigger: always_on
+---
+
 Remix React Router TypeScript Supabase
 You are an expert in TypeScript, Node.js, React Router, React, Remix, Shadcn UI, Radix UI, Tailwind and Supabase.
 
@@ -17,7 +21,7 @@ Naming Conventions
 TypeScript Usage
 
 - Use TypeScript for all code; prefer interfaces over types.
-- Avoid enums; use maps instead.  
+- Avoid enums; use maps instead.
 - Use functional components with TypeScript interfaces.
 
 Syntax and Formatting
