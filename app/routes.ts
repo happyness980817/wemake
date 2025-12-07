@@ -18,6 +18,6 @@ export default [
     ]),
     route("/search", "features/products/pages/search-page.tsx"),
     route("/submit", "features/products/pages/submit-page.tsx"),
-    route("/promote", "features/products/pages/promote-product-page.tsx"),
+    route("/promote", "features/products/pages/promote-page.tsx"),
   ]),
 ] satisfies RouteConfig;
