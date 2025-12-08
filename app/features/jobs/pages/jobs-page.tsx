@@ -25,7 +25,7 @@ export default function JobsPage({}: Route.ComponentProps) {
       <Hero title="Jobs" subtitle="Companies looking for makers" />
       <div className="grid grid-cols-6 gap-20 items-start">
         <div className="grid grid-cols-3 col-span-4 gap-5">
-          {Array.from({ length: 15 }).map((_, index) => (
+          {Array.from({ length: 20 }).map((_, index) => (
             <JobCard
               key={index}
               id={`jobId-${index}`}
@@ -39,7 +39,7 @@ export default function JobsPage({}: Route.ComponentProps) {
             />
           ))}
         </div>
-        <div className="col-span-2 flex flex-col gap-10">
+        <div className="col-span-2 sticky top-20 flex flex-col gap-10">
           <div className="flex flex-col items-start gap-2.5">
             <h4 className="text-sm text-muted-foreground font-bold">Work Type</h4>
             <div className="flex flex-wrap gap-2">
