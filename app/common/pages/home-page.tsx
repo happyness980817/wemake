@@ -55,8 +55,8 @@ export default function HomePage() {
       </div>
       <div className="grid grid-cols-3 gap-4">
         <div>
-          <h2 className="text-5xl font-bold leading-tight tracking-tight">IdeasGPT</h2>
-          <p className="text-xl font-light text-foreground">AI-generated ideas for your next project</p>
+          <h2 className="text-5xl font-bold leading-tight tracking-tight">Business Ideas</h2>
+          <p className="text-xl font-light text-foreground">Buy and sell your brilliant Business/Startup ideas here.</p>
           <Button variant="link" asChild className="text-lg p-0">
             <Link to="/ideas">Explore All Ideas &rarr;</Link>
           </Button>
@@ -65,7 +65,7 @@ export default function HomePage() {
           <IdeaCard
             key={index}
             id={`ideaId-${index}`}
-            title={`Some generated bullshit by dumb AIs (${index})`}
+            title={`Someone's Business/Startup ideas (${index})`}
             viewCount={123}
             timestamp="12 hours ago"
             likeCount={123}

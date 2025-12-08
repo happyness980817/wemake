@@ -113,7 +113,7 @@ const menus = [
     ],
   },
   {
-    name: "IdeasGPT",
+    name: "Ideas",
     to: "/ideas",
   },
   {
