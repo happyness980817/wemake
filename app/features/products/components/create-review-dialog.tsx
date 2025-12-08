@@ -4,6 +4,7 @@ import { Form } from "react-router";
 import InputPair from "~/common/components/input-pair";
 import { Button } from "~/common/components/ui/button";
 import {
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -57,7 +58,9 @@ export default function CreateReviewDialog() {
           textArea
         />
         <DialogFooter>
-          <Button type="submit">Submit</Button>
+          <DialogClose asChild>
+            <Button type="submit">Submit</Button>
+          </DialogClose>
         </DialogFooter>
       </Form>
     </DialogContent>
