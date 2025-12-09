@@ -50,7 +50,6 @@ export default function JobPage({}: Route.ComponentProps) {
             <h4 className="text-2xl font-bold">Qualifications</h4>
             <ul className="text-lg list-disc list-inside">
               {[
-                "Bachelor's degree in Computer Science or a related field.",
                 "3 years of experience in React, Node.js, and MongoDB.",
                 "Strong understanding of web development principles and best practices.",
                 "Familiarity with Agile methodologies and software development processes.",
