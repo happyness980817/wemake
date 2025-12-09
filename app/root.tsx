@@ -1,5 +1,4 @@
-import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
-
+import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration, useLocation } from "react-router";
 import type { Route } from "./+types/root";
 import stylesheet from "./app.css?url";
 import Navigation from "./common/components/navigation";
@@ -31,7 +30,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <main className="px-20">{children}</main>
+        <main>{children}</main>
         <ScrollRestoration />
         <Scripts />
       </body>
@@ -40,9 +39,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+  const { pathname } = useLocation();
   return (
-    <div className="py-28">
-      <Navigation isloggedIn={true} hasNotifications={true} hasMessages={true} />
+    <div className={pathname.includes("/auth") ? "" : "py-28 px-20"}>
+      {pathname.includes("/auth") ? null : (
+        <Navigation isloggedIn={false} hasNotifications={false} hasMessages={false} />
+      )}
       <Outlet />
     </div>
   );
