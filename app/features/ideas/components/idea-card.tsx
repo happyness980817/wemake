@@ -9,11 +9,11 @@ interface IdeaCardProps {
   title: string;
   viewCount: number;
   timestamp: string;
-  likeCount: number;
+  likesCount: number;
   claimed: boolean;
 }
 
-export function IdeaCard({ id, title, viewCount, timestamp, likeCount, claimed }: IdeaCardProps) {
+export function IdeaCard({ id, title, viewCount, timestamp, likesCount, claimed }: IdeaCardProps) {
   return (
     <Card className="bg-transparent hover:bg-card/50 transition-colors">
       <CardHeader>
@@ -34,7 +34,7 @@ export function IdeaCard({ id, title, viewCount, timestamp, likeCount, claimed }
       <CardFooter className="flex justify-end gap-2">
         <Button variant="outline">
           <HeartIcon className="w-4 h-4" />
-          <span>{likeCount}</span>
+          <span>{likesCount}</span>
         </Button>
         {!claimed ? (
           <Button asChild>

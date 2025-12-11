@@ -2,6 +2,8 @@ import { Link } from "react-router";
 import { Card, CardFooter, CardHeader, CardTitle } from "~/common/components/ui/card";
 import { Button } from "~/common/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "~/common/components/ui/avatar";
+import { HeartIcon } from "lucide-react";
+import { cn } from "~/lib/utils";
 
 interface PostCardProps {
   id: string;
@@ -10,16 +12,32 @@ interface PostCardProps {
   authorAvatarURL?: string;
   category: string;
   timestamp: string;
+  expanded?: boolean;
+  likesCount?: number;
 }
 
-export function PostCard({ id, title, authorName, authorAvatarURL, category, timestamp }: PostCardProps) {
+export function PostCard({
+  id,
+  title,
+  authorName,
+  authorAvatarURL,
+  category,
+  timestamp,
+  expanded = false,
+  likesCount = 0,
+}: PostCardProps) {
   return (
-    <Link to={`/community/${id}`}>
-      <Card className="bg-transparent hover:bg-card/50 transition-colors">
-        <CardHeader className="flex flex-row items-center gap-2">
+    <Link to={`/community/${id}`} className="block">
+      <Card
+        className={cn(
+          "bg-transparent hover:bg-card/50 transition-colors",
+          expanded ? "flex flex-row items-center justify-between" : ""
+        )}
+      >
+        <CardHeader className="flex flex-row items-center gap-4 flex-1 min-w-0">
           <Avatar className="size-14">
-            <AvatarImage src={authorAvatarURL} />
-            <AvatarFallback>{authorName.charAt(0).toUpperCase()}</AvatarFallback>
+            <AvatarFallback>{authorName[0]}</AvatarFallback>
+            {authorAvatarURL && <AvatarImage src={authorAvatarURL} />}
           </Avatar>
           <div className="space-y-2">
             <CardTitle>{title}</CardTitle>
@@ -31,9 +49,19 @@ export function PostCard({ id, title, authorName, authorAvatarURL, category, tim
             </div>
           </div>
         </CardHeader>
-        <CardFooter className="flex justify-end">
-          <Button variant="link">Reply &rarr;</Button>
-        </CardFooter>
+        {!expanded && (
+          <CardFooter className="flex justify-end">
+            <Button variant="link">Reply &rarr;</Button>
+          </CardFooter>
+        )}
+        {expanded && (
+          <CardFooter className="flex justify-end">
+            <Button variant="outline" className="flex flex-col h-14">
+              <HeartIcon className="w-4 h-4 shrink-0" />
+              <span>{likesCount}</span>
+            </Button>
+          </CardFooter>
+        )}
       </Card>
     </Link>
   );

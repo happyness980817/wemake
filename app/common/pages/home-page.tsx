@@ -29,7 +29,7 @@ export default function HomePage() {
             description={`Product Description ${index}`}
             commentCount={123}
             viewCount={123}
-            likeCount={123}
+            likesCount={123}
           />
         ))}
       </div>
@@ -50,6 +50,7 @@ export default function HomePage() {
             authorAvatarURL="https://github.com/happyness980817.png"
             category="Productivity"
             timestamp="12 hours ago"
+            likesCount={123}
           />
         ))}
       </div>
@@ -68,7 +69,7 @@ export default function HomePage() {
             title={`Someone's Business/Startup ideas (${index})`}
             viewCount={123}
             timestamp="12 hours ago"
-            likeCount={123}
+            likesCount={123}
             claimed={index % 2 === 0}
           />
         ))}

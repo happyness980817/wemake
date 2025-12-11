@@ -31,7 +31,7 @@ export default function JobsPage({}: Route.ComponentProps) {
               id={`jobId-${index}`}
               title={`Job Title ${index}`}
               companyName={`Company ${index}`}
-              companyLogoURL={`https://github.com/teslamotors.png`}
+              companyLogoURL={`https://github.com/apple.png`}
               timestamp="12 hours ago"
               badges={["Remote", "Full-Time"]}
               salaryRange="100,000 - 150,000"

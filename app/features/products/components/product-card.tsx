@@ -9,10 +9,10 @@ interface ProductCardProps {
   description: string;
   commentCount: number;
   viewCount: number;
-  likeCount: number;
+  likesCount: number;
 }
 
-export function ProductCard({ id, name, description, commentCount, viewCount, likeCount }: ProductCardProps) {
+export function ProductCard({ id, name, description, commentCount, viewCount, likesCount }: ProductCardProps) {
   return (
     <Link to={`/products/${id}`} className="block">
       <Card className="w-full flex flex-row items-center justify-between p-4 bg-transparent hover:bg-primary/10">
@@ -31,9 +31,9 @@ export function ProductCard({ id, name, description, commentCount, viewCount, li
           </div>
         </CardHeader>
         <CardFooter className="py-0">
-          <Button variant="outline" className="w-full">
+          <Button variant="outline" className="flex flex-col h-14">
             <HeartIcon className="w-4 h-4 shrink-0" />
-            <span>{likeCount}</span>
+            <span>{likesCount}</span>
           </Button>
         </CardFooter>
       </Card>
