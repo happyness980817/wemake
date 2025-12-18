@@ -47,7 +47,7 @@ export default function TeamPage({}: Route.ComponentProps) {
               <CardHeader>
                 <CardTitle className="text-sm font-medium text-muted-foreground">{item.title}</CardTitle>
                 <CardContent className="p-0 font-bold text-2xl">
-                  <p>{item.value}</p>
+                  <p key={item.title}>{item.value}</p>
                 </CardContent>
               </CardHeader>
             </Card>

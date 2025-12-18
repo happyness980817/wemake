@@ -1,5 +1,5 @@
 import { Hero } from "~/common/components/hero";
-import type { Route } from "./+types/submit-page";
+import type { Route } from "./+types/submit-product-page";
 import { Form } from "react-router";
 import { Label } from "~/common/components/ui/label";
 import { Input } from "~/common/components/ui/input";
@@ -9,7 +9,10 @@ import { useState } from "react";
 import { Button } from "~/common/components/ui/button";
 
 export const meta: Route.MetaFunction = () => {
-  return [{ title: "Submit Product - WeMake" }, { name: "description", content: "Submit your product" }];
+  return [
+    { title: "Submit Product - WeMake" },
+    { name: "description", content: "Submit your product" },
+  ];
 };
 
 export default function SubmitPage() {
@@ -23,7 +26,10 @@ export default function SubmitPage() {
   };
   return (
     <div>
-      <Hero title="Submit Your Product" subtitle="Share your product with the world" />
+      <Hero
+        title="Submit Your Product"
+        subtitle="Share your product with the world"
+      />
       <Form className="grid grid-cols-2 gap-10 max-w-5xl mx-auto">
         <div className="space-y-5">
           <InputPair
@@ -79,12 +85,28 @@ export default function SubmitPage() {
         </div>
         <div className="flex flex-col space-y-2">
           <div className="size-40 rounded-xl shadow-xl overflow-hidden">
-            {icon ? <img src={icon} alt="icon" className="w-full h-full object-cover" /> : null}
+            {icon ? (
+              <img
+                src={icon}
+                alt="icon"
+                className="w-full h-full object-cover"
+              />
+            ) : null}
           </div>
           <Label className="flex flex-col gap-1">
-            Icon <small className="text-muted-foreground">This is the icon of your product</small>
+            Icon{" "}
+            <small className="text-muted-foreground">
+              This is the icon of your product
+            </small>
           </Label>
-          <Input type="file" className="w-1/2" onChange={onChange} required name="icon" multiple />
+          <Input
+            type="file"
+            className="w-1/2"
+            onChange={onChange}
+            required
+            name="icon"
+            multiple
+          />
           <div className="flex flex-col gap-1 text-xs text-muted-foreground">
             <span>Recommended size: 128x128</span>
             <span>Allowed formats: SVG, PNG, JPG</span>

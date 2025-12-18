@@ -1,4 +1,10 @@
-import { type RouteConfig, index, prefix, route, layout } from "@react-router/dev/routes";
+import {
+  type RouteConfig,
+  index,
+  prefix,
+  route,
+  layout,
+} from "@react-router/dev/routes";
 
 export default [
   index("common/pages/home-page.tsx"),
@@ -6,24 +12,41 @@ export default [
     index("features/products/pages/products-page.tsx"),
     ...prefix("leaderboards", [
       index("features/products/pages/leaderboards-page.tsx"),
-      route("/yearly/:year", "features/products/pages/yearly-leaderboards-page.tsx"),
-      route("/monthly/:year/:month", "features/products/pages/monthly-leaderboards-page.tsx"),
-      route("/weekly/:year/:week", "features/products/pages/weekly-leaderboards-page.tsx"),
-      route("/daily/:year/:month/:day", "features/products/pages/daily-leaderboards-page.tsx"),
-      route("/:period", "features/products/pages/leaderboards-redirection-page.tsx"),
+      route(
+        "/yearly/:year",
+        "features/products/pages/yearly-leaderboards-page.tsx"
+      ),
+      route(
+        "/monthly/:year/:month",
+        "features/products/pages/monthly-leaderboards-page.tsx"
+      ),
+      route(
+        "/weekly/:year/:week",
+        "features/products/pages/weekly-leaderboards-page.tsx"
+      ),
+      route(
+        "/daily/:year/:month/:day",
+        "features/products/pages/daily-leaderboards-page.tsx"
+      ),
+      route(
+        "/:period",
+        "features/products/pages/leaderboards-redirection-page.tsx"
+      ),
     ]),
     ...prefix("categories", [
       index("features/products/pages/categories-page.tsx"),
       route("/:category", "features/products/pages/category-page.tsx"),
     ]),
     route("/search", "features/products/pages/search-page.tsx"),
-    route("/submit", "features/products/pages/submit-page.tsx"),
+    route("/submit", "features/products/pages/submit-product-page.tsx"),
     route("/promote", "features/products/pages/promote-page.tsx"),
     ...prefix("/:productId", [
       index("features/products/pages/product-redirect-page.tsx"),
       layout("features/products/layouts/product-overview-layout.tsx", [
         route("/overview", "features/products/pages/product-overview-page.tsx"),
-        ...prefix("/reviews", [index("features/products/pages/product-reviews-page.tsx")]),
+        ...prefix("/reviews", [
+          index("features/products/pages/product-reviews-page.tsx"),
+        ]),
       ]),
     ]),
   ]),
@@ -60,4 +83,22 @@ export default [
     route("/:teamId", "features/teams/pages/team-page.tsx"),
     route("/create", "features/teams/pages/create-team-page.tsx"),
   ]),
+  ...prefix("/my", [
+    route("/profile", "features/users/pages/my-profile-page.tsx"),
+    ...prefix("/dashboard", [
+      index("features/users/pages/dashboard-page.tsx"),
+      route("/ideas", "features/users/pages/dashboard-ideas-page.tsx"),
+      route(
+        "/products/:productId",
+        "features/users/pages/dashboard-product-page.tsx"
+      ),
+    ]),
+    route("/settings", "features/users/pages/settings-page.tsx"),
+    route("/notifications", "features/users/pages/notifications-page.tsx"),
+    ...prefix("/messages", [
+      index("features/users/pages/messages-page.tsx"),
+      route("/:messageId", "features/users/pages/message-page.tsx"),
+    ]),
+  ]),
+  route("/users/:username", "features/users/pages/public-profile-page.tsx"),
 ] satisfies RouteConfig;
