@@ -1,0 +1,93 @@
+import { Form, Link, Outlet, NavLink } from "react-router";
+import type { Route } from "./+types/profile-layout";
+import {
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
+} from "~/common/components/ui/avatar";
+import { Button, buttonVariants } from "~/common/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "~/common/components/ui/dialog";
+import { Textarea } from "~/common/components/ui/textarea";
+import { Badge } from "~/common/components/ui/badge";
+import { cn } from "~/lib/utils";
+
+export default function ProfileLayout({}: Route.ComponentProps) {
+  const tabs = [
+    { label: "About", to: "/users/username" },
+    { label: "Products", to: "/users/username/products" },
+    { label: "Posts", to: "/users/username/posts" },
+  ];
+  return (
+    <div className="space-y-10">
+      <div className="flex items-center gap-4">
+        <Avatar className="size-40">
+          <AvatarImage src="https://github.com/shadcn.png" />
+          <AvatarFallback>CN</AvatarFallback>
+        </Avatar>
+        <div className="space-y-4">
+          <div className="flex gap-2">
+            <h1 className="text-2xl font-semibold">John Doe</h1>
+            <Button variant="outline" asChild>
+              <Link to="/my/settings">Edit Profile</Link>
+            </Button>
+            <Button variant="secondary">Follow</Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="secondary">Message</Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Message</DialogTitle>
+                </DialogHeader>
+                <DialogDescription>
+                  <span>Send a message to John Doe</span>
+                  <Form className="mt-2 space-y-4">
+                    <Textarea
+                      placeholder="Write a message..."
+                      className="resize-none"
+                      rows={4}
+                    />
+                    <Button type="submit">Send</Button>
+                  </Form>
+                </DialogDescription>
+              </DialogContent>
+            </Dialog>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">@john_doe</span>
+            <Badge variant="secondary">Designer</Badge>
+            <Badge variant="secondary">100 followers</Badge>
+            <Badge variant="secondary">100 following</Badge>
+          </div>
+        </div>
+      </div>
+      <div className="flex gap-2">
+        {tabs.map((item) => (
+          <NavLink
+            end
+            className={({ isActive }) =>
+              cn(
+                buttonVariants({ variant: "outline" }),
+                isActive && "bg-accent text-foreground"
+              )
+            }
+            to={item.to}
+            key={item.label}
+          >
+            {item.label}
+          </NavLink>
+        ))}
+      </div>
+      <div className="max-w-3xl">
+        <Outlet />
+      </div>
+    </div>
+  );
+}

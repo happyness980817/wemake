@@ -47,6 +47,14 @@ export default function SettingsPage({}: Route.ComponentProps) {
               ]}
             />
             <InputPair
+              label="Headline"
+              description="Your headline. This will be displayed on your profile."
+              required
+              id="headline"
+              name="headline"
+              placeholder="i.e. A passionate backend developer."
+            />
+            <InputPair
               label="Bio"
               description="Your public bio. This will be displayed on your profile."
               required

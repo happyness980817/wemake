@@ -5,7 +5,9 @@ import { ChevronUpIcon } from "lucide-react";
 import { cn } from "~/lib/utils";
 import type { Route } from "./+types/product-overview-layout";
 
-export default function ProductOverviewLayout({ params: { productId } }: Route.ComponentProps) {
+export default function ProductOverviewLayout({
+  params: { productId },
+}: Route.ComponentProps) {
   return (
     <div className="space-y-10">
       <div className="flex justify-between">
@@ -36,8 +38,12 @@ export default function ProductOverviewLayout({ params: { productId } }: Route.C
       </div>
       <div className="flex gap-2.5">
         <NavLink
+          end
           className={({ isActive }) =>
-            cn(buttonVariants({ variant: "outline" }), isActive && "bg-accent text-foreground")
+            cn(
+              buttonVariants({ variant: "outline" }),
+              isActive && "bg-accent text-foreground"
+            )
           }
           to={`/products/${productId}/overview`}
         >
@@ -45,7 +51,10 @@ export default function ProductOverviewLayout({ params: { productId } }: Route.C
         </NavLink>
         <NavLink
           className={({ isActive }) =>
-            cn(buttonVariants({ variant: "outline" }), isActive && "bg-accent text-foreground")
+            cn(
+              buttonVariants({ variant: "outline" }),
+              isActive && "bg-accent text-foreground"
+            )
           }
           to={`/products/${productId}/reviews`}
         >
