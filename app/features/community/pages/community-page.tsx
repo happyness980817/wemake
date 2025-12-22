@@ -24,9 +24,12 @@ export default function CommunityPage({}: Route.ComponentProps) {
   const period = searchParams.get("period") || "all-time";
   return (
     <div>
-      <Hero title="Community" subtitle="Join our community and share your thoughts and ideas with others." />
-      <div className="grid grid-cols-6 items-start gap-40">
-        <div className="col-span-4 space-y-10">
+      <Hero
+        title="Community"
+        subtitle="Join our community and share your thoughts and ideas with others."
+      />
+      <div className="grid grid-cols-1 lg:grid-cols-6 items-start gap-40">
+        <div className="col-span-1 lg:col-span-4 space-y-10">
           <div className="flex justify-between">
             <div className="space-y-5 w-full">
               <div className="flex items-center gap-5">
@@ -84,7 +87,11 @@ export default function CommunityPage({}: Route.ComponentProps) {
                 )}
               </div>
               <Form className="w-2/3">
-                <Input type="text" name="search" placeholder="Search for discussions" />
+                <Input
+                  type="text"
+                  name="search"
+                  placeholder="Search for discussions"
+                />
               </Form>
             </div>
             <Button asChild>
@@ -106,18 +113,28 @@ export default function CommunityPage({}: Route.ComponentProps) {
             ))}
           </div>
         </div>
-        <aside className="col-span-2 space-y-5">
+        <aside className="col-span-1 lg:col-span-2 space-y-5">
           <p className="text-sm font-bold text-muted-foreground">TOPICS</p>
           <div className="flex flex-col gap-4 items-start">
-            {["Productivity", "Technology", "Business", "Marketing", "Design", "Development", "Other"].map(
-              (category) => (
-                <Button key={category} variant="link" asChild className="pl-0">
-                  <Link key={category} to={`/community?topic=${category}`} className="font-semibold">
-                    {category}
-                  </Link>
-                </Button>
-              )
-            )}
+            {[
+              "Productivity",
+              "Technology",
+              "Business",
+              "Marketing",
+              "Design",
+              "Development",
+              "Other",
+            ].map((category) => (
+              <Button key={category} variant="link" asChild className="pl-0">
+                <Link
+                  key={category}
+                  to={`/community?topic=${category}`}
+                  className="font-semibold"
+                >
+                  {category}
+                </Link>
+              </Button>
+            ))}
           </div>
         </aside>
       </div>

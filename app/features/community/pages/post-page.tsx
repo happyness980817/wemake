@@ -10,7 +10,11 @@ import { Form, Link } from "react-router";
 import { Button } from "~/common/components/ui/button";
 import { DotIcon, HeartIcon } from "lucide-react";
 import { Textarea } from "~/common/components/ui/textarea";
-import { Avatar, AvatarFallback, AvatarImage } from "~/common/components/ui/avatar";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "~/common/components/ui/avatar";
 import { Badge } from "~/common/components/ui/badge";
 import { Reply } from "../components/reply";
 
@@ -42,8 +46,8 @@ export default function PostPage({}: Route.ComponentProps) {
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <div className="grid grid-cols-6 gap-40 items-start">
-        <div className="col-span-4 space-y-10">
+      <div className="grid grid-cols-1 lg:grid-cols-6 gap-40 items-start">
+        <div className="col-span-1 lg:col-span-4 space-y-10">
           <div className="flex w-full items-start gap-10">
             <Button variant="outline" className="flex flex-col h-14">
               <HeartIcon className="w-4 h-4 shrink-0" />
@@ -62,9 +66,10 @@ export default function PostPage({}: Route.ComponentProps) {
                   <span>10 replies</span>
                 </div>
                 <p className="text-sm text-muted-foreground w-3/4">
-                  Hello, I'm looking for a productivity tool that can help me manage my time and tasks. I've tried a few
-                  different tools, but none of them have worked for me. I'm looking for a tool that can help me manage
-                  my time and tasks.
+                  Hello, I'm looking for a productivity tool that can help me
+                  manage my time and tasks. I've tried a few different tools,
+                  but none of them have worked for me. I'm looking for a tool
+                  that can help me manage my time and tasks.
                 </p>
               </div>
               <Form className="flex items-start gap-2 w-3/4">
@@ -73,7 +78,11 @@ export default function PostPage({}: Route.ComponentProps) {
                   <AvatarImage src="https://github.com/apple.png" />
                 </Avatar>
                 <div className="flex flex-col gap-5 items-end w-full">
-                  <Textarea placeholder="Write a reply" className="w-full resize-none" rows={5} />
+                  <Textarea
+                    placeholder="Write a reply"
+                    className="w-full resize-none"
+                    rows={5}
+                  />
                   <Button>Reply</Button>
                 </div>
               </Form>
@@ -92,7 +101,7 @@ export default function PostPage({}: Route.ComponentProps) {
             </div>
           </div>
         </div>
-        <aside className="col-span-2 space-y-5 border rounded-lg shadow-sm p-6">
+        <aside className="col-span-1 lg:col-span-2 space-y-5 border rounded-lg shadow-sm p-6">
           <div className="flex gap-5">
             <Avatar className="size-10">
               <AvatarFallback>N</AvatarFallback>

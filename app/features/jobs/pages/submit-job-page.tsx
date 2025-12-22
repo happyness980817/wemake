@@ -13,9 +13,12 @@ export const meta: Route.MetaFunction = () => {
 export default function SubmitJobPage({}: Route.ComponentProps) {
   return (
     <div>
-      <Hero title="Post a Job" subtitle="Reach out to the best developers in the world" />
+      <Hero
+        title="Post a Job"
+        subtitle="Reach out to the best developers in the world"
+      />
       <Form className="max-w-screen-2xl flex flex-col gap-10 mx-auto items-center">
-        <div className="grid grid-cols-3 w-full gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full gap-10">
           <InputPair
             id="position"
             label="Position"
@@ -127,7 +130,10 @@ export default function SubmitJobPage({}: Route.ComponentProps) {
             name="jobType"
             required
             placeholder="e.g. Full-time"
-            options={JOB_TYPES.map((type) => ({ label: type.label, value: type.value }))}
+            options={JOB_TYPES.map((type) => ({
+              label: type.label,
+              value: type.value,
+            }))}
           />
           <SelectPair
             label="Job Location"
@@ -135,7 +141,10 @@ export default function SubmitJobPage({}: Route.ComponentProps) {
             name="jobLocation"
             required
             placeholder="e.g. Remote"
-            options={LOCATION_TYPES.map((type) => ({ label: type.label, value: type.value }))}
+            options={LOCATION_TYPES.map((type) => ({
+              label: type.label,
+              value: type.value,
+            }))}
           />
           <SelectPair
             label="Salary Range"
@@ -143,7 +152,10 @@ export default function SubmitJobPage({}: Route.ComponentProps) {
             name="salaryRange"
             required
             placeholder="e.g. $0 - $50,000"
-            options={SALARY_RANGES.map((range) => ({ label: range, value: range }))}
+            options={SALARY_RANGES.map((range) => ({
+              label: range,
+              value: range,
+            }))}
           />
         </div>
         <Button type="submit" className="w-full max-w-sm" size="lg">

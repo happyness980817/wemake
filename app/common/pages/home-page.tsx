@@ -7,16 +7,23 @@ import { TeamCard } from "~/features/teams/components/team-card";
 import { Button } from "../components/ui/button";
 
 export const meta: MetaFunction = () => {
-  return [{ title: "Home | Wemake" }, { name: "description", content: "Welcome to Wemake" }];
+  return [
+    { title: "Home | Wemake" },
+    { name: "description", content: "Welcome to Wemake" },
+  ];
 };
 
 export default function HomePage() {
   return (
     <div className="px-20 space-y-20">
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div>
-          <h2 className="text-5xl font-bold leading-tight tracking-tight">Today's Products</h2>
-          <p className="text-xl font-light text-foreground">See the latest products from our community</p>
+          <h2 className="text-5xl font-bold leading-tight tracking-tight">
+            Today's Products
+          </h2>
+          <p className="text-xl font-light text-foreground">
+            See the latest products from our community
+          </p>
           <Button variant="link" asChild className="text-lg p-0">
             <Link to="/products/leaderboards">Explore All Products &rarr;</Link>
           </Button>
@@ -33,10 +40,14 @@ export default function HomePage() {
           />
         ))}
       </div>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div>
-          <h2 className="text-5xl font-bold leading-tight tracking-tight">Latest Discussions</h2>
-          <p className="text-xl font-light text-foreground">See the latest discussions from our community</p>
+          <h2 className="text-5xl font-bold leading-tight tracking-tight">
+            Latest Discussions
+          </h2>
+          <p className="text-xl font-light text-foreground">
+            See the latest discussions from our community
+          </p>
           <Button variant="link" asChild className="text-lg p-0">
             <Link to="/community">Explore All Discussions &rarr;</Link>
           </Button>
@@ -54,10 +65,14 @@ export default function HomePage() {
           />
         ))}
       </div>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div>
-          <h2 className="text-5xl font-bold leading-tight tracking-tight">Business Ideas</h2>
-          <p className="text-xl font-light text-foreground">Buy and sell your brilliant Business/Startup ideas here.</p>
+          <h2 className="text-5xl font-bold leading-tight tracking-tight">
+            Business Ideas
+          </h2>
+          <p className="text-xl font-light text-foreground">
+            Buy and sell your brilliant Business/Startup ideas here.
+          </p>
           <Button variant="link" asChild className="text-lg p-0">
             <Link to="/ideas">Explore All Ideas &rarr;</Link>
           </Button>
@@ -74,10 +89,14 @@ export default function HomePage() {
           />
         ))}
       </div>
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
         <div>
-          <h2 className="text-5xl font-bold leading-tight tracking-tight">Latest Jobs</h2>
-          <p className="text-xl font-light text-foreground">See the latest jobs from our community</p>
+          <h2 className="text-5xl font-bold leading-tight tracking-tight">
+            Latest Jobs
+          </h2>
+          <p className="text-xl font-light text-foreground">
+            See the latest jobs from our community
+          </p>
           <Button variant="link" asChild className="text-lg p-0">
             <Link to="/jobs">Explore All Jobs &rarr;</Link>
           </Button>
@@ -96,10 +115,14 @@ export default function HomePage() {
           />
         ))}
       </div>
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
         <div>
-          <h2 className="text-5xl font-bold leading-tight tracking-tight">Find a Teammate</h2>
-          <p className="text-xl font-light text-foreground">Join a team to build something great</p>
+          <h2 className="text-5xl font-bold leading-tight tracking-tight">
+            Find a Teammate
+          </h2>
+          <p className="text-xl font-light text-foreground">
+            Join a team to build something great
+          </p>
           <Button variant="link" asChild className="text-lg p-0">
             <Link to="/teams">Explore All Teams &rarr;</Link>
           </Button>
@@ -110,7 +133,13 @@ export default function HomePage() {
             id={`teamId-${index}`}
             username="paul"
             avatarURL="https://github.com/happyness980817.png"
-            skills={["Full-stack", "Developer", "React", "TypeScript", "Node.js"]}
+            skills={[
+              "Full-stack",
+              "Developer",
+              "React",
+              "TypeScript",
+              "Node.js",
+            ]}
             description="To build a platform"
           />
         ))}

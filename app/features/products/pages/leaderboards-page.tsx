@@ -20,7 +20,7 @@ export default function LeaderboardsPage() {
       />
 
       {/* Daily Leaderboards */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div>
           <h2 className="text-3xl font-bold leading-tight tracking-tight">
             Daily Leaderboards
@@ -48,7 +48,7 @@ export default function LeaderboardsPage() {
       </div>
 
       {/* Weekly Leaderboards */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div>
           <h2 className="text-3xl font-bold leading-tight tracking-tight">
             Weekly Leaderboards
@@ -76,7 +76,7 @@ export default function LeaderboardsPage() {
       </div>
 
       {/* Monthly Leaderboards */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div>
           <h2 className="text-3xl font-bold leading-tight tracking-tight">
             Monthly Leaderboards
@@ -104,7 +104,7 @@ export default function LeaderboardsPage() {
       </div>
 
       {/* Yearly Leaderboards */}
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div>
           <h2 className="text-3xl font-bold leading-tight tracking-tight">
             Yearly Leaderboards

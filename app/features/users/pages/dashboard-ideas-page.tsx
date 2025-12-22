@@ -9,7 +9,7 @@ export default function DashboardIdeasPage({}: Route.ComponentProps) {
   return (
     <div className="space-y-5">
       <h1 className="text-2xl font-semibold mb-6">Your Claimed Ideas</h1>
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {Array.from({ length: 10 }).map((_, index) => (
           <IdeaCard
             key={index}

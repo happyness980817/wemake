@@ -13,9 +13,12 @@ export const meta: Route.MetaFunction = () => {
 export default function CreateTeamPage({}: Route.ComponentProps) {
   return (
     <div className="space-y-20">
-      <Hero title="Create a Team" subtitle="Create a team to collaborate with others" />
+      <Hero
+        title="Create a Team"
+        subtitle="Create a team to collaborate with others"
+      />
       <Form className="max-w-screen-2xl flex flex-col gap-10 mx-auto items-center">
-        <div className="grid grid-cols-3 w-full gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 w-full gap-10">
           <InputPair
             label="What is the name of your product?"
             description="(20 characters max)"
