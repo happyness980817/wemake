@@ -84,13 +84,15 @@ export default [
     route("/create", "features/teams/pages/create-team-page.tsx"),
   ]),
   ...prefix("/my", [
-    ...prefix("/dashboard", [
-      index("features/users/pages/dashboard-page.tsx"),
-      route("/ideas", "features/users/pages/dashboard-ideas-page.tsx"),
-      route(
-        "/products/:productId",
-        "features/users/pages/dashboard-product-page.tsx"
-      ),
+    layout("features/users/layouts/dashboard-layout.tsx", [
+      ...prefix("/dashboard", [
+        index("features/users/pages/dashboard-page.tsx"),
+        route("/ideas", "features/users/pages/dashboard-ideas-page.tsx"),
+        route(
+          "/products/:productId",
+          "features/users/pages/dashboard-product-page.tsx"
+        ),
+      ]),
     ]),
     layout("features/users/layouts/messages-layout.tsx", [
       ...prefix("/messages", [
