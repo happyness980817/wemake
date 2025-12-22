@@ -1,4 +1,12 @@
-import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration, useLocation } from "react-router";
+import {
+  isRouteErrorResponse,
+  Links,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+  useLocation,
+} from "react-router";
 import type { Route } from "./+types/root";
 import stylesheet from "./app.css?url";
 import Navigation from "./common/components/navigation";
@@ -43,7 +51,11 @@ export default function App() {
   return (
     <div className={pathname.includes("/auth") ? "" : "py-28 px-20"}>
       {pathname.includes("/auth") ? null : (
-        <Navigation isloggedIn={true} hasNotifications={false} hasMessages={false} />
+        <Navigation
+          isloggedIn={true}
+          hasNotifications={false}
+          hasMessages={false}
+        />
       )}
       <Outlet />
     </div>
@@ -57,7 +69,10 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 
   if (isRouteErrorResponse(error)) {
     message = error.status === 404 ? "404" : "Error";
-    details = error.status === 404 ? "The requested page could not be found." : error.statusText || details;
+    details =
+      error.status === 404
+        ? "The requested page could not be found."
+        : error.statusText || details;
   } else if (import.meta.env.DEV && error && error instanceof Error) {
     details = error.message;
     stack = error.stack;
