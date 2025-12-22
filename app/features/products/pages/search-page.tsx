@@ -8,7 +8,10 @@ import { Input } from "~/common/components/ui/input";
 import { Button } from "~/common/components/ui/button";
 
 export const meta: Route.MetaFunction = () => {
-  return [{ title: "Search - WeMake" }, { name: "description", content: "Search for products" }];
+  return [
+    { title: "Search - WeMake" },
+    { name: "description", content: "Search for products" },
+  ];
 };
 
 const paramsSchema = z.object({
@@ -20,7 +23,9 @@ export const loader = ({ request }: Route.LoaderArgs) => {
   const url = new URL(request.url);
   // console.log(url);
   // console.log(Object.fromEntries(url.searchParams), url.searchParams);
-  const { success, data: parsedData } = paramsSchema.safeParse(Object.fromEntries(url.searchParams));
+  const { success, data: parsedData } = paramsSchema.safeParse(
+    Object.fromEntries(url.searchParams)
+  );
   if (!success) {
     throw new Error("Invalid parameters");
   }
@@ -30,9 +35,16 @@ export const loader = ({ request }: Route.LoaderArgs) => {
 export default function SearchPage({ loaderData }: Route.ComponentProps) {
   return (
     <div className="space-y-10">
-      <Hero title="Search" subtitle="Search for products by title or description" />
+      <Hero
+        title="Search"
+        subtitle="Search for products by title or description"
+      />
       <Form className="flex justify-center max-w-screen-sm items-center mx-auto gap-2">
-        <Input name="query" placeholder="Search for products" className="text-lg" />
+        <Input
+          name="query"
+          placeholder="Search for products"
+          className="text-lg"
+        />
         <Button type="submit">Search</Button>
       </Form>
       <div className="space-y-5 w-full max-w-3xl mx-auto">
@@ -44,7 +56,7 @@ export default function SearchPage({ loaderData }: Route.ComponentProps) {
             description={`Product Description ${index}`}
             commentCount={123}
             viewCount={123}
-            likeCount={123}
+            likesCount={123}
           />
         ))}
       </div>

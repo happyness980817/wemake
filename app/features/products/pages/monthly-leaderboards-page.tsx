@@ -20,7 +20,9 @@ export const meta: Route.MetaFunction = ({ params }) => {
     .setZone("Asia/Seoul")
     .setLocale("ko-KR");
   return [
-    { title: `Best products of ${date.setLocale("en").toLocaleString({ month: "long", year: "numeric" })} | Wemake` },
+    {
+      title: `Best products of ${date.setLocale("en").toLocaleString({ month: "long", year: "numeric" })} | Wemake`,
+    },
   ];
 };
 
@@ -69,7 +71,9 @@ export const loader = ({ params }: Route.LoaderArgs) => {
   };
 };
 
-export default function MonthlyLeaderboardsPage({ loaderData }: Route.ComponentProps) {
+export default function MonthlyLeaderboardsPage({
+  loaderData,
+}: Route.ComponentProps) {
   const urlDate = DateTime.fromObject({
     year: loaderData.year,
     month: loaderData.month,
@@ -84,14 +88,24 @@ export default function MonthlyLeaderboardsPage({ loaderData }: Route.ComponentP
       />
       <div className="flex items-center justify-center gap-2">
         <Button variant="secondary" asChild>
-          <Link to={`/products/leaderboards/monthly/${previousMonth.year}/${previousMonth.month}`}>
-            &larr; {previousMonth.setLocale("en").toLocaleString({ month: "short", year: "numeric" })}
+          <Link
+            to={`/products/leaderboards/monthly/${previousMonth.year}/${previousMonth.month}`}
+          >
+            &larr;{" "}
+            {previousMonth
+              .setLocale("en")
+              .toLocaleString({ month: "short", year: "numeric" })}
           </Link>
         </Button>
         {!isToday ? (
           <Button variant="secondary" asChild>
-            <Link to={`/products/leaderboards/monthly/${nextMonth.year}/${nextMonth.month}`}>
-              {nextMonth.setLocale("en").toLocaleString({ month: "short", year: "numeric" })} &rarr;
+            <Link
+              to={`/products/leaderboards/monthly/${nextMonth.year}/${nextMonth.month}`}
+            >
+              {nextMonth
+                .setLocale("en")
+                .toLocaleString({ month: "short", year: "numeric" })}{" "}
+              &rarr;
             </Link>
           </Button>
         ) : null}
@@ -105,7 +119,7 @@ export default function MonthlyLeaderboardsPage({ loaderData }: Route.ComponentP
             description={`Product Description ${index}`}
             commentCount={123}
             viewCount={123}
-            likeCount={123}
+            likesCount={123}
           />
         ))}
       </div>

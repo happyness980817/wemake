@@ -67,7 +67,9 @@ export const loader = ({ params }: Route.LoaderArgs) => {
   };
 };
 
-export default function WeeklyLeaderboardsPage({ loaderData }: Route.ComponentProps) {
+export default function WeeklyLeaderboardsPage({
+  loaderData,
+}: Route.ComponentProps) {
   const urlDate = DateTime.fromObject({
     weekYear: loaderData.year,
     weekNumber: loaderData.week,
@@ -83,13 +85,17 @@ export default function WeeklyLeaderboardsPage({ loaderData }: Route.ComponentPr
       />
       <div className="flex items-center justify-center gap-2">
         <Button variant="secondary" asChild>
-          <Link to={`/products/leaderboards/weekly/${previousWeek.year}/${previousWeek.weekNumber}`}>
+          <Link
+            to={`/products/leaderboards/weekly/${previousWeek.year}/${previousWeek.weekNumber}`}
+          >
             &larr; {previousWeek.toLocaleString()}
           </Link>
         </Button>
         {!isToday ? (
           <Button variant="secondary" asChild>
-            <Link to={`/products/leaderboards/weekly/${nextWeek.year}/${nextWeek.weekNumber}`}>
+            <Link
+              to={`/products/leaderboards/weekly/${nextWeek.year}/${nextWeek.weekNumber}`}
+            >
               {nextWeek.toLocaleString()} &rarr;
             </Link>
           </Button>
@@ -104,7 +110,7 @@ export default function WeeklyLeaderboardsPage({ loaderData }: Route.ComponentPr
             description={`Product Description ${index}`}
             commentCount={123}
             viewCount={123}
-            likeCount={123}
+            likesCount={123}
           />
         ))}
       </div>

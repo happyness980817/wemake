@@ -4,7 +4,10 @@ import { ProductCard } from "../components/product-card";
 import ProductPagination from "~/common/components/product-pagination";
 
 export const meta = ({ params }: Route.MetaArgs) => {
-  return [{ title: `Developer Tools | WeMake` }, { name: "description", content: `Browse Developer Tools products` }];
+  return [
+    { title: `Developer Tools | WeMake` },
+    { name: "description", content: `Browse Developer Tools products` },
+  ];
 };
 
 export default function CategoryPage() {
@@ -20,7 +23,7 @@ export default function CategoryPage() {
             description={`Product Description ${index}`}
             commentCount={123}
             viewCount={123}
-            likeCount={123}
+            likesCount={123}
           />
         ))}
       </div>

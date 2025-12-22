@@ -17,7 +17,11 @@ export const meta: Route.MetaFunction = ({ params }) => {
   })
     .setZone("Asia/Seoul")
     .setLocale("ko-KR");
-  return [{ title: `Best products of ${date.setLocale("en").toLocaleString({ year: "numeric" })} | Wemake` }];
+  return [
+    {
+      title: `Best products of ${date.setLocale("en").toLocaleString({ year: "numeric" })} | Wemake`,
+    },
+  ];
 };
 
 export const loader = ({ params }: Route.LoaderArgs) => {
@@ -64,7 +68,9 @@ export const loader = ({ params }: Route.LoaderArgs) => {
   };
 };
 
-export default function YearlyLeaderboardsPage({ loaderData }: Route.ComponentProps) {
+export default function YearlyLeaderboardsPage({
+  loaderData,
+}: Route.ComponentProps) {
   const urlDate = DateTime.fromObject({
     year: loaderData.year,
   });
@@ -73,17 +79,21 @@ export default function YearlyLeaderboardsPage({ loaderData }: Route.ComponentPr
   const isToday = urlDate.equals(DateTime.now().startOf("year"));
   return (
     <div className="space-y-10">
-      <Hero title={`The best products of ${urlDate.setLocale("en").toLocaleString({ year: "numeric" })}`} />
+      <Hero
+        title={`The best products of ${urlDate.setLocale("en").toLocaleString({ year: "numeric" })}`}
+      />
       <div className="flex items-center justify-center gap-2">
         <Button variant="secondary" asChild>
           <Link to={`/products/leaderboards/yearly/${previousYear.year}`}>
-            &larr; {previousYear.setLocale("en").toLocaleString({ year: "numeric" })}
+            &larr;{" "}
+            {previousYear.setLocale("en").toLocaleString({ year: "numeric" })}
           </Link>
         </Button>
         {!isToday ? (
           <Button variant="secondary" asChild>
             <Link to={`/products/leaderboards/yearly/${nextYear.year}`}>
-              {nextYear.setLocale("en").toLocaleString({ year: "numeric" })} &rarr;
+              {nextYear.setLocale("en").toLocaleString({ year: "numeric" })}{" "}
+              &rarr;
             </Link>
           </Button>
         ) : null}
@@ -97,7 +107,7 @@ export default function YearlyLeaderboardsPage({ loaderData }: Route.ComponentPr
             description={`Product Description ${index}`}
             commentCount={123}
             viewCount={123}
-            likeCount={123}
+            likesCount={123}
           />
         ))}
       </div>

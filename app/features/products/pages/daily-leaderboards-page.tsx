@@ -21,7 +21,11 @@ export const meta: Route.MetaFunction = ({ params }) => {
   })
     .setZone("Asia/Seoul")
     .setLocale("ko-KR");
-  return [{ title: `Best products of ${date.setLocale("en").toLocaleString(DateTime.DATE_MED)} | Wemake` }];
+  return [
+    {
+      title: `Best products of ${date.setLocale("en").toLocaleString(DateTime.DATE_MED)} | Wemake`,
+    },
+  ];
 };
 
 export const loader = ({ params }: Route.LoaderArgs) => {
@@ -66,7 +70,9 @@ export const loader = ({ params }: Route.LoaderArgs) => {
   };
 };
 
-export default function DailyLeaderboardsPage({ loaderData }: Route.ComponentProps) {
+export default function DailyLeaderboardsPage({
+  loaderData,
+}: Route.ComponentProps) {
   const urlDate = DateTime.fromObject({
     year: loaderData.year,
     month: loaderData.month,
@@ -80,13 +86,17 @@ export default function DailyLeaderboardsPage({ loaderData }: Route.ComponentPro
       <Hero title={`The best products of ${urlDate.toLocaleString()}`} />
       <div className="flex items-center justify-center gap-2">
         <Button variant="secondary" asChild>
-          <Link to={`/products/leaderboards/daily/${previousDay.year}/${previousDay.month}/${previousDay.day}`}>
+          <Link
+            to={`/products/leaderboards/daily/${previousDay.year}/${previousDay.month}/${previousDay.day}`}
+          >
             &larr; {previousDay.toLocaleString()}
           </Link>
         </Button>
         {!isToday ? (
           <Button variant="secondary" asChild>
-            <Link to={`/products/leaderboards/daily/${nextDay.year}/${nextDay.month}/${nextDay.day}`}>
+            <Link
+              to={`/products/leaderboards/daily/${nextDay.year}/${nextDay.month}/${nextDay.day}`}
+            >
               {nextDay.toLocaleString()} &rarr;
             </Link>
           </Button>
@@ -101,7 +111,7 @@ export default function DailyLeaderboardsPage({ loaderData }: Route.ComponentPro
             description={`Product Description ${index}`}
             commentCount={123}
             viewCount={123}
-            likeCount={123}
+            likesCount={123}
           />
         ))}
       </div>
