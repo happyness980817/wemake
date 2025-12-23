@@ -1,0 +1,336 @@
+{
+  "id": "f454b6b3-57d0-4e0f-a193-974d3229c151",
+  "prevId": "5d6363b8-8e12-4119-918e-5a8f97c6d8e1",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.jobs": {
+      "name": "jobs",
+      "schema": "",
+      "columns": {
+        "job_id": {
+          "name": "job_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "jobs_job_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "9223372036854775807",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "position": {
+          "name": "position",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "overview": {
+          "name": "overview",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "responsibilities": {
+          "name": "responsibilities",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "qualifications": {
+          "name": "qualifications",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "benefits": {
+          "name": "benefits",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "skills": {
+          "name": "skills",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "company_name": {
+          "name": "company_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "company_logo_url": {
+          "name": "company_logo_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "company_location": {
+          "name": "company_location",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "apply_url": {
+          "name": "apply_url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "job_type": {
+          "name": "job_type",
+          "type": "job_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "job_location": {
+          "name": "job_location",
+          "type": "location_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "salary_range": {
+          "name": "salary_range",
+          "type": "salary_range",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.follows": {
+      "name": "follows",
+      "schema": "",
+      "columns": {
+        "follower_id": {
+          "name": "follower_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "following_id": {
+          "name": "following_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "follows_follower_id_profiles_profile_id_fk": {
+          "name": "follows_follower_id_profiles_profile_id_fk",
+          "tableFrom": "follows",
+          "tableTo": "profiles",
+          "columnsFrom": [
+            "follower_id"
+          ],
+          "columnsTo": [
+            "profile_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "follows_following_id_profiles_profile_id_fk": {
+          "name": "follows_following_id_profiles_profile_id_fk",
+          "tableFrom": "follows",
+          "tableTo": "profiles",
+          "columnsFrom": [
+            "following_id"
+          ],
+          "columnsTo": [
+            "profile_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.profiles": {
+      "name": "profiles",
+      "schema": "",
+      "columns": {
+        "profile_id": {
+          "name": "profile_id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "avatar": {
+          "name": "avatar",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "username": {
+          "name": "username",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "headline": {
+          "name": "headline",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "bio": {
+          "name": "bio",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "role": {
+          "name": "role",
+          "type": "role",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'developer'"
+        },
+        "stats": {
+          "name": "stats",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "profiles_profile_id_users_id_fk": {
+          "name": "profiles_profile_id_users_id_fk",
+          "tableFrom": "profiles",
+          "tableTo": "users",
+          "schemaTo": "auth",
+          "columnsFrom": [
+            "profile_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {
+    "public.job_type": {
+      "name": "job_type",
+      "schema": "public",
+      "values": [
+        "full-time",
+        "part-time",
+        "freelance",
+        "internship",
+        "contract"
+      ]
+    },
+    "public.location_type": {
+      "name": "location_type",
+      "schema": "public",
+      "values": [
+        "remote",
+        "on-site",
+        "hybrid"
+      ]
+    },
+    "public.salary_range": {
+      "name": "salary_range",
+      "schema": "public",
+      "values": [
+        "$0 - $50,000",
+        "$50,000 - $100,000",
+        "$100,000 - $200,000",
+        "$200,000+"
+      ]
+    },
+    "public.role": {
+      "name": "role",
+      "schema": "public",
+      "values": [
+        "developer",
+        "designer",
+        "salesperson",
+        "other"
+      ]
+    }
+  },
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
