@@ -1,8 +1,17 @@
 import { Link } from "react-router";
-import { Card, CardFooter, CardHeader, CardTitle } from "~/common/components/ui/card";
+import {
+  Card,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "~/common/components/ui/card";
 import { Button } from "~/common/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "~/common/components/ui/avatar";
-import { HeartIcon } from "lucide-react";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "~/common/components/ui/avatar";
+import { ChevronUpIcon } from "lucide-react";
 import { cn } from "~/lib/utils";
 
 interface PostCardProps {
@@ -13,7 +22,7 @@ interface PostCardProps {
   category: string;
   timestamp: string;
   expanded?: boolean;
-  likesCount?: number;
+  votesCount?: number;
 }
 
 export function PostCard({
@@ -24,7 +33,7 @@ export function PostCard({
   category,
   timestamp,
   expanded = false,
-  likesCount = 0,
+  votesCount = 0,
 }: PostCardProps) {
   return (
     <Link to={`/community/${id}`} className="block">
@@ -57,8 +66,8 @@ export function PostCard({
         {expanded && (
           <CardFooter className="flex justify-end">
             <Button variant="outline" className="flex flex-col h-14">
-              <HeartIcon className="w-4 h-4 shrink-0" />
-              <span>{likesCount}</span>
+              <ChevronUpIcon className="w-4 h-4 shrink-0" />
+              <span>{votesCount}</span>
             </Button>
           </CardFooter>
         )}

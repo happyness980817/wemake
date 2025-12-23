@@ -8,7 +8,7 @@ import {
 import type { Route } from "./+types/post-page";
 import { Form, Link } from "react-router";
 import { Button } from "~/common/components/ui/button";
-import { DotIcon, HeartIcon } from "lucide-react";
+import { ChevronUpIcon, DotIcon } from "lucide-react";
 import { Textarea } from "~/common/components/ui/textarea";
 import {
   Avatar,
@@ -50,7 +50,7 @@ export default function PostPage({}: Route.ComponentProps) {
         <div className="col-span-1 lg:col-span-4 space-y-10">
           <div className="flex w-full items-start gap-10">
             <Button variant="outline" className="flex flex-col h-14">
-              <HeartIcon className="w-4 h-4 shrink-0" />
+              <ChevronUpIcon className="w-4 h-4 shrink-0" />
               <span>10</span>
             </Button>
             <div className="space-y-20">

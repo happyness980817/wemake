@@ -61,7 +61,7 @@ export default function HomePage() {
             authorAvatarURL="https://github.com/happyness980817.png"
             category="Productivity"
             timestamp="12 hours ago"
-            likesCount={123}
+            votesCount={123}
           />
         ))}
       </div>

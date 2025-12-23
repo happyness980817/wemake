@@ -17,7 +17,7 @@ export default function ProfilePostsPage() {
           authorAvatarURL="https://github.com/shadcn.png"
           category="Productivity"
           timestamp="12 hours ago"
-          likesCount={123}
+          votesCount={123}
           expanded
         />
       ))}
