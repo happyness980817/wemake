@@ -5,6 +5,7 @@ import InputPair from "~/common/components/input-pair";
 import SelectPair from "~/common/components/select-pair";
 
 import { Button } from "~/common/components/ui/button";
+import { PRODUCT_STAGES } from "../constants";
 
 export const meta: Route.MetaFunction = () => {
   return [{ title: "Create Team | Wemake" }];
@@ -35,13 +36,7 @@ export default function CreateTeamPage({}: Route.ComponentProps) {
             name="stage"
             required
             placeholder="Select the stage of your product"
-            options={[
-              { label: "Idea", value: "idea" },
-              { label: "Prototype", value: "prototype" },
-              { label: "MVP", value: "mvp" },
-              { label: "Product", value: "product" },
-              { label: "Enterprise", value: "enterprise" },
-            ]}
+            options={PRODUCT_STAGES}
           />
           <InputPair
             label="What is the size of your team?"
@@ -55,13 +50,15 @@ export default function CreateTeamPage({}: Route.ComponentProps) {
           />
           <InputPair
             label="How much equity are you willing to offer to your team member?"
-            description="(~% of your company per person)"
-            placeholder="i.e 10%"
+            description="% of your company stock per person"
+            placeholder="0-100, no decimals"
             name="equity"
-            maxLength={10}
-            type="text"
+            type="number"
             id="equity"
             required
+            max={100}
+            min={0}
+            step={1}
           />
           <InputPair
             label="What roles are you looking for?"

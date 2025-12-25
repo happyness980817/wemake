@@ -36,6 +36,13 @@
       "when": 1766493261187,
       "tag": "0004_clever_madrox",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1766627517964,
+      "tag": "0005_chief_groot",
+      "breakpoints": true
     }
   ]
 }
