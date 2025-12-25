@@ -43,6 +43,13 @@
       "when": 1766627517964,
       "tag": "0005_chief_groot",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1766670770120,
+      "tag": "0006_workable_ted_forrester",
+      "breakpoints": true
     }
   ]
 }
