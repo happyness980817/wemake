@@ -13,12 +13,19 @@ import { PERIOD_OPTIONS, SORT_OPTIONS } from "../constants";
 import { useSearchParams } from "react-router";
 import { Input } from "~/common/components/ui/input";
 import { PostCard } from "../components/post-card";
+import { getPosts, getTopics } from "../queries";
 
 export const meta: Route.MetaFunction = () => {
   return [{ title: "Community | Wemake" }];
 };
 
-export default function CommunityPage({}: Route.ComponentProps) {
+export const loader = async () => {
+  const topics = await getTopics();
+  const posts = await getPosts();
+  return { topics, posts };
+};
+
+export default function CommunityPage({ loaderData }: Route.ComponentProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const sort = searchParams.get("sort") || "newest";
   const period = searchParams.get("period") || "all-time";
@@ -99,15 +106,16 @@ export default function CommunityPage({}: Route.ComponentProps) {
             </Button>
           </div>
           <div className="space-y-5">
-            {Array.from({ length: 11 }).map((_, index) => (
+            {loaderData.posts.map((post) => (
               <PostCard
-                key={index}
-                id={`postId-${index}`}
-                title="What is the best way to learn React?"
-                authorName="John Doe"
-                authorAvatarURL="https://github.com/happyness980817.png"
-                category="Productivity"
-                timestamp="12 hours ago"
+                key={post.id}
+                id={post.id}
+                title={post.title}
+                authorName={post.authorName}
+                authorAvatarURL={post.authorAvatarURL}
+                category={post.topic}
+                timestamp={post.createdAt}
+                votesCount={post.upvotes}
                 expanded
               />
             ))}
@@ -116,23 +124,9 @@ export default function CommunityPage({}: Route.ComponentProps) {
         <aside className="col-span-1 lg:col-span-2 space-y-5">
           <p className="text-sm font-bold text-muted-foreground">TOPICS</p>
           <div className="flex flex-col gap-4 items-start">
-            {[
-              "Productivity",
-              "Technology",
-              "Business",
-              "Marketing",
-              "Design",
-              "Development",
-              "Other",
-            ].map((category) => (
-              <Button key={category} variant="link" asChild className="pl-0">
-                <Link
-                  key={category}
-                  to={`/community?topic=${category}`}
-                  className="font-semibold"
-                >
-                  {category}
-                </Link>
+            {loaderData.topics.map((topic) => (
+              <Button key={topic.name} variant="link" asChild className="pl-0">
+                <Link to={`/community?topic=${topic.slug}`}>{topic.name}</Link>
               </Button>
             ))}
           </div>
