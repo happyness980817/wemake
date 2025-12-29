@@ -21,7 +21,7 @@ interface PostCardProps {
   authorName: string;
   authorAvatarURL?: string | null;
   category: string;
-  timestamp: Date;
+  timestamp: string;
   expanded?: boolean;
   votesCount?: number;
 }
@@ -58,7 +58,7 @@ export function PostCard({
               <span>{category}</span>
               <span>•</span>
               <span>
-                {DateTime.fromJSDate(timestamp).toRelative({ locale: "en-US" })}
+                {DateTime.fromISO(timestamp).toRelative({ locale: "en-US" })}
               </span>
             </div>
           </div>
