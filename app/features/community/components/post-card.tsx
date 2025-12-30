@@ -19,7 +19,7 @@ interface PostCardProps {
   id: number;
   title: string;
   authorName: string;
-  authorAvatarURL?: string | null;
+  authorAvatarURL: string | null;
   category: string;
   timestamp: string;
   expanded?: boolean;
