@@ -21,7 +21,14 @@ import {
   DropdownMenuGroup,
 } from "./ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { BarChart3Icon, BellIcon, LogOutIcon, MessageCircleIcon, SettingsIcon, UserIcon } from "lucide-react";
+import {
+  BarChart3Icon,
+  BellIcon,
+  LogOutIcon,
+  MessageCircleIcon,
+  SettingsIcon,
+  UserIcon,
+} from "lucide-react";
 
 const menus = [
   {
@@ -156,7 +163,7 @@ export default function Navigation({
               <NavigationMenuItem key={menu.name}>
                 {menu.items ? (
                   <>
-                    <Link to={menu.to}>
+                    <Link to={menu.to} prefetch="intent">
                       <NavigationMenuTrigger>{menu.name}</NavigationMenuTrigger>
                     </Link>
                     <NavigationMenuContent>
@@ -173,8 +180,13 @@ export default function Navigation({
                             ])}
                           >
                             <NavigationMenuLink asChild>
-                              <Link className="p-3 space-y-1 block leading-none no-underline outline-none" to={item.to}>
-                                <span className="text-sm font-medium leading-none">{item.name}</span>
+                              <Link
+                                className="p-3 space-y-1 block leading-none no-underline outline-none"
+                                to={item.to}
+                              >
+                                <span className="text-sm font-medium leading-none">
+                                  {item.name}
+                                </span>
                                 <p className="text-sm leading-snug text-muted-foreground"></p>
                               </Link>
                             </NavigationMenuLink>
@@ -198,13 +210,17 @@ export default function Navigation({
           <Button variant="ghost" size="icon" asChild className="relative">
             <Link to="/my/notifications">
               <BellIcon className="size-4" />
-              {hasNotifications && <span className="absolute top-1.5 right-1.5 size-2 bg-red-500 rounded-full" />}
+              {hasNotifications && (
+                <span className="absolute top-1.5 right-1.5 size-2 bg-red-500 rounded-full" />
+              )}
             </Link>
           </Button>
           <Button variant="ghost" size="icon" asChild className="relative">
             <Link to="/my/messages">
               <MessageCircleIcon className="size-4" />
-              {hasMessages && <span className="absolute top-1.5 right-1.5 size-2 bg-red-500 rounded-full" />}
+              {hasMessages && (
+                <span className="absolute top-1.5 right-1.5 size-2 bg-red-500 rounded-full" />
+              )}
             </Link>
           </Button>
           <DropdownMenu>
