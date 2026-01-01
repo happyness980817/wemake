@@ -20,6 +20,7 @@ export const meta: Route.MetaFunction = () => {
 };
 
 export const loader = async () => {
+  // await new Promise((resolve) => setTimeout(resolve, 3000)); // UI 는 이 부분이 완료되기 전까지 나타나지 않는다.
   const topics = await getTopics();
   const posts = await getPosts();
   return { topics, posts };
