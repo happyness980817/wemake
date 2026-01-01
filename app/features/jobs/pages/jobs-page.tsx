@@ -50,6 +50,7 @@ export default function JobsPage({}: Route.ComponentProps) {
             <div className="flex flex-wrap gap-2">
               {JOB_TYPES.map((type) => (
                 <Button
+                  key={type.value}
                   variant="outline"
                   onClick={() => onFilterClick("type", type.value)}
                   className={cn(
