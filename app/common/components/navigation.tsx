@@ -172,7 +172,7 @@ export default function Navigation({
                           <NavigationMenuItem
                             key={item.name}
                             className={cn([
-                              "select-none rounded-md transition-colors focus:bg-accent  hover:bg-accent",
+                              "select-none rounded-md transition-colors focus:bg-accent hover:bg-accent",
                               item.to === "/products/promote" &&
                                 "col-span-2 bg-primary/10 [&_a]:hover:bg-primary/20 [&_a]:focus:bg-primary/20",
                               item.to === "/jobs/submit" &&

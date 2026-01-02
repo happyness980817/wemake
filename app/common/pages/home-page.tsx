@@ -5,6 +5,9 @@ import { IdeaCard } from "~/features/ideas/components/idea-card";
 import { JobCard } from "~/features/jobs/components/job-card";
 import { TeamCard } from "~/features/teams/components/team-card";
 import { Button } from "../components/ui/button";
+import { getProductsByDate } from "~/features/products/queries";
+import { DateTime } from "luxon";
+import type { Route } from "./+types/home-page";
 
 export const meta: MetaFunction = () => {
   return [
@@ -13,7 +16,16 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export default function HomePage() {
+export const loader = async () => {
+  const products = await getProductsByDate({
+    startDate: DateTime.now().startOf("day"),
+    endDate: DateTime.now().endOf("day"),
+    limit: 7,
+  });
+  return { products };
+};
+
+export default function HomePage({ loaderData }: Route.ComponentProps) {
   return (
     <div className="px-20 space-y-20">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
@@ -28,15 +40,15 @@ export default function HomePage() {
             <Link to="/products/leaderboards">Explore All Products &rarr;</Link>
           </Button>
         </div>
-        {Array.from({ length: 11 }).map((_, index) => (
+        {loaderData.products.map((product, index) => (
           <ProductCard
-            key={index}
-            id={`productId-${index}`}
-            name={`Product Name ${index}`}
-            description={`Product Description ${index}`}
-            commentCount={123}
-            viewCount={123}
-            likesCount={123}
+            key={product.product_id}
+            id={product.product_id.toString()}
+            name={product.name}
+            description={product.description}
+            reviewsCount={product.reviews}
+            viewsCount={product.views}
+            likesCount={product.likes}
           />
         ))}
       </div>
@@ -55,7 +67,7 @@ export default function HomePage() {
         {Array.from({ length: 11 }).map((_, index) => (
           <PostCard
             key={index}
-            id={`postId-${index}`}
+            id={index}
             title="What is the best way to learn React?"
             authorName="John Doe"
             authorAvatarURL="https://github.com/happyness980817.png"
