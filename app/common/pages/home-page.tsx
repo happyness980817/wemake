@@ -5,7 +5,7 @@ import { IdeaCard } from "~/features/ideas/components/idea-card";
 import { JobCard } from "~/features/jobs/components/job-card";
 import { TeamCard } from "~/features/teams/components/team-card";
 import { Button } from "../components/ui/button";
-import { getProductsByDate } from "~/features/products/queries";
+import { getProductsByDateRange } from "~/features/products/queries";
 import { DateTime } from "luxon";
 import type { Route } from "./+types/home-page";
 
@@ -17,7 +17,7 @@ export const meta: MetaFunction = () => {
 };
 
 export const loader = async () => {
-  const products = await getProductsByDate({
+  const products = await getProductsByDateRange({
     startDate: DateTime.now().startOf("day"),
     endDate: DateTime.now().endOf("day"),
     limit: 7,

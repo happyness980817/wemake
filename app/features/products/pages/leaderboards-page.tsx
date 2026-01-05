@@ -3,7 +3,7 @@ import { ProductCard } from "../components/product-card";
 import type { Route } from "./+types/leaderboards-page";
 import { Hero } from "~/common/components/hero";
 import { Link } from "react-router";
-import { getProductsByDate } from "../queries";
+import { getProductsByDateRange } from "../queries";
 import { DateTime } from "luxon";
 
 export const meta: Route.MetaFunction = () => {
@@ -17,22 +17,22 @@ export const loader = async () => {
   const [dailyProducts, weeklyProducts, monthlyProducts, yearlyProducts] =
     await Promise.all([
       // 병렬 처리
-      getProductsByDate({
+      getProductsByDateRange({
         startDate: DateTime.now().startOf("day"),
         endDate: DateTime.now().endOf("day"),
         limit: 7,
       }),
-      getProductsByDate({
+      getProductsByDateRange({
         startDate: DateTime.now().startOf("week"),
         endDate: DateTime.now().endOf("week"),
         limit: 7,
       }),
-      getProductsByDate({
+      getProductsByDateRange({
         startDate: DateTime.now().startOf("month"),
         endDate: DateTime.now().endOf("month"),
         limit: 7,
       }),
-      getProductsByDate({
+      getProductsByDateRange({
         startDate: DateTime.now().startOf("year"),
         endDate: DateTime.now().endOf("year"),
         limit: 7,
