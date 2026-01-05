@@ -40,6 +40,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
       }
     );
   }
+
   const date = DateTime.fromObject({
     weekYear: parsedData.year,
     weekNumber: parsedData.week,
@@ -55,6 +56,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
       }
     );
   }
+
   const today = DateTime.now().setZone("Asia/Seoul").startOf("week");
   if (date > today) {
     throw data(
@@ -67,6 +69,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
       }
     );
   }
+
   const url = new URL(request.url);
   const products = await getProductsByDateRange({
     startDate: date.startOf("week"),

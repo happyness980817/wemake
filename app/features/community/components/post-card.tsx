@@ -52,10 +52,13 @@ export function PostCard({
             {authorAvatarURL && <AvatarImage src={authorAvatarURL} />}
           </Avatar>
           <div className="space-y-2">
-            <CardTitle>{title}</CardTitle>
+            <CardTitle className="text-lg md:text-xl leading-tight">
+              {title}
+            </CardTitle>
             <div className="flex gap-2 text-sm text-muted-foreground leading-tight">
-              <span>{authorName}</span>
-              <span>{category}</span>
+              <span>
+                {authorName} on {category}
+              </span>
               <span>•</span>
               <span>
                 {DateTime.fromISO(timestamp).toRelative({ locale: "en-US" })}

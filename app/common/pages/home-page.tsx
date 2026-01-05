@@ -8,6 +8,7 @@ import { Button } from "../components/ui/button";
 import { getProductsByDateRange } from "~/features/products/queries";
 import { DateTime } from "luxon";
 import type { Route } from "./+types/home-page";
+import { getPosts } from "~/features/community/queries";
 
 export const meta: MetaFunction = () => {
   return [
@@ -22,7 +23,11 @@ export const loader = async () => {
     endDate: DateTime.now().endOf("day"),
     limit: 7,
   });
-  return { products };
+  const posts = await getPosts({
+    limit: 7,
+    sorting: "newest",
+  });
+  return { products, posts };
 };
 
 export default function HomePage({ loaderData }: Route.ComponentProps) {
@@ -64,16 +69,16 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             <Link to="/community">Explore All Discussions &rarr;</Link>
           </Button>
         </div>
-        {Array.from({ length: 11 }).map((_, index) => (
+        {loaderData.posts.map((post) => (
           <PostCard
-            key={index}
-            id={index}
-            title="What is the best way to learn React?"
-            authorName="John Doe"
-            authorAvatarURL="https://github.com/happyness980817.png"
-            category="Productivity"
-            timestamp="12 hours ago"
-            votesCount={123}
+            key={post.post_id}
+            id={post.post_id}
+            title={post.title}
+            authorName={post.author}
+            authorAvatarURL={post.author_avatar}
+            category={post.topic}
+            timestamp={post.created_at}
+            votesCount={post.upvotes}
           />
         ))}
       </div>

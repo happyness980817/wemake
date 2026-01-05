@@ -1,7 +1,7 @@
 import { Hero } from "~/common/components/hero";
 import type { Route } from "./+types/community-page";
 import { Button } from "~/common/components/ui/button";
-import { Form, Link } from "react-router";
+import { data, Form, Link } from "react-router";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,14 +14,47 @@ import { useSearchParams } from "react-router";
 import { Input } from "~/common/components/ui/input";
 import { PostCard } from "../components/post-card";
 import { getPosts, getTopics } from "../queries";
+import z from "zod";
 
 export const meta: Route.MetaFunction = () => {
   return [{ title: "Community | Wemake" }];
 };
 
-export const loader = async () => {
-  // await new Promise((resolve) => setTimeout(resolve, 3000)); // UI 는 이 부분이 완료되기 전까지 나타나지 않는다.
-  const [topics, posts] = await Promise.all([getTopics(), getPosts()]);
+const searchParamsSchema = z.object({
+  sort: z.enum(["newest", "popular"]).optional().default("newest"),
+  period: z
+    .enum(["all-time", "today", "weekly", "monthly", "yearly"])
+    .optional()
+    .default("all-time"),
+  keyword: z.string().optional(),
+  topic: z.string().optional(),
+});
+
+export const loader = async ({ request }: Route.LoaderArgs) => {
+  const url = new URL(request.url);
+  const { success, data: parsedData } = searchParamsSchema.safeParse(
+    Object.fromEntries(url.searchParams)
+  );
+  if (!success) {
+    throw data(
+      {
+        error_code: "invalid_search_params",
+        message: "Invalid search parameters",
+      },
+      { status: 400 }
+    );
+  }
+  // console.log(parsedData);
+  const [topics, posts] = await Promise.all([
+    getTopics(),
+    getPosts({
+      limit: 20,
+      sorting: parsedData.sort,
+      period: parsedData.period,
+      keyword: parsedData.keyword,
+      topic: parsedData.topic,
+    }),
+  ]);
   return { topics, posts };
 };
 
@@ -94,9 +127,11 @@ export default function CommunityPage({ loaderData }: Route.ComponentProps) {
                 )}
               </div>
               <Form className="w-2/3">
+                <Input type="hidden" name="sort" value={sort} />
+                <Input type="hidden" name="period" value={period} />
                 <Input
                   type="text"
-                  name="search"
+                  name="keyword"
                   placeholder="Search for discussions"
                 />
               </Form>

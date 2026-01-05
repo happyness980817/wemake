@@ -41,6 +41,7 @@
 // };
 
 import client from "~/supa-client";
+import { DateTime } from "luxon";
 
 export const getTopics = async () => {
   const { data, error } = await client.from("topics").select("name, slug");
@@ -48,11 +49,52 @@ export const getTopics = async () => {
   return data;
 };
 
-export const getPosts = async () => {
-  const { data, error } = await client
+export const getPosts = async ({
+  limit,
+  sorting,
+  period = "all-time",
+  keyword,
+  topic,
+}: {
+  limit: number;
+  sorting: "newest" | "popular";
+  period?: "all-time" | "today" | "weekly" | "monthly" | "yearly";
+  keyword?: string;
+  topic?: string;
+}) => {
+  const baseQuery = client
     .from("community_post_list_view")
-    .select(`*`);
-  console.log(error);
+    .select(`*`)
+    .limit(limit);
+  if (sorting === "newest") {
+    baseQuery.order("created_at", { ascending: false });
+  } else {
+    if (period === "all-time") {
+      baseQuery.order("upvotes", { ascending: false });
+    } else {
+      const today = DateTime.now().startOf("day");
+      if (period === "today") {
+        baseQuery.gte("created_at", today.startOf("day").toISO());
+      } else if (period === "weekly") {
+        baseQuery.gte("created_at", today.startOf("week").toISO());
+      } else if (period === "monthly") {
+        baseQuery.gte("created_at", today.startOf("month").toISO());
+      } else if (period === "yearly") {
+        baseQuery.gte("created_at", today.startOf("year").toISO());
+      }
+      baseQuery.order("upvotes", { ascending: false });
+    }
+  }
+
+  if (keyword) {
+    baseQuery.ilike("title", `%${keyword}%`); // '%{}%': keyword 를 검색하되, 문자의 위치는 상관없다
+  }
+
+  if (topic) {
+    baseQuery.eq("topic_slug", topic);
+  }
+
+  const { data, error } = await baseQuery;
   if (error) throw Error(error.message);
   return data;
 };

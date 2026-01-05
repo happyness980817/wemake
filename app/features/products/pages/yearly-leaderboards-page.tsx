@@ -42,6 +42,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
       }
     );
   }
+
   const date = DateTime.fromObject({
     year: parsedData.year,
   }).setZone("Asia/Seoul");
@@ -56,6 +57,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
       }
     );
   }
+
   const today = DateTime.now().setZone("Asia/Seoul").startOf("year");
   if (date > today) {
     throw data(
@@ -70,14 +72,12 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
   }
 
   const url = new URL(request.url);
-
   const products = await getProductsByDateRange({
     startDate: date.startOf("year"),
     endDate: date.endOf("year"),
     limit: PAGE_SIZE,
     page: Number(url.searchParams.get("page")) || 1,
   });
-
   const totalPages = await getProductsPagesByDateRange({
     startDate: date.startOf("year"),
     endDate: date.endOf("year"),

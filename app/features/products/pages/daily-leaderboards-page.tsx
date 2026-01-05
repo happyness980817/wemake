@@ -46,6 +46,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
       }
     );
   }
+
   const date = DateTime.fromObject(parsedData).setZone("Asia/Seoul");
   if (!date.isValid) {
     throw data(
@@ -58,6 +59,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
       }
     );
   }
+
   const today = DateTime.now().setZone("Asia/Seoul").startOf("day");
   if (date > today) {
     throw data(
@@ -70,6 +72,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
       }
     );
   }
+
   const url = new URL(request.url);
   const products = await getProductsByDateRange({
     startDate: date.startOf("day"),
