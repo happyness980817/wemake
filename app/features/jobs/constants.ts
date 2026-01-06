@@ -20,7 +20,7 @@ export const JOB_TYPES = [
     label: "Contract",
     value: "contract",
   },
-];
+] as const;
 
 export const LOCATION_TYPES = [
   {
@@ -35,6 +35,11 @@ export const LOCATION_TYPES = [
     label: "Hybrid",
     value: "hybrid",
   },
-];
+] as const;
 
-export const SALARY_RANGES = ["$0 - $50,000", "$50,000 - $100,000", "$100,000 - $200,000", "$200,000+"];
+export const SALARY_RANGES = [
+  "$0 - $50,000",
+  "$50,000 - $100,000",
+  "$100,000 - $200,000",
+  "$200,000+",
+] as const;

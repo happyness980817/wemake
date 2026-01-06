@@ -10,6 +10,7 @@ import { DateTime } from "luxon";
 import type { Route } from "./+types/home-page";
 import { getPosts } from "~/features/community/queries";
 import { getIdeas } from "~/features/ideas/queries";
+import { getJobs } from "~/features/jobs/queries";
 
 export const meta: MetaFunction = () => {
   return [
@@ -29,13 +30,14 @@ export const loader = async () => {
     sorting: "newest",
   });
   const ideas = await getIdeas({ limit: 7 });
-  return { products, posts, ideas };
+  const jobs = await getJobs({ limit: 11 });
+  return { products, posts, ideas, jobs };
 };
 
 export default function HomePage({ loaderData }: Route.ComponentProps) {
   return (
     <div className="px-20 space-y-20">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         <div>
           <h2 className="text-5xl font-bold leading-tight tracking-tight">
             Today's Products
@@ -59,7 +61,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
           />
         ))}
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         <div>
           <h2 className="text-5xl font-bold leading-tight tracking-tight">
             Latest Discussions
@@ -84,7 +86,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
           />
         ))}
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         <div>
           <h2 className="text-5xl font-bold leading-tight tracking-tight">
             Business Ideas
@@ -108,7 +110,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
           />
         ))}
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
         <div>
           <h2 className="text-5xl font-bold leading-tight tracking-tight">
             Latest Jobs
@@ -120,21 +122,21 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             <Link to="/jobs">Explore All Jobs &rarr;</Link>
           </Button>
         </div>
-        {Array.from({ length: 15 }).map((_, index) => (
+        {loaderData.jobs.map((job) => (
           <JobCard
-            key={index}
-            id={`jobId-${index}`}
-            companyName="Apple Inc."
-            companyLogoURL={`https://github.com/apple.png?${index}`}
-            timestamp="12 hours ago"
-            title="Software Engineer"
-            badges={["Full-time", "Remote", "Senior"]}
-            salaryRange="$100,000+ per year"
-            location="Remote"
+            key={job.job_id}
+            id={job.job_id}
+            companyName={job.company_name}
+            companyLogoURL={job.company_logo_url}
+            postedAt={job.created_at}
+            title={job.position}
+            badges={[job.job_type]}
+            salaryRange={job.salary_range}
+            location={job.job_location}
           />
         ))}
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
         <div>
           <h2 className="text-5xl font-bold leading-tight tracking-tight">
             Find a Teammate
