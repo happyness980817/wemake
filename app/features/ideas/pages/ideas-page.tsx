@@ -1,6 +1,7 @@
 import { Hero } from "~/common/components/hero";
 import type { Route } from "./+types/ideas-page";
 import { IdeaCard } from "../components/idea-card";
+import { getIdeas } from "../queries";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -9,7 +10,12 @@ export const meta: Route.MetaFunction = () => {
   ];
 };
 
-export default function IdeasPage({}: Route.ComponentProps) {
+export const loader = async () => {
+  const ideas = await getIdeas({ limit: 10 });
+  return { ideas };
+};
+
+export default function IdeasPage({ loaderData }: Route.ComponentProps) {
   return (
     <div className="space-y-20">
       <Hero
@@ -17,15 +23,15 @@ export default function IdeasPage({}: Route.ComponentProps) {
         subtitle="Buy and sell your brilliant Business/Startup ideas here."
       />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {Array.from({ length: 10 }).map((_, index) => (
+        {loaderData.ideas.map((idea) => (
           <IdeaCard
-            key={index}
-            id={`ideaId-${index}`}
-            title="AI-driven marketplace that matches underutilized industrial equipment with startups, handles financing, and optimizes logistics to reduce downtime."
-            viewCount={100}
-            timestamp="12 hours ago"
-            likesCount={100}
-            claimed={false}
+            key={idea.idea_id}
+            id={idea.idea_id}
+            title={idea.idea}
+            viewCount={idea.views}
+            timestamp={idea.created_at}
+            likesCount={idea.likes}
+            claimed={idea.claimed}
           />
         ))}
       </div>

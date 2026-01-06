@@ -9,6 +9,7 @@ import { getProductsByDateRange } from "~/features/products/queries";
 import { DateTime } from "luxon";
 import type { Route } from "./+types/home-page";
 import { getPosts } from "~/features/community/queries";
+import { getIdeas } from "~/features/ideas/queries";
 
 export const meta: MetaFunction = () => {
   return [
@@ -27,7 +28,8 @@ export const loader = async () => {
     limit: 7,
     sorting: "newest",
   });
-  return { products, posts };
+  const ideas = await getIdeas({ limit: 7 });
+  return { products, posts, ideas };
 };
 
 export default function HomePage({ loaderData }: Route.ComponentProps) {
@@ -45,7 +47,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             <Link to="/products/leaderboards">Explore All Products &rarr;</Link>
           </Button>
         </div>
-        {loaderData.products.map((product, index) => (
+        {loaderData.products.map((product) => (
           <ProductCard
             key={product.product_id}
             id={product.product_id.toString()}
@@ -94,15 +96,15 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             <Link to="/ideas">Explore All Ideas &rarr;</Link>
           </Button>
         </div>
-        {Array.from({ length: 5 }).map((_, index) => (
+        {loaderData.ideas.map((idea) => (
           <IdeaCard
-            key={index}
-            id={`ideaId-${index}`}
-            title={`Someone's Business/Startup ideas (${index})`}
-            viewCount={123}
-            timestamp="12 hours ago"
-            likesCount={123}
-            claimed={index % 2 === 0}
+            key={idea.idea_id}
+            id={idea.idea_id}
+            title={idea.idea}
+            viewCount={idea.views}
+            timestamp={idea.created_at}
+            likesCount={idea.likes}
+            claimed={idea.claimed}
           />
         ))}
       </div>

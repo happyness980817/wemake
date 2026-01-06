@@ -1,11 +1,18 @@
 import { Link } from "react-router";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "~/common/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "~/common/components/ui/card";
 import { Button } from "~/common/components/ui/button";
 import { DotIcon, EyeIcon, HeartIcon, LockIcon } from "lucide-react";
 import { cn } from "~/lib/utils";
+import { DateTime } from "luxon";
 
 interface IdeaCardProps {
-  id: string;
+  id: number;
   title: string;
   viewCount: number;
   timestamp: string;
@@ -13,13 +20,28 @@ interface IdeaCardProps {
   claimed: boolean;
 }
 
-export function IdeaCard({ id, title, viewCount, timestamp, likesCount, claimed }: IdeaCardProps) {
+export function IdeaCard({
+  id,
+  title,
+  viewCount,
+  timestamp,
+  likesCount,
+  claimed,
+}: IdeaCardProps) {
   return (
     <Card className="bg-transparent hover:bg-card/50 transition-colors">
       <CardHeader>
         <Link to={`/ideas/${id}`}>
           <CardTitle>
-            <span className={cn(claimed ? "bg-foreground selection:bg-foreground text-foreground" : "")}>{title}</span>
+            <span
+              className={cn(
+                claimed
+                  ? "bg-foreground selection:bg-foreground text-foreground"
+                  : ""
+              )}
+            >
+              {title}
+            </span>
           </CardTitle>
         </Link>
       </CardHeader>
@@ -29,7 +51,9 @@ export function IdeaCard({ id, title, viewCount, timestamp, likesCount, claimed 
           <span>{viewCount}</span>
         </div>
         <DotIcon className="w-4 h-4" />
-        <span>{timestamp}</span>
+        <span>
+          {DateTime.fromISO(timestamp).toRelative({ locale: "en-US" })}
+        </span>
       </CardContent>
       <CardFooter className="flex justify-end gap-2">
         <Button variant="outline">
