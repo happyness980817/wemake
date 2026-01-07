@@ -7,20 +7,27 @@ import {
   pgTable,
   text,
   timestamp,
+  uuid,
 } from "drizzle-orm/pg-core";
 import { PRODUCT_STAGES } from "./constants";
+import { profiles } from "../users/schema";
 
 export const productStages = pgEnum(
   "team_stage",
   PRODUCT_STAGES.map((stage) => stage.value) as [string, ...string[]] // pgEnum 은 1개 이상의 string이 있는 배열(튜플)을 요구
 );
 
-export const team = pgTable(
-  "team",
+export const teams = pgTable(
+  "teams",
   {
     team_id: bigint({ mode: "number" })
       .primaryKey()
       .generatedAlwaysAsIdentity(),
+    team_leader_id: uuid()
+      .references(() => profiles.profile_id, {
+        onDelete: "cascade",
+      })
+      .notNull(),
     team_size: integer().notNull(),
     product_name: text().notNull(),
     product_stage: productStages().notNull(),

@@ -1,6 +1,6 @@
 {
-  "id": "203a54ec-832e-4908-8701-15f80546cde2",
-  "prevId": "5b7e6fc5-fd89-43ca-9834-e0163fca8d9c",
+  "id": "b8f4d13f-d3eb-44b1-b7eb-e711b9a9ca57",
+  "prevId": "06da74ca-7f20-4a92-8f3e-a2d6ad68c0a8",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -70,8 +70,12 @@
           "name": "post_replies_post_id_posts_post_id_fk",
           "tableFrom": "post_replies",
           "tableTo": "posts",
-          "columnsFrom": ["post_id"],
-          "columnsTo": ["post_id"],
+          "columnsFrom": [
+            "post_id"
+          ],
+          "columnsTo": [
+            "post_id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -79,8 +83,12 @@
           "name": "post_replies_parent_id_post_replies_post_reply_id_fk",
           "tableFrom": "post_replies",
           "tableTo": "post_replies",
-          "columnsFrom": ["parent_id"],
-          "columnsTo": ["post_reply_id"],
+          "columnsFrom": [
+            "parent_id"
+          ],
+          "columnsTo": [
+            "post_reply_id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -88,8 +96,12 @@
           "name": "post_replies_profile_id_profiles_profile_id_fk",
           "tableFrom": "post_replies",
           "tableTo": "profiles",
-          "columnsFrom": ["profile_id"],
-          "columnsTo": ["profile_id"],
+          "columnsFrom": [
+            "profile_id"
+          ],
+          "columnsTo": [
+            "profile_id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -123,8 +135,12 @@
           "name": "post_upvotes_post_id_posts_post_id_fk",
           "tableFrom": "post_upvotes",
           "tableTo": "posts",
-          "columnsFrom": ["post_id"],
-          "columnsTo": ["post_id"],
+          "columnsFrom": [
+            "post_id"
+          ],
+          "columnsTo": [
+            "post_id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -132,8 +148,12 @@
           "name": "post_upvotes_profile_id_profiles_profile_id_fk",
           "tableFrom": "post_upvotes",
           "tableTo": "profiles",
-          "columnsFrom": ["profile_id"],
-          "columnsTo": ["profile_id"],
+          "columnsFrom": [
+            "profile_id"
+          ],
+          "columnsTo": [
+            "profile_id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -141,7 +161,10 @@
       "compositePrimaryKeys": {
         "post_upvotes_post_id_profile_id_pk": {
           "name": "post_upvotes_post_id_profile_id_pk",
-          "columns": ["post_id", "profile_id"]
+          "columns": [
+            "post_id",
+            "profile_id"
+          ]
         }
       },
       "uniqueConstraints": {},
@@ -182,6 +205,13 @@
           "primaryKey": false,
           "notNull": true
         },
+        "upvotes": {
+          "name": "upvotes",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp",
@@ -215,8 +245,12 @@
           "name": "posts_topic_id_topics_topic_id_fk",
           "tableFrom": "posts",
           "tableTo": "topics",
-          "columnsFrom": ["topic_id"],
-          "columnsTo": ["topic_id"],
+          "columnsFrom": [
+            "topic_id"
+          ],
+          "columnsTo": [
+            "topic_id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -224,8 +258,12 @@
           "name": "posts_profile_id_profiles_profile_id_fk",
           "tableFrom": "posts",
           "tableTo": "profiles",
-          "columnsFrom": ["profile_id"],
-          "columnsTo": ["profile_id"],
+          "columnsFrom": [
+            "profile_id"
+          ],
+          "columnsTo": [
+            "profile_id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -345,8 +383,12 @@
           "name": "ideas_claimed_by_profiles_profile_id_fk",
           "tableFrom": "ideas",
           "tableTo": "profiles",
-          "columnsFrom": ["claimed_by"],
-          "columnsTo": ["profile_id"],
+          "columnsFrom": [
+            "claimed_by"
+          ],
+          "columnsTo": [
+            "profile_id"
+          ],
           "onDelete": "set null",
           "onUpdate": "no action"
         }
@@ -380,8 +422,12 @@
           "name": "ideas_likes_idea_id_ideas_idea_id_fk",
           "tableFrom": "ideas_likes",
           "tableTo": "ideas",
-          "columnsFrom": ["idea_id"],
-          "columnsTo": ["idea_id"],
+          "columnsFrom": [
+            "idea_id"
+          ],
+          "columnsTo": [
+            "idea_id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -389,8 +435,12 @@
           "name": "ideas_likes_profile_id_profiles_profile_id_fk",
           "tableFrom": "ideas_likes",
           "tableTo": "profiles",
-          "columnsFrom": ["profile_id"],
-          "columnsTo": ["profile_id"],
+          "columnsFrom": [
+            "profile_id"
+          ],
+          "columnsTo": [
+            "profile_id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -398,7 +448,10 @@
       "compositePrimaryKeys": {
         "ideas_likes_idea_id_profile_id_pk": {
           "name": "ideas_likes_idea_id_profile_id_pk",
-          "columns": ["idea_id", "profile_id"]
+          "columns": [
+            "idea_id",
+            "profile_id"
+          ]
         }
       },
       "uniqueConstraints": {},
@@ -610,8 +663,12 @@
           "name": "product_likes_product_id_products_product_id_fk",
           "tableFrom": "product_likes",
           "tableTo": "products",
-          "columnsFrom": ["product_id"],
-          "columnsTo": ["product_id"],
+          "columnsFrom": [
+            "product_id"
+          ],
+          "columnsTo": [
+            "product_id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -619,8 +676,12 @@
           "name": "product_likes_profile_id_profiles_profile_id_fk",
           "tableFrom": "product_likes",
           "tableTo": "profiles",
-          "columnsFrom": ["profile_id"],
-          "columnsTo": ["profile_id"],
+          "columnsFrom": [
+            "profile_id"
+          ],
+          "columnsTo": [
+            "profile_id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -628,7 +689,10 @@
       "compositePrimaryKeys": {
         "product_likes_product_id_profile_id_pk": {
           "name": "product_likes_product_id_profile_id_pk",
-          "columns": ["product_id", "profile_id"]
+          "columns": [
+            "product_id",
+            "profile_id"
+          ]
         }
       },
       "uniqueConstraints": {},
@@ -698,7 +762,7 @@
           "type": "jsonb",
           "primaryKey": false,
           "notNull": true,
-          "default": "'{\"views\":0,\"reviews\":0}'::jsonb"
+          "default": "'{\"views\":0,\"reviews\":0,\"likes\":0}'::jsonb"
         },
         "profile_id": {
           "name": "profile_id",
@@ -733,8 +797,12 @@
           "name": "products_profile_id_profiles_profile_id_fk",
           "tableFrom": "products",
           "tableTo": "profiles",
-          "columnsFrom": ["profile_id"],
-          "columnsTo": ["profile_id"],
+          "columnsFrom": [
+            "profile_id"
+          ],
+          "columnsTo": [
+            "profile_id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -742,8 +810,12 @@
           "name": "products_category_id_categories_category_id_fk",
           "tableFrom": "products",
           "tableTo": "categories",
-          "columnsFrom": ["category_id"],
-          "columnsTo": ["category_id"],
+          "columnsFrom": [
+            "category_id"
+          ],
+          "columnsTo": [
+            "category_id"
+          ],
           "onDelete": "set null",
           "onUpdate": "no action"
         }
@@ -820,8 +892,12 @@
           "name": "reviews_product_id_products_product_id_fk",
           "tableFrom": "reviews",
           "tableTo": "products",
-          "columnsFrom": ["product_id"],
-          "columnsTo": ["product_id"],
+          "columnsFrom": [
+            "product_id"
+          ],
+          "columnsTo": [
+            "product_id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -829,8 +905,12 @@
           "name": "reviews_profile_id_profiles_profile_id_fk",
           "tableFrom": "reviews",
           "tableTo": "profiles",
-          "columnsFrom": ["profile_id"],
-          "columnsTo": ["profile_id"],
+          "columnsFrom": [
+            "profile_id"
+          ],
+          "columnsTo": [
+            "profile_id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -857,7 +937,7 @@
           "notNull": true,
           "identity": {
             "type": "always",
-            "name": "team_team_id_seq",
+            "name": "teams_team_id_seq",
             "schema": "public",
             "increment": "1",
             "startWith": "1",
@@ -866,6 +946,12 @@
             "cache": "1",
             "cycle": false
           }
+        },
+        "team_leader_id": {
+          "name": "team_leader_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
         },
         "team_size": {
           "name": "team_size",
@@ -920,22 +1006,36 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "teams_team_leader_id_profiles_profile_id_fk": {
+          "name": "teams_team_leader_id_profiles_profile_id_fk",
+          "tableFrom": "teams",
+          "tableTo": "profiles",
+          "columnsFrom": [
+            "team_leader_id"
+          ],
+          "columnsTo": [
+            "profile_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {
         "team_size_check": {
           "name": "team_size_check",
-          "value": "\"team\".\"team_size\" BETWEEN 1 AND 100"
+          "value": "\"teams\".\"team_size\" BETWEEN 1 AND 100"
         },
         "equity_check": {
           "name": "equity_check",
-          "value": "\"team\".\"equity\" BETWEEN 0 AND 100"
+          "value": "\"teams\".\"equity\" BETWEEN 0 AND 100"
         },
         "product_description_check": {
           "name": "product_description_check",
-          "value": "LENGTH(\"team\".\"product_description\") <= 200"
+          "value": "LENGTH(\"teams\".\"product_description\") <= 200"
         }
       },
       "isRLSEnabled": false
@@ -970,8 +1070,12 @@
           "name": "follows_follower_id_profiles_profile_id_fk",
           "tableFrom": "follows",
           "tableTo": "profiles",
-          "columnsFrom": ["follower_id"],
-          "columnsTo": ["profile_id"],
+          "columnsFrom": [
+            "follower_id"
+          ],
+          "columnsTo": [
+            "profile_id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -979,8 +1083,325 @@
           "name": "follows_following_id_profiles_profile_id_fk",
           "tableFrom": "follows",
           "tableTo": "profiles",
-          "columnsFrom": ["following_id"],
-          "columnsTo": ["profile_id"],
+          "columnsFrom": [
+            "following_id"
+          ],
+          "columnsTo": [
+            "profile_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.message_room_members": {
+      "name": "message_room_members",
+      "schema": "",
+      "columns": {
+        "message_room_id": {
+          "name": "message_room_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "profile_id": {
+          "name": "profile_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "message_room_members_message_room_id_message_rooms_message_room_id_fk": {
+          "name": "message_room_members_message_room_id_message_rooms_message_room_id_fk",
+          "tableFrom": "message_room_members",
+          "tableTo": "message_rooms",
+          "columnsFrom": [
+            "message_room_id"
+          ],
+          "columnsTo": [
+            "message_room_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "message_room_members_profile_id_profiles_profile_id_fk": {
+          "name": "message_room_members_profile_id_profiles_profile_id_fk",
+          "tableFrom": "message_room_members",
+          "tableTo": "profiles",
+          "columnsFrom": [
+            "profile_id"
+          ],
+          "columnsTo": [
+            "profile_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "message_room_members_message_room_id_profile_id_pk": {
+          "name": "message_room_members_message_room_id_profile_id_pk",
+          "columns": [
+            "message_room_id",
+            "profile_id"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.message_rooms": {
+      "name": "message_rooms",
+      "schema": "",
+      "columns": {
+        "message_room_id": {
+          "name": "message_room_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "message_rooms_message_room_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "9223372036854775807",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.messages": {
+      "name": "messages",
+      "schema": "",
+      "columns": {
+        "message_id": {
+          "name": "message_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "messages_message_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "9223372036854775807",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "message_room_id": {
+          "name": "message_room_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "sender_id": {
+          "name": "sender_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "content": {
+          "name": "content",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "messages_message_room_id_message_rooms_message_room_id_fk": {
+          "name": "messages_message_room_id_message_rooms_message_room_id_fk",
+          "tableFrom": "messages",
+          "tableTo": "message_rooms",
+          "columnsFrom": [
+            "message_room_id"
+          ],
+          "columnsTo": [
+            "message_room_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "messages_sender_id_profiles_profile_id_fk": {
+          "name": "messages_sender_id_profiles_profile_id_fk",
+          "tableFrom": "messages",
+          "tableTo": "profiles",
+          "columnsFrom": [
+            "sender_id"
+          ],
+          "columnsTo": [
+            "profile_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.notifications": {
+      "name": "notifications",
+      "schema": "",
+      "columns": {
+        "notification_id": {
+          "name": "notification_id",
+          "type": "bigint",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "notifications_notification_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "9223372036854775807",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "source_id": {
+          "name": "source_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "product_id": {
+          "name": "product_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "post_id": {
+          "name": "post_id",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "target_id": {
+          "name": "target_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "notification_type",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "message": {
+          "name": "message",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "notifications_source_id_profiles_profile_id_fk": {
+          "name": "notifications_source_id_profiles_profile_id_fk",
+          "tableFrom": "notifications",
+          "tableTo": "profiles",
+          "columnsFrom": [
+            "source_id"
+          ],
+          "columnsTo": [
+            "profile_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "notifications_product_id_products_product_id_fk": {
+          "name": "notifications_product_id_products_product_id_fk",
+          "tableFrom": "notifications",
+          "tableTo": "products",
+          "columnsFrom": [
+            "product_id"
+          ],
+          "columnsTo": [
+            "product_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "notifications_post_id_posts_post_id_fk": {
+          "name": "notifications_post_id_posts_post_id_fk",
+          "tableFrom": "notifications",
+          "tableTo": "posts",
+          "columnsFrom": [
+            "post_id"
+          ],
+          "columnsTo": [
+            "post_id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "notifications_target_id_profiles_profile_id_fk": {
+          "name": "notifications_target_id_profiles_profile_id_fk",
+          "tableFrom": "notifications",
+          "tableTo": "profiles",
+          "columnsFrom": [
+            "target_id"
+          ],
+          "columnsTo": [
+            "profile_id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -1067,8 +1488,12 @@
           "tableFrom": "profiles",
           "tableTo": "users",
           "schemaTo": "auth",
-          "columnsFrom": ["profile_id"],
-          "columnsTo": ["id"],
+          "columnsFrom": [
+            "profile_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -1095,7 +1520,11 @@
     "public.location_type": {
       "name": "location_type",
       "schema": "public",
-      "values": ["remote", "on-site", "hybrid"]
+      "values": [
+        "remote",
+        "on-site",
+        "hybrid"
+      ]
     },
     "public.salary_range": {
       "name": "salary_range",
@@ -1110,12 +1539,33 @@
     "public.team_stage": {
       "name": "team_stage",
       "schema": "public",
-      "values": ["idea", "prototype", "mvp", "product", "enterprise"]
+      "values": [
+        "idea",
+        "prototype",
+        "mvp",
+        "product",
+        "enterprise"
+      ]
+    },
+    "public.notification_type": {
+      "name": "notification_type",
+      "schema": "public",
+      "values": [
+        "follow",
+        "review",
+        "reply",
+        "mention"
+      ]
     },
     "public.role": {
       "name": "role",
       "schema": "public",
-      "values": ["developer", "designer", "salesperson", "other"]
+      "values": [
+        "developer",
+        "designer",
+        "salesperson",
+        "other"
+      ]
     }
   },
   "schemas": {},

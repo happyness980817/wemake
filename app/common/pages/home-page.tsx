@@ -11,6 +11,7 @@ import type { Route } from "./+types/home-page";
 import { getPosts } from "~/features/community/queries";
 import { getIdeas } from "~/features/ideas/queries";
 import { getJobs } from "~/features/jobs/queries";
+import { getTeams } from "~/features/teams/queries";
 
 export const meta: MetaFunction = () => {
   return [
@@ -31,7 +32,8 @@ export const loader = async () => {
   });
   const ideas = await getIdeas({ limit: 7 });
   const jobs = await getJobs({ limit: 11 });
-  return { products, posts, ideas, jobs };
+  const teams = await getTeams({ limit: 7 });
+  return { products, posts, ideas, jobs, teams };
 };
 
 export default function HomePage({ loaderData }: Route.ComponentProps) {
@@ -148,20 +150,14 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
             <Link to="/teams">Explore All Teams &rarr;</Link>
           </Button>
         </div>
-        {Array.from({ length: 7 }).map((_, index) => (
+        {loaderData.teams.map((team) => (
           <TeamCard
-            key={index}
-            id={`teamId-${index}`}
-            username="paul"
-            avatarURL="https://github.com/happyness980817.png"
-            skills={[
-              "Full-stack",
-              "Developer",
-              "React",
-              "TypeScript",
-              "Node.js",
-            ]}
-            description="To build a platform"
+            key={team.team_id}
+            id={team.team_id}
+            leaderUsername={team.team_leader.username}
+            leaderAvatarURL={team.team_leader.avatar}
+            roles={team.roles.split(",")}
+            description={team.product_description}
           />
         ))}
       </div>

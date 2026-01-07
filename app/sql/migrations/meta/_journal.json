@@ -64,6 +64,20 @@
       "when": 1767318241812,
       "tag": "0008_yielding_taskmaster",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1767747411028,
+      "tag": "0009_dizzy_trish_tilby",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1767747946606,
+      "tag": "0010_marvelous_black_tarantula",
+      "breakpoints": true
     }
   ]
 }
