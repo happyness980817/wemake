@@ -11,12 +11,12 @@ export default function ProfileProductsPage() {
       {Array.from({ length: 3 }).map((_, index) => (
         <ProductCard
           key={index}
-          id={`productId-${index}`}
+          id={index}
           name={`Product Name ${index}`}
           description={`Product Description ${index}`}
-          commentCount={123}
-          viewCount={123}
-          likesCount={123}
+          reviewsCount="123"
+          viewsCount="123"
+          likesCount="123"
         />
       ))}
     </div>

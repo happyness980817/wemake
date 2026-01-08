@@ -21,18 +21,20 @@ export const meta: MetaFunction = () => {
 };
 
 export const loader = async () => {
-  const products = await getProductsByDateRange({
-    startDate: DateTime.now().startOf("day"),
-    endDate: DateTime.now().endOf("day"),
-    limit: 7,
-  });
-  const posts = await getPosts({
-    limit: 7,
-    sorting: "newest",
-  });
-  const ideas = await getIdeas({ limit: 7 });
-  const jobs = await getJobs({ limit: 11 });
-  const teams = await getTeams({ limit: 7 });
+  const [products, posts, ideas, jobs, teams] = await Promise.all([
+    getProductsByDateRange({
+      startDate: DateTime.now().startOf("day"),
+      endDate: DateTime.now().endOf("day"),
+      limit: 7,
+    }),
+    getPosts({
+      limit: 7,
+      sorting: "newest",
+    }),
+    getIdeas({ limit: 7 }),
+    getJobs({ limit: 11 }),
+    getTeams({ limit: 7 }),
+  ]);
   return { products, posts, ideas, jobs, teams };
 };
 
@@ -54,7 +56,7 @@ export default function HomePage({ loaderData }: Route.ComponentProps) {
         {loaderData.products.map((product) => (
           <ProductCard
             key={product.product_id}
-            id={product.product_id.toString()}
+            id={product.product_id}
             name={product.name}
             description={product.description}
             reviewsCount={product.reviews}

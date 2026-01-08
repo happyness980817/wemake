@@ -13,7 +13,8 @@ export const getIdea = async (ideaId: string) => {
   const { data, error } = await client
     .from("ideas_view")
     .select("*")
-    .eq("idea_id", parseInt(ideaId));
+    .eq("idea_id", parseInt(ideaId))
+    .single();
   if (error) throw Error(error.message);
-  return data[0];
+  return data;
 };

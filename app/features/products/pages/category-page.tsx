@@ -2,6 +2,12 @@ import type { Route } from "./+types/category-page";
 import { Hero } from "~/common/components/hero";
 import { ProductCard } from "../components/product-card";
 import ProductPagination from "~/common/components/product-pagination";
+import {
+  getCategory,
+  getProductsByCategory,
+  getCategoryPages,
+} from "../queries";
+import { z } from "zod";
 
 export const meta = ({ params }: Route.MetaArgs) => {
   return [
@@ -10,24 +16,50 @@ export const meta = ({ params }: Route.MetaArgs) => {
   ];
 };
 
-export default function CategoryPage() {
+const categoryIdSchema = z.coerce.number().int();
+const pageSchema = z.coerce.number().int().min(1).optional().default(1);
+
+export const loader = async ({ params, request }: Route.LoaderArgs) => {
+  const url = new URL(request.url);
+
+  const { success: isCategoryIdValid, data: categoryId } =
+    categoryIdSchema.safeParse(params.category);
+  if (!isCategoryIdValid) throw new Error("Invalid Category ID");
+
+  const { success: isPageValid, data: page } = pageSchema.safeParse(
+    url.searchParams.get("page") ?? undefined
+  );
+  if (!isPageValid) throw new Error("Invalid page");
+
+  const [category, products, totalPages] = await Promise.all([
+    getCategory(categoryId),
+    getProductsByCategory({ categoryId, page }),
+    getCategoryPages(categoryId),
+  ]);
+  return { category, products, totalPages };
+};
+
+export default function CategoryPage({ loaderData }: Route.ComponentProps) {
   return (
     <div className="space-y-10">
-      <Hero title="Developer Tools" subtitle="Tools for developers" />
+      <Hero
+        title={loaderData.category.name}
+        subtitle={loaderData.category.description}
+      />
       <div className="space-y-5 w-full max-w-3xl mx-auto">
-        {Array.from({ length: 11 }).map((_, index) => (
+        {loaderData.products.map((product) => (
           <ProductCard
-            key={index}
-            id={`productId-${index}`}
-            name={`Product Name ${index}`}
-            description={`Product Description ${index}`}
-            commentCount={123}
-            viewCount={123}
-            likesCount={123}
+            key={product.product_id}
+            id={product.product_id}
+            name={product.name}
+            description={product.description}
+            reviewsCount={product.reviews}
+            viewsCount={product.views}
+            likesCount={product.likes}
           />
         ))}
       </div>
-      <ProductPagination totalPages={10} />
+      <ProductPagination totalPages={loaderData.totalPages} />
     </div>
   );
 }

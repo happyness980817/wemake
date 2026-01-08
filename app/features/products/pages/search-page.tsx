@@ -1,6 +1,6 @@
 import { Hero } from "~/common/components/hero";
 import type { Route } from "./+types/search-page";
-import z from "zod";
+import { z } from "zod";
 import { ProductCard } from "../components/product-card";
 import ProductPagination from "~/common/components/product-pagination";
 import { Form } from "react-router";
@@ -51,12 +51,12 @@ export default function SearchPage({ loaderData }: Route.ComponentProps) {
         {Array.from({ length: 11 }).map((_, index) => (
           <ProductCard
             key={index}
-            id={`productId-${index}`}
+            id={index}
             name={`Product Name ${index}`}
             description={`Product Description ${index}`}
-            commentCount={123}
-            viewCount={123}
-            likesCount={123}
+            reviewsCount="123"
+            viewsCount="123"
+            likesCount="123"
           />
         ))}
       </div>
