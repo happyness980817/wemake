@@ -5,7 +5,7 @@ import { PAGE_SIZE } from "./constants";
 const productColumns = `
   product_id,
   name,
-  description,
+  tagline,
   likes:stats->>likes,
   views:stats->>views,
   reviews:stats->>reviews
@@ -89,6 +89,32 @@ export const getCategoryPages = async (categoryId: number) => {
     .from("products")
     .select(`product_id`, { count: "exact", head: true })
     .eq("category_id", categoryId);
+  if (error) throw error;
+  if (count) return Math.ceil(count / PAGE_SIZE);
+  return 1;
+};
+
+export const getProductsBySearch = async ({
+  query,
+  page,
+}: {
+  query: string;
+  page: number;
+}) => {
+  const { data, error } = await client
+    .from("products")
+    .select(productColumns)
+    .or(`name.ilike.%${query}%,tagline.ilike.%${query}%`)
+    .range((page - 1) * PAGE_SIZE, page * PAGE_SIZE - 1);
+  if (error) throw error;
+  return data;
+};
+
+export const getPagesBySearch = async ({ query }: { query: string }) => {
+  const { count, error } = await client
+    .from("products")
+    .select(`product_id`, { count: "exact", head: true })
+    .or(`name.ilike.%${query}%,tagline.ilike.%${query}%`);
   if (error) throw error;
   if (count) return Math.ceil(count / PAGE_SIZE);
   return 1;

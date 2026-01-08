@@ -13,7 +13,7 @@ export default function ProfileProductsPage() {
           key={index}
           id={index}
           name={`Product Name ${index}`}
-          description={`Product Description ${index}`}
+          tagline={`Product Tagline ${index}`}
           reviewsCount="123"
           viewsCount="123"
           likesCount="123"

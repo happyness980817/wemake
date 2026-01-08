@@ -12,7 +12,7 @@ import { Button } from "~/common/components/ui/button";
 interface ProductCardProps {
   id: number;
   name: string;
-  description: string;
+  tagline: string;
   reviewsCount: string;
   viewsCount: string;
   likesCount: string;
@@ -21,7 +21,7 @@ interface ProductCardProps {
 export function ProductCard({
   id,
   name,
-  description,
+  tagline,
   reviewsCount,
   viewsCount,
   likesCount,
@@ -34,7 +34,7 @@ export function ProductCard({
             {name}
           </CardTitle>
           <CardDescription className="text-muted-foreground">
-            {description}
+            {tagline}
           </CardDescription>
           <div className="flex items-center gap-4 mt-2">
             <div className="flex items-center gap-px text-xs text-muted-foreground">
