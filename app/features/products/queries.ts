@@ -119,3 +119,13 @@ export const getPagesBySearch = async ({ query }: { query: string }) => {
   if (count) return Math.ceil(count / PAGE_SIZE);
   return 1;
 };
+
+export const getProductById = async (productId: number) => {
+  const { data, error } = await client
+    .from("product_overview_view")
+    .select(`*`)
+    .eq("product_id", productId)
+    .single();
+  if (error) throw error;
+  return data;
+};

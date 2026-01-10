@@ -16,6 +16,11 @@ type Database = MergeDeep<
             string | null
           >;
         };
+        product_overview_view: {
+          Row: SetNonNullable<
+            SupabaseDatabase["public"]["Views"]["product_overview_view"]["Row"]
+          >;
+        };
         ideas_view: {
           Row: SetNonNullable<
             SupabaseDatabase["public"]["Views"]["ideas_view"]["Row"]

@@ -4,9 +4,23 @@ import { StarIcon } from "lucide-react";
 import { ChevronUpIcon } from "lucide-react";
 import { cn } from "~/lib/utils";
 import type { Route } from "./+types/product-overview-layout";
+import { getProductById } from "../queries";
+
+export const meta: Route.MetaFunction = ({ data }: Route.MetaArgs) => {
+  return [
+    { title: `${data.product.name} - Overview | Wemake` },
+    { name: "description", content: "Product overview page" },
+  ];
+};
+
+export const loader = async ({ params }: Route.LoaderArgs) => {
+  const { productId } = params;
+  const product = await getProductById(parseInt(productId));
+  return { product };
+};
 
 export default function ProductOverviewLayout({
-  params: { productId },
+  loaderData,
 }: Route.ComponentProps) {
   return (
     <div className="space-y-10">
@@ -14,25 +28,37 @@ export default function ProductOverviewLayout({
         <div className="flex gap-10">
           <div className="size-40 rounded-xl shadow-xl bg-primary"></div>
           <div>
-            <h1 className="text-5xl font-bold">Product Name</h1>
-            <p className="text-2xl font-light">Product Description</p>
+            <h1 className="text-5xl font-bold">{loaderData.product.name}</h1>
+            <p className="text-2xl font-light">
+              {loaderData.product.description}
+            </p>
             <div className="mt-5 flex items-center gap-2">
               <div className="flex text-yellow-500">
-                {Array.from({ length: 5 }).map((_, index) => (
-                  <StarIcon key={index} className="w-4 h-4" />
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <StarIcon
+                    key={i}
+                    className="w-4 h-4"
+                    fill={
+                      i < Math.floor(loaderData.product.average_rating)
+                        ? "currentColor"
+                        : "none"
+                    }
+                  />
                 ))}
               </div>
-              <span className="text-muted-foreground">100 reviews</span>
+              <span className="text-muted-foreground">
+                {loaderData.product.reviews} reviews
+              </span>
             </div>
           </div>
         </div>
         <div className="flex gap-2">
-          <Button variant="secondary" size="lg" className="text-lg h-14 px-10">
+          <Button variant="secondary" size="lg" className="h-14 px-10 text-lg">
             View Product
           </Button>
-          <Button size="lg" className="text-lg h-12 px-10">
+          <Button size="lg" className="h-14 px-10 text-lg">
             <ChevronUpIcon className="w-4 h-4" />
-            Upvote (100)
+            Upvote ({loaderData.product.upvotes})
           </Button>
         </div>
       </div>
@@ -45,7 +71,7 @@ export default function ProductOverviewLayout({
               isActive && "bg-accent text-foreground"
             )
           }
-          to={`/products/${productId}/overview`}
+          to={`/products/${loaderData.product.product_id}/overview`}
         >
           Overview
         </NavLink>
@@ -56,13 +82,20 @@ export default function ProductOverviewLayout({
               isActive && "bg-accent text-foreground"
             )
           }
-          to={`/products/${productId}/reviews`}
+          to={`/products/${loaderData.product.product_id}/reviews`}
         >
           Reviews
         </NavLink>
       </div>
       <div>
-        <Outlet />
+        <Outlet
+          context={{
+            product_id: loaderData.product.product_id,
+            description: loaderData.product.description,
+            how_it_works: loaderData.product.how_it_works,
+          }}
+        />
+        {/* product 데이터를 자식 컴포넌트에 전달 */}
       </div>
     </div>
   );
