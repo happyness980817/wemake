@@ -7,7 +7,7 @@ import {
 } from "~/common/components/ui/avatar";
 import { Badge } from "~/common/components/ui/badge";
 import { Button } from "~/common/components/ui/button";
-import { Form } from "react-router";
+import { data, Form } from "react-router";
 import InputPair from "~/common/components/input-pair";
 import {
   Card,
@@ -15,52 +15,57 @@ import {
   CardHeader,
   CardTitle,
 } from "~/common/components/ui/card";
+import { getTeamById } from "../queries";
+import { z } from "zod";
+
+const paramsSchema = z.object({
+  teamId: z.coerce.number(),
+});
 
 export const meta: Route.MetaFunction = () => {
   return [{ title: "Team | Wemake" }];
 };
 
-export default function TeamPage({}: Route.ComponentProps) {
-  const teamInfoList = [
-    {
-      title: "Product Name",
-      value: "Doggie Social",
-    },
-    {
-      title: "Product Stage",
-      value: "MVP",
-    },
-    {
-      title: "Team Size",
-      value: 3,
-    },
-    {
-      title: "Equity",
-      value: "5 - 10%",
-    },
+export const loader = async ({ params }: Route.LoaderArgs) => {
+  const { success, data: parsedData } = paramsSchema.safeParse(params);
+  if (!success) {
+    throw data(
+      {
+        error_code: "INVALID_PARAMS",
+        message: "Invalid parameters",
+      },
+      { status: 400 }
+    );
+  }
+  const team = await getTeamById(parsedData.teamId);
+  return { team };
+};
+
+export default function TeamPage({ loaderData }: Route.ComponentProps) {
+  const roles = loaderData.team.roles.split(",");
+
+  const summaryItems = [
+    { title: "Product name", value: loaderData.team.product_name },
+    { title: "Stage", value: loaderData.team.product_stage },
+    { title: "Team size", value: loaderData.team.team_size },
+    { title: "Available equity", value: `${loaderData.team.equity}%` },
   ];
-  const lookingForList = [
-    "Frontend Developer",
-    "Backend Developer",
-    "UI/UX Designer",
-    "Sales Representative",
-    "Customer Support",
-  ];
+
   return (
     <div className="space-y-20">
-      <Hero title="Join User123's Team" />
+      <Hero title={`Join ${loaderData.team.team_leader.name}'s team`} />
       <div className="grid grid-cols-1 lg:grid-cols-6 gap-40 items-start">
         <div className="col-span-1 lg:col-span-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {teamInfoList.map((item) => (
-            <Card>
+          {summaryItems.map((item) => (
+            <Card key={item.title}>
               <CardHeader>
                 <CardTitle className="text-sm font-medium text-muted-foreground">
                   {item.title}
                 </CardTitle>
-                <CardContent className="p-0 font-bold text-2xl">
-                  <p key={item.title}>{item.value}</p>
-                </CardContent>
               </CardHeader>
+              <CardContent className="p-0 px-6 pb-6 font-bold text-2xl">
+                <p className="capitalize">{item.value}</p>
+              </CardContent>
             </Card>
           ))}
           <Card className="col-span-1 sm:col-span-2">
@@ -68,38 +73,43 @@ export default function TeamPage({}: Route.ComponentProps) {
               <CardTitle className="text-sm font-medium text-muted-foreground">
                 Looking for
               </CardTitle>
-              <CardContent className="p-0 font-bold text-2xl">
-                <ul className="list-disc list-inside text-lg">
-                  {lookingForList.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </CardContent>
             </CardHeader>
+            <CardContent className="pt-0 font-bold text-2xl">
+              <ul className="list-disc list-inside text-lg">
+                {roles.map((role) => (
+                  <li key={role}>{role}</li>
+                ))}
+              </ul>
+            </CardContent>
           </Card>
           <Card className="col-span-1 sm:col-span-2">
             <CardHeader>
               <CardTitle className="text-sm font-medium text-muted-foreground">
                 Idea Description
               </CardTitle>
-              <CardContent className="p-0 font-medium text-xl">
-                <p>
-                  Doggie Social is a social media platform for dogs. We are
-                  looking for a team to help us build our platform.
-                </p>
-              </CardContent>
             </CardHeader>
+            <CardContent className="pt-0 font-medium text-xl">
+              <p>{loaderData.team.product_description}</p>
+            </CardContent>
           </Card>
         </div>
         <aside className="col-span-1 lg:col-span-2 space-y-5 border rounded-lg shadow-sm p-6">
           <div className="flex gap-5">
             <Avatar className="size-10">
-              <AvatarFallback>N</AvatarFallback>
-              <AvatarImage src="https://github.com/happyness980817.png" />
+              <AvatarFallback>
+                {loaderData.team.team_leader.name.charAt(0).toUpperCase()}
+              </AvatarFallback>
+              {loaderData.team.team_leader.avatar ? (
+                <AvatarImage src={loaderData.team.team_leader.avatar} />
+              ) : null}
             </Avatar>
             <div className="flex flex-col space-y-1">
-              <h4 className="text-lg font-medium">Paul Jang</h4>
-              <Badge variant="secondary">Entrepreneur</Badge>
+              <h4 className="text-lg font-medium">
+                {loaderData.team.team_leader.name}
+              </h4>
+              <Badge variant="secondary" className="capitalize">
+                {loaderData.team.team_leader.role}
+              </Badge>
             </div>
           </div>
           <Form className="space-y-5">

@@ -49,3 +49,13 @@ export const getJobs = async ({
   if (error) throw Error(error.message);
   return data;
 };
+
+export const getJobById = async (jobId: number) => {
+  const { data, error } = await client
+    .from("jobs")
+    .select("*")
+    .eq("job_id", jobId)
+    .single();
+  if (error) throw Error(error.message);
+  return data;
+};
