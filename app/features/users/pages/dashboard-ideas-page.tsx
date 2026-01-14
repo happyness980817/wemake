@@ -13,7 +13,7 @@ export default function DashboardIdeasPage({}: Route.ComponentProps) {
         {Array.from({ length: 10 }).map((_, index) => (
           <IdeaCard
             key={index}
-            id={`ideaId-${index}`}
+            id={index + 1}
             title="AI-driven marketplace that matches underutilized industrial equipment with startups, handles financing, and optimizes logistics to reduce downtime."
             viewCount={100}
             timestamp="12 hours ago"

@@ -101,7 +101,8 @@ export default function YearlyLeaderboardsPage({
   return (
     <div className="space-y-10">
       <Hero
-        title={`The best products of ${urlDate.setLocale("en").toLocaleString({ year: "numeric" })}`}
+        title="Yearly Leaderboards"
+        subtitle={`The best products of ${urlDate.setLocale("en").toLocaleString({ year: "numeric" })}`}
       />
       <div className="flex items-center justify-center gap-2">
         <Button variant="secondary" asChild>

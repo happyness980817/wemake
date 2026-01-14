@@ -11,7 +11,7 @@ export default function ProfilePostsPage() {
       {Array.from({ length: 5 }).map((_, index) => (
         <PostCard
           key={index}
-          id={`postId-${index}`}
+          id={index + 1}
           title="What is the best way to learn React?"
           authorName="John Doe"
           authorAvatarURL="https://github.com/shadcn.png"

@@ -50,6 +50,31 @@ export const getProductsPagesByDateRange = async ({
   return 1;
 };
 
+export const getAllTimeProductsByLikes = async ({
+  limit,
+  page = 1,
+}: {
+  limit: number;
+  page?: number;
+}) => {
+  const { data, error } = await client
+    .from("products")
+    .select(productColumns)
+    .order("stats->>likes", { ascending: false })
+    .range((page - 1) * limit, page * limit - 1);
+  if (error) throw error;
+  return data;
+};
+
+export const getAllTimeProductsPages = async ({ limit }: { limit: number }) => {
+  const { count, error } = await client
+    .from("products")
+    .select(`product_id`, { count: "exact", head: true });
+  if (error) throw error;
+  if (count) return Math.ceil(count / limit);
+  return 1;
+};
+
 export const getCategories = async () => {
   const { data, error } = await client
     .from("categories")
@@ -126,6 +151,25 @@ export const getProductById = async (productId: number) => {
     .select(`*`)
     .eq("product_id", productId)
     .single();
+  if (error) throw error;
+  return data;
+};
+
+export const getReviews = async (productId: number) => {
+  const { data, error } = await client
+    .from("reviews")
+    .select(
+      `
+      review_id,
+      rating,
+      review,
+      created_at,
+      user:profiles!inner(
+      name,username,avatar
+    )
+      `
+    )
+    .eq("product_id", productId);
   if (error) throw error;
   return data;
 };

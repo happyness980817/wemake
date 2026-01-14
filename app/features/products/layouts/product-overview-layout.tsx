@@ -47,7 +47,8 @@ export default function ProductOverviewLayout({
                 ))}
               </div>
               <span className="text-muted-foreground">
-                {loaderData.product.reviews} reviews
+                {loaderData.product.reviews}{" "}
+                {loaderData.product.reviews === "1" ? "Review" : "Reviews"}
               </span>
             </div>
           </div>
@@ -93,6 +94,7 @@ export default function ProductOverviewLayout({
             product_id: loaderData.product.product_id,
             description: loaderData.product.description,
             how_it_works: loaderData.product.how_it_works,
+            review_count: loaderData.product.reviews,
           }}
         />
         {/* product 데이터를 자식 컴포넌트에 전달 */}

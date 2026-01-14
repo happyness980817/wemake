@@ -1,11 +1,15 @@
 import { StarIcon } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "~/common/components/ui/avatar";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "~/common/components/ui/avatar";
+import { DateTime } from "luxon";
 
 export interface ReviewCardProps {
   authorName: string;
   username: string;
-  avatarFallback: string;
-  avatarURL?: string;
+  avatarURL?: string | null;
   rating: number;
   content: string;
   timestamp: string;
@@ -14,7 +18,6 @@ export interface ReviewCardProps {
 export function ReviewCard({
   authorName,
   username,
-  avatarFallback,
   avatarURL,
   rating,
   content,
@@ -26,7 +29,7 @@ export function ReviewCard({
     <div className="space-y-5">
       <div className="flex items-center gap-2">
         <Avatar>
-          <AvatarFallback>{avatarFallback}</AvatarFallback>
+          <AvatarFallback>{username.charAt(0)}</AvatarFallback>
           {avatarURL ? <AvatarImage src={avatarURL} alt={authorName} /> : null}
         </Avatar>
         <div>
@@ -36,11 +39,17 @@ export function ReviewCard({
       </div>
       <div className="flex text-yellow-500">
         {Array.from({ length: 5 }).map((_, index) => (
-          <StarIcon key={index} className="h-4 w-4" fill={index < clampedRating ? "currentColor" : "none"} />
+          <StarIcon
+            key={index}
+            className="h-4 w-4"
+            fill={index < clampedRating ? "currentColor" : "none"}
+          />
         ))}
       </div>
       <p className="text-sm text-muted-foreground">{content}</p>
-      <span className="text-xs text-muted-foreground">{timestamp}</span>
+      <span className="text-xs text-muted-foreground">
+        {DateTime.fromISO(timestamp).toRelative({ locale: "en" })}
+      </span>
     </div>
   );
 }

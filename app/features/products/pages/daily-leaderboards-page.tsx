@@ -104,7 +104,10 @@ export default function DailyLeaderboardsPage({
   const isToday = urlDate.equals(DateTime.now().startOf("day"));
   return (
     <div className="space-y-10">
-      <Hero title={`The best products of ${urlDate.toLocaleString()}`} />
+      <Hero
+        title="Daily Leaderboards"
+        subtitle={`The best products of ${urlDate.toLocaleString()}`}
+      />
       <div className="flex items-center justify-center gap-2">
         <Button variant="secondary" asChild>
           <Link

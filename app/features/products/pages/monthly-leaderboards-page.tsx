@@ -105,7 +105,8 @@ export default function MonthlyLeaderboardsPage({
   return (
     <div className="space-y-10">
       <Hero
-        title={`The best products of ${urlDate.setLocale("en").toLocaleString({ month: "long", year: "numeric" })}`}
+        title="Monthly Leaderboards"
+        subtitle={`The best products of ${urlDate.setLocale("en").toLocaleString({ month: "long", year: "numeric" })}`}
       />
       <div className="flex items-center justify-center gap-2">
         <Button variant="secondary" asChild>

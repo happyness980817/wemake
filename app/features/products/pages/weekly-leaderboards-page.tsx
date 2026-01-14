@@ -101,8 +101,8 @@ export default function WeeklyLeaderboardsPage({
   return (
     <div className="space-y-10">
       <Hero
-        title={`The best products of:`}
-        subtitle={`${urlDate.startOf("week").toLocaleString(DateTime.DATE_SHORT)} - ${urlDate.endOf("week").toLocaleString(DateTime.DATE_SHORT)}`}
+        title="Weekly Leaderboards"
+        subtitle={`The best products of ${urlDate.startOf("week").toLocaleString(DateTime.DATE_SHORT)} - ${urlDate.endOf("week").toLocaleString(DateTime.DATE_SHORT)}`}
       />
       <div className="flex items-center justify-center gap-2">
         <Button variant="secondary" asChild>
