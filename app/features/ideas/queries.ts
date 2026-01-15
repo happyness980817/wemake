@@ -5,7 +5,7 @@ export const getIdeas = async ({ limit }: { limit: number }) => {
     .from("ideas_view")
     .select("*")
     .limit(limit);
-  if (error) throw Error(error.message);
+  if (error) throw error;
   return data;
 };
 
@@ -15,6 +15,6 @@ export const getIdea = async (ideaId: string) => {
     .select("*")
     .eq("idea_id", parseInt(ideaId))
     .single();
-  if (error) throw Error(error.message);
+  if (error) throw error;
   return data;
 };

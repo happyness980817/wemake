@@ -46,7 +46,7 @@ export const getJobs = async ({
     );
   }
   const { data, error } = await baseQuery;
-  if (error) throw Error(error.message);
+  if (error) throw error;
   return data;
 };
 
@@ -56,6 +56,6 @@ export const getJobById = async (jobId: number) => {
     .select("*")
     .eq("job_id", jobId)
     .single();
-  if (error) throw Error(error.message);
+  if (error) throw error;
   return data;
 };

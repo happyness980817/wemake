@@ -15,7 +15,7 @@ export const getTeams = async ({ limit }: { limit: number }) => {
     `
     )
     .limit(limit);
-  if (error) throw Error(error.message);
+  if (error) throw error;
   return data;
 };
 
@@ -33,6 +33,6 @@ export const getTeamById = async (teamId: number) => {
     )
     .eq("team_id", teamId)
     .single();
-  if (error) throw Error(error.message);
+  if (error) throw error;
   return data;
 };

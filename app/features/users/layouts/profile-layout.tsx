@@ -17,23 +17,34 @@ import {
 import { Textarea } from "~/common/components/ui/textarea";
 import { Badge } from "~/common/components/ui/badge";
 import { cn } from "~/lib/utils";
+import { getUserProfile } from "../queries";
 
-export default function ProfileLayout({}: Route.ComponentProps) {
+export const loader = async ({ params }: Route.LoaderArgs) => {
+  const user = await getUserProfile(params.username);
+  return { user };
+};
+
+export default function ProfileLayout({ loaderData }: Route.ComponentProps) {
   const tabs = [
-    { label: "About", to: "/users/username" },
-    { label: "Products", to: "/users/username/products" },
-    { label: "Posts", to: "/users/username/posts" },
+    { label: "About", to: `/users/${loaderData.user.username}` },
+    { label: "Products", to: `/users/${loaderData.user.username}/products` },
+    { label: "Posts", to: `/users/${loaderData.user.username}/posts` },
   ];
   return (
     <div className="space-y-10">
       <div className="flex items-center gap-4">
         <Avatar className="size-40">
-          <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback>CN</AvatarFallback>
+          {loaderData.user.avatar ? (
+            <AvatarImage src={loaderData.user.avatar} />
+          ) : (
+            <AvatarFallback className="text-2xl">
+              {loaderData.user.name.charAt(0)}
+            </AvatarFallback>
+          )}
         </Avatar>
         <div className="space-y-4">
           <div className="flex gap-2">
-            <h1 className="text-2xl font-semibold">John Doe</h1>
+            <h1 className="text-2xl font-semibold">{loaderData.user.name}</h1>
             <Button variant="outline" asChild>
               <Link to="/my/settings">Edit Profile</Link>
             </Button>
@@ -47,7 +58,7 @@ export default function ProfileLayout({}: Route.ComponentProps) {
                   <DialogTitle>Message</DialogTitle>
                 </DialogHeader>
                 <DialogDescription>
-                  <span>Send a message to John Doe</span>
+                  <span>Send a message to {loaderData.user.name}</span>
                   <Form className="mt-2 space-y-4">
                     <Textarea
                       placeholder="Write a message..."
@@ -61,8 +72,10 @@ export default function ProfileLayout({}: Route.ComponentProps) {
             </Dialog>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-sm text-muted-foreground">@john_doe</span>
-            <Badge variant="secondary">Designer</Badge>
+            <span className="text-sm text-muted-foreground">
+              @{loaderData.user.username}
+            </span>
+            <Badge variant="secondary">{loaderData.user.role}</Badge>
             <Badge variant="secondary">100 followers</Badge>
             <Badge variant="secondary">100 following</Badge>
           </div>
@@ -86,7 +99,14 @@ export default function ProfileLayout({}: Route.ComponentProps) {
         ))}
       </div>
       <div className="max-w-3xl">
-        <Outlet />
+        <Outlet
+          context={{
+            headline: loaderData.user.headline,
+            bio: loaderData.user.bio,
+          }}
+        />
+        {/* 여러번 데이터 중복해서 fetch 하지 말라고 쓰는건데 내 웹사이트에서
+        이런거까지 고려를 해야 할까? */}
       </div>
     </div>
   );

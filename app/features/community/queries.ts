@@ -45,7 +45,7 @@ import { DateTime } from "luxon";
 
 export const getTopics = async () => {
   const { data, error } = await client.from("topics").select("name, slug");
-  if (error) throw Error(error.message);
+  if (error) throw error;
   return data;
 };
 
@@ -95,7 +95,7 @@ export const getPosts = async ({
   }
 
   const { data, error } = await baseQuery;
-  if (error) throw Error(error.message);
+  if (error) throw error;
   return data;
 };
 
@@ -105,7 +105,7 @@ export const getPostById = async (postId: number) => {
     .select("*")
     .eq("post_id", postId)
     .single();
-  if (error) throw Error(error.message);
+  if (error) throw error;
   return data;
 };
 
@@ -131,7 +131,7 @@ export const getReplies = async (postId: number) => {
       `
     )
     .eq("post_id", postId);
-  if (error) throw Error(error.message);
+  if (error) throw error;
   console.log(JSON.stringify(data, null, 2));
   return data;
 };
