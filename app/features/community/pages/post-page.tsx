@@ -18,15 +18,17 @@ import {
 import { Badge } from "~/common/components/ui/badge";
 import { Reply } from "../components/reply";
 import { getPostById } from "../queries";
+import { getReplies } from "../queries";
 import { DateTime } from "luxon";
 
-export const meta: Route.MetaFunction = () => {
-  return [{ title: "Post | Wemake" }];
+export const meta: Route.MetaFunction = ({ params }: Route.MetaArgs) => {
+  return [{ title: `Post #${params.postId} | Wemake` }];
 };
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
   const post = await getPostById(Number(params.postId));
-  return { post };
+  const replies = await getReplies(Number(params.postId));
+  return { post, replies };
 };
 
 export default function PostPage({ loaderData }: Route.ComponentProps) {
@@ -64,7 +66,7 @@ export default function PostPage({ loaderData }: Route.ComponentProps) {
               <ChevronUpIcon className="w-4 h-4 shrink-0" />
               <span>{loaderData.post.upvotes}</span>
             </Button>
-            <div className="space-y-20">
+            <div className="space-y-20 w-full">
               <div className="space-y-2">
                 <h2 className="text-2xl font-semibold leading-none tracking-tight">
                   {loaderData.post.title}
@@ -103,13 +105,17 @@ export default function PostPage({ loaderData }: Route.ComponentProps) {
                   {loaderData.post.replies_count} Replies
                 </h4>
                 <div className="flex flex-col gap-5">
-                  <Reply
-                    username="John Apple Doe"
-                    avatarURL="https://github.com/apple.png"
-                    timestamp="12 hours ago"
-                    content="Hello, I'm looking for a productivity tool that can help me manage my time and tasks. I've tried a few different tools, but none of them have worked for me. I'm looking for a tool that can help me manage my time and tasks."
-                    topLevel
-                  />
+                  {loaderData.replies.map((reply) => (
+                    <Reply
+                      key={reply.post_reply_id}
+                      username={reply.user.name}
+                      avatarURL={reply.user.avatar}
+                      timestamp={reply.created_at}
+                      content={reply.reply}
+                      topLevel={true}
+                      replies={reply.post_replies}
+                    />
+                  ))}
                 </div>
               </div>
             </div>
@@ -137,9 +143,13 @@ export default function PostPage({ loaderData }: Route.ComponentProps) {
           <div className="gap-1 text-sm flex flex-col text-muted-foreground">
             <span>
               🎂 Joined{" "}
-              {DateTime.fromISO(loaderData.post.author_created_at).toRelative({
-                locale: "en-US",
-              })}
+              {loaderData.post.author_created_at
+                ? DateTime.fromISO(
+                    loaderData.post.author_created_at
+                  ).toRelative({
+                    locale: "en-US",
+                  })
+                : null}
             </span>
             <span>🚀 Launched {loaderData.post.products_count} products</span>
           </div>
