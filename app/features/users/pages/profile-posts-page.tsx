@@ -1,23 +1,32 @@
 import { PostCard } from "~/features/community/components/post-card";
 import type { Route } from "./+types/profile-posts-page";
+import { getUserPosts } from "../queries";
+import { data } from "react-router";
+import { makeSSRClient } from "~/supa-client";
 
 export const meta: Route.MetaFunction = () => {
   return [{ title: "Profile Posts | Wemake" }];
 };
 
-export default function ProfilePostsPage() {
+export const loader = async ({ params, request }: Route.LoaderArgs) => {
+  const { serverSideClient: client, headers } = makeSSRClient(request);
+  const posts = await getUserPosts(client, params.username);
+  return data({ posts }, { headers });
+};
+
+export default function ProfilePostsPage({ loaderData }: Route.ComponentProps) {
   return (
     <div>
-      {Array.from({ length: 5 }).map((_, index) => (
+      {loaderData.posts.map((post) => (
         <PostCard
-          key={index}
-          id={index + 1}
-          title="What is the best way to learn React?"
-          authorName="John Doe"
-          authorAvatarURL="https://github.com/shadcn.png"
-          category="Productivity"
-          timestamp="12 hours ago"
-          votesCount={123}
+          key={post.post_id}
+          id={post.post_id}
+          title={post.title}
+          authorName={post.author}
+          authorAvatarURL={post.author_avatar}
+          category={post.topic}
+          timestamp={post.created_at}
+          votesCount={post.upvotes}
           expanded
         />
       ))}

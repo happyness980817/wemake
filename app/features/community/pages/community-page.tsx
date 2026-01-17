@@ -14,6 +14,7 @@ import { useSearchParams } from "react-router";
 import { Input } from "~/common/components/ui/input";
 import { PostCard } from "../components/post-card";
 import { getPosts, getTopics } from "../queries";
+import { makeSSRClient } from "~/supa-client";
 import z from "zod";
 
 export const meta: Route.MetaFunction = () => {
@@ -32,6 +33,7 @@ const searchParamsSchema = z.object({
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const url = new URL(request.url);
+  const { serverSideClient: client, headers } = makeSSRClient(request);
   const { success, data: parsedData } = searchParamsSchema.safeParse(
     Object.fromEntries(url.searchParams)
   );
@@ -46,8 +48,8 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   }
   // console.log(parsedData);
   const [topics, posts] = await Promise.all([
-    getTopics(),
-    getPosts({
+    getTopics(client),
+    getPosts(client, {
       limit: 20,
       sorting: parsedData.sort,
       period: parsedData.period,
@@ -55,7 +57,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
       topic: parsedData.topic,
     }),
   ]);
-  return { topics, posts };
+  return data({ topics, posts }, { headers });
 };
 
 export default function CommunityPage({ loaderData }: Route.ComponentProps) {

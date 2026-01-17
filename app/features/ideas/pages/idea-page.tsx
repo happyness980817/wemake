@@ -4,6 +4,8 @@ import { EyeIcon, DotIcon, HeartIcon } from "lucide-react";
 import { Button } from "~/common/components/ui/button";
 import { getIdea } from "../queries";
 import { DateTime } from "luxon";
+import { data } from "react-router";
+import { makeSSRClient } from "~/supa-client";
 
 export const meta: Route.MetaFunction = ({
   data: {
@@ -13,9 +15,10 @@ export const meta: Route.MetaFunction = ({
   return [{ title: `Idea #${idea_id} : ${idea} | Wemake` }];
 };
 
-export const loader = async ({ params }: Route.LoaderArgs) => {
-  const idea = await getIdea(params.ideaId);
-  return { idea };
+export const loader = async ({ params, request }: Route.LoaderArgs) => {
+  const { serverSideClient: client, headers } = makeSSRClient(request);
+  const idea = await getIdea(client, params.ideaId);
+  return data({ idea }, { headers });
 };
 
 export default function IdeaPage({ loaderData }: Route.ComponentProps) {

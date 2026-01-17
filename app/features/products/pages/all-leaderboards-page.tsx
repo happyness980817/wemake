@@ -1,9 +1,10 @@
 import type { Route } from "./+types/all-leaderboards-page";
-import { isRouteErrorResponse } from "react-router";
+import { data, isRouteErrorResponse } from "react-router";
 import { Hero } from "~/common/components/hero";
 import { ProductCard } from "../components/product-card";
 import ProductPagination from "~/common/components/product-pagination";
 import { getAllTimeProductsByLikes, getAllTimeProductsPages } from "../queries";
+import { makeSSRClient } from "~/supa-client";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -14,17 +15,15 @@ export const meta: Route.MetaFunction = () => {
 };
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
+  const { serverSideClient: client, headers } = makeSSRClient(request);
   const limit = 10;
   const url = new URL(request.url);
-  const products = await getAllTimeProductsByLikes({
+  const products = await getAllTimeProductsByLikes(client, {
     limit,
     page: Number(url.searchParams.get("page")) || 1,
   });
-  const totalPages = await getAllTimeProductsPages({ limit });
-  return {
-    products,
-    totalPages,
-  };
+  const totalPages = await getAllTimeProductsPages(client, { limit });
+  return data({ products, totalPages }, { headers });
 };
 
 export default function AllLeaderboardsPage({

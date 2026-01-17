@@ -1,14 +1,17 @@
 import { ProductCard } from "~/features/products/components/product-card";
 import type { Route } from "./+types/profile-products-page";
 import { getUserProducts } from "../queries";
+import { data } from "react-router";
+import { makeSSRClient } from "~/supa-client";
 
 export const meta: Route.MetaFunction = () => {
   return [{ title: "Profile Products | Wemake" }];
 };
 
-export const loader = async ({ params }: Route.LoaderArgs) => {
-  const products = await getUserProducts(params.username);
-  return { products };
+export const loader = async ({ params, request }: Route.LoaderArgs) => {
+  const { serverSideClient: client, headers } = makeSSRClient(request);
+  const products = await getUserProducts(client, params.username);
+  return data({ products }, { headers });
 };
 
 export default function ProfileProductsPage({

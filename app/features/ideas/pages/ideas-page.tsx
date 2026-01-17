@@ -2,6 +2,8 @@ import { Hero } from "~/common/components/hero";
 import type { Route } from "./+types/ideas-page";
 import { IdeaCard } from "../components/idea-card";
 import { getIdeas } from "../queries";
+import { data } from "react-router";
+import { makeSSRClient } from "~/supa-client";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -10,9 +12,10 @@ export const meta: Route.MetaFunction = () => {
   ];
 };
 
-export const loader = async () => {
-  const ideas = await getIdeas({ limit: 10 });
-  return { ideas };
+export const loader = async ({ request }: Route.LoaderArgs) => {
+  const { serverSideClient: client, headers } = makeSSRClient(request);
+  const ideas = await getIdeas(client, { limit: 10 });
+  return data({ ideas }, { headers });
 };
 
 export default function IdeasPage({ loaderData }: Route.ComponentProps) {

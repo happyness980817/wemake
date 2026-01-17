@@ -1,8 +1,13 @@
-import { createClient } from "@supabase/supabase-js";
+import {
+  createBrowserClient,
+  createServerClient,
+  parseCookieHeader,
+  serializeCookieHeader,
+} from "@supabase/ssr";
 import type { MergeDeep, SetNonNullable, SetFieldType } from "type-fest";
 import type { Database as SupabaseDatabase } from "../database.types";
 
-type Database = MergeDeep<
+export type Database = MergeDeep<
   SupabaseDatabase,
   {
     public: {
@@ -36,9 +41,37 @@ type Database = MergeDeep<
   }
 >;
 
-const client = createClient<Database>(
+export const browserClient = createBrowserClient<Database>(
   process.env.SUPABASE_URL!,
   process.env.SUPABASE_ANON_KEY!
 );
 
-export default client;
+export const makeSSRClient = (request: Request) => {
+  const headers = new Headers();
+  const serverSideClient = createServerClient<Database>(
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() {
+          const cookies = parseCookieHeader(
+            request.headers.get("Cookie") ?? ""
+          );
+          return cookies.map(({ name, value }) => ({
+            name,
+            value: value ?? "",
+          }));
+        },
+        setAll(cookies) { // 쿠키를 헤더에 담아서 유저에게 전달
+          cookies.forEach(({ name, value, options }) => {
+            headers.append(
+              "Set-Cookie", // Set-Cookie 헤더를 주면 유저의 브라우저에 자동으로 쿠키를 만들어 준다
+              serializeCookieHeader(name, value, options) // supabase 가 보낸 쿠키를 브라우저에서 사용할 수 있는 쿠키로 변환
+            );
+          });
+        },
+      },
+    } // 두 가지 method - 요청으로부터 특정 supabase 쿠키를 가져오는 기능 + supabase 가 유저의 쿠키를 설정하게 하는 기능
+  );
+  return {serverSideClient, headers}; // 헤더도 유저에게 보내줘야 (유저의) 브라우저에서 쿠키를 설정 가능 
+};

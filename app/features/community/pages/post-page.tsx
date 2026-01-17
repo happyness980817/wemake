@@ -6,7 +6,7 @@ import {
   BreadcrumbSeparator,
 } from "~/common/components/ui/breadcrumb";
 import type { Route } from "./+types/post-page";
-import { Form, Link } from "react-router";
+import { data, Form, Link } from "react-router";
 import { Button } from "~/common/components/ui/button";
 import { ChevronUpIcon, DotIcon } from "lucide-react";
 import { Textarea } from "~/common/components/ui/textarea";
@@ -19,16 +19,18 @@ import { Badge } from "~/common/components/ui/badge";
 import { Reply } from "../components/reply";
 import { getPostById } from "../queries";
 import { getReplies } from "../queries";
+import { makeSSRClient } from "~/supa-client";
 import { DateTime } from "luxon";
 
 export const meta: Route.MetaFunction = ({ params }: Route.MetaArgs) => {
   return [{ title: `Post #${params.postId} | Wemake` }];
 };
 
-export const loader = async ({ params }: Route.LoaderArgs) => {
-  const post = await getPostById(Number(params.postId));
-  const replies = await getReplies(Number(params.postId));
-  return { post, replies };
+export const loader = async ({ params, request }: Route.LoaderArgs) => {
+  const { serverSideClient: client, headers } = makeSSRClient(request);
+  const post = await getPostById(client, Number(params.postId));
+  const replies = await getReplies(client, Number(params.postId));
+  return data({ post, replies }, { headers });
 };
 
 export default function PostPage({ loaderData }: Route.ComponentProps) {

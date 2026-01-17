@@ -3,8 +3,9 @@ import { Button } from "~/common/components/ui/button";
 import { Dialog, DialogTrigger } from "~/common/components/ui/dialog";
 import { ReviewCard } from "~/features/products/components/review-card";
 import CreateReviewDialog from "~/features/products/components/create-review-dialog";
-import { useOutletContext } from "react-router";
+import { data, useOutletContext } from "react-router";
 import { getReviews } from "../queries";
+import { makeSSRClient } from "~/supa-client";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -13,9 +14,10 @@ export const meta: Route.MetaFunction = () => {
   ];
 };
 
-export const loader = async ({ params }: Route.LoaderArgs) => {
-  const reviews = await getReviews(Number(params.productId));
-  return { reviews };
+export const loader = async ({ params, request }: Route.LoaderArgs) => {
+  const { serverSideClient: client, headers } = makeSSRClient(request);
+  const reviews = await getReviews(client, Number(params.productId));
+  return data({ reviews }, { headers });
 };
 
 export default function ProductReviewsPage({

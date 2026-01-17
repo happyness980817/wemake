@@ -17,6 +17,7 @@ import {
 } from "~/common/components/ui/card";
 import { getTeamById } from "../queries";
 import { z } from "zod";
+import { makeSSRClient } from "~/supa-client";
 
 const paramsSchema = z.object({
   teamId: z.coerce.number(),
@@ -26,7 +27,8 @@ export const meta: Route.MetaFunction = () => {
   return [{ title: "Team | Wemake" }];
 };
 
-export const loader = async ({ params }: Route.LoaderArgs) => {
+export const loader = async ({ params, request }: Route.LoaderArgs) => {
+  const { serverSideClient: client, headers } = makeSSRClient(request);
   const { success, data: parsedData } = paramsSchema.safeParse(params);
   if (!success) {
     throw data(
@@ -37,8 +39,8 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
       { status: 400 }
     );
   }
-  const team = await getTeamById(parsedData.teamId);
-  return { team };
+  const team = await getTeamById(client, parsedData.teamId);
+  return data({ team }, { headers });
 };
 
 export default function TeamPage({ loaderData }: Route.ComponentProps) {

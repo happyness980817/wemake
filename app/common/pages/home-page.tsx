@@ -1,4 +1,4 @@
-import { Link, type MetaFunction } from "react-router";
+import { data, Link, type MetaFunction } from "react-router";
 import { ProductCard } from "~/features/products/components/product-card";
 import { PostCard } from "~/features/community/components/post-card";
 import { IdeaCard } from "~/features/ideas/components/idea-card";
@@ -12,6 +12,7 @@ import { getPosts } from "~/features/community/queries";
 import { getIdeas } from "~/features/ideas/queries";
 import { getJobs } from "~/features/jobs/queries";
 import { getTeams } from "~/features/teams/queries";
+import { makeSSRClient } from "~/supa-client";
 
 export const meta: MetaFunction = () => {
   return [
@@ -20,22 +21,23 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export const loader = async () => {
+export const loader = async ({ request }:Route.LoaderArgs) => {
+  const {serverSideClient: client, headers} = makeSSRClient(request);
   const [products, posts, ideas, jobs, teams] = await Promise.all([
-    getProductsByDateRange({
+    getProductsByDateRange(client,{
       startDate: DateTime.now().startOf("day"),
       endDate: DateTime.now().endOf("day"),
       limit: 7,
     }),
-    getPosts({
+    getPosts(client,{
       limit: 7,
       sorting: "newest",
     }),
-    getIdeas({ limit: 7 }),
-    getJobs({ limit: 11 }),
-    getTeams({ limit: 7 }),
+    getIdeas(client,{ limit: 7 }),
+    getJobs(client,{ limit: 11 }),
+    getTeams(client,{ limit: 7 }),
   ]);
-  return { products, posts, ideas, jobs, teams };
+  return data({ products, posts, ideas, jobs, teams }, { headers });
 };
 
 export default function HomePage({ loaderData }: Route.ComponentProps) {

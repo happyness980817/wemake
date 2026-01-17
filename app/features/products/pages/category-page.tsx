@@ -8,6 +8,8 @@ import {
   getCategoryPages,
 } from "../queries";
 import { z } from "zod";
+import { data } from "react-router";
+import { makeSSRClient } from "~/supa-client";
 
 export const meta = ({ params }: Route.MetaArgs) => {
   return [
@@ -20,6 +22,7 @@ const categoryIdSchema = z.coerce.number().int();
 const pageSchema = z.coerce.number().int().min(1).optional().default(1);
 
 export const loader = async ({ params, request }: Route.LoaderArgs) => {
+  const { serverSideClient: client, headers } = makeSSRClient(request);
   const url = new URL(request.url);
 
   const { success: isCategoryIdValid, data: categoryId } =
@@ -32,11 +35,11 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
   if (!isPageValid) throw new Error("Invalid page");
 
   const [category, products, totalPages] = await Promise.all([
-    getCategory(categoryId),
-    getProductsByCategory({ categoryId, page }),
-    getCategoryPages(categoryId),
+    getCategory(client, categoryId),
+    getProductsByCategory(client, { categoryId, page }),
+    getCategoryPages(client, categoryId),
   ]);
-  return { category, products, totalPages };
+  return data({ category, products, totalPages }, { headers });
 };
 
 export default function CategoryPage({ loaderData }: Route.ComponentProps) {

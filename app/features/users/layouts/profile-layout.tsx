@@ -1,4 +1,4 @@
-import { Form, Link, Outlet, NavLink } from "react-router";
+import { data, Form, Link, Outlet, NavLink } from "react-router";
 import type { Route } from "./+types/profile-layout";
 import {
   Avatar,
@@ -18,10 +18,12 @@ import { Textarea } from "~/common/components/ui/textarea";
 import { Badge } from "~/common/components/ui/badge";
 import { cn } from "~/lib/utils";
 import { getUserProfile } from "../queries";
+import { makeSSRClient } from "~/supa-client";
 
-export const loader = async ({ params }: Route.LoaderArgs) => {
-  const user = await getUserProfile(params.username);
-  return { user };
+export const loader = async ({ params, request }: Route.LoaderArgs) => {
+  const { serverSideClient: client, headers } = makeSSRClient(request);
+  const user = await getUserProfile(client, params.username);
+  return data({ user }, { headers });
 };
 
 export default function ProfileLayout({ loaderData }: Route.ComponentProps) {

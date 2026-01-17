@@ -2,6 +2,8 @@ import { CategoryCard } from "../components/category-card";
 import { getCategories } from "../queries";
 import type { Route } from "./+types/categories-page";
 import { Hero } from "~/common/components/hero";
+import { data } from "react-router";
+import { makeSSRClient } from "~/supa-client";
 
 export const meta: Route.MetaFunction = ({}: Route.MetaArgs) => {
   return [
@@ -10,9 +12,10 @@ export const meta: Route.MetaFunction = ({}: Route.MetaArgs) => {
   ];
 };
 
-export const loader = async () => {
-  const categories = await getCategories();
-  return { categories };
+export const loader = async ({ request }: Route.LoaderArgs) => {
+  const { serverSideClient: client, headers } = makeSSRClient(request);
+  const categories = await getCategories(client);
+  return data({ categories }, { headers });
 };
 
 export default function CategoriesPage({ loaderData }: Route.ComponentProps) {

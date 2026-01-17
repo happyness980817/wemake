@@ -6,6 +6,7 @@ import { getJobById } from "../queries";
 import { z } from "zod";
 import { data } from "react-router";
 import { DateTime } from "luxon";
+import { makeSSRClient } from "~/supa-client";
 
 const paramsSchema = z.object({
   jobId: z.coerce.number(),
@@ -15,7 +16,8 @@ export const meta: Route.MetaFunction = () => {
   return [{ title: "Job | Wemake" }];
 };
 
-export const loader = async ({ params }: Route.LoaderArgs) => {
+export const loader = async ({ params, request }: Route.LoaderArgs) => {
+  const { serverSideClient: client, headers } = makeSSRClient(request);
   const { success, data: parsedData } = paramsSchema.safeParse(params);
   if (!success) {
     throw data(
@@ -26,8 +28,8 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
       { status: 400 }
     );
   }
-  const job = await getJobById(parsedData.jobId);
-  return { job };
+  const job = await getJobById(client, parsedData.jobId);
+  return data({ job }, { headers });
 };
 
 export default function JobPage({ loaderData }: Route.ComponentProps) {

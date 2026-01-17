@@ -11,6 +11,7 @@ import {
   getProductsPagesByDateRange,
 } from "../queries";
 import { PAGE_SIZE } from "../constants";
+import { makeSSRClient } from "~/supa-client";
 
 const paramsSchema = z.object({
   year: z.coerce.number(),
@@ -32,6 +33,7 @@ export const meta: Route.MetaFunction = ({ params }) => {
 };
 
 export const loader = async ({ params, request }: Route.LoaderArgs) => {
+  const { serverSideClient: client, headers } = makeSSRClient(request);
   const { success, data: parsedData } = paramsSchema.safeParse(params);
   if (!success) {
     throw data(
@@ -75,21 +77,17 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
   }
 
   const url = new URL(request.url);
-  const products = await getProductsByDateRange({
+  const products = await getProductsByDateRange(client, {
     startDate: date.startOf("month"),
     endDate: date.endOf("month"),
     limit: PAGE_SIZE,
     page: Number(url.searchParams.get("page")) || 1,
   });
-  const totalPages = await getProductsPagesByDateRange({
+  const totalPages = await getProductsPagesByDateRange(client, {
     startDate: date.startOf("month"),
     endDate: date.endOf("month"),
   });
-  return {
-    products,
-    totalPages,
-    ...parsedData,
-  };
+  return data({ products, totalPages, ...parsedData }, { headers });
 };
 
 export default function MonthlyLeaderboardsPage({

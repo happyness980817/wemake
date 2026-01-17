@@ -1,7 +1,8 @@
-import client from "~/supa-client";
 import { productColumns } from "../products/queries";
+import type { SupabaseClient } from "@supabase/supabase-js";
+import type { Database } from "~/supa-client";
 
-export const getUserProfile = async (username: string) => {
+export const getUserProfile = async (client: SupabaseClient<Database>,username: string) => {
   const { data, error } = await client
     .from("profiles")
     .select(
@@ -21,7 +22,7 @@ export const getUserProfile = async (username: string) => {
   return data;
 };
 
-export const getUserProducts = async (username: string) => {
+export const getUserProducts = async (client: SupabaseClient<Database>,username: string) => {
   const { data, error } = await client
     .from("products")
     .select(
@@ -38,11 +39,11 @@ export const getUserProducts = async (username: string) => {
   return data;
 };
 
-export const getUserPosts = async (username: string) => {
+export const getUserPosts = async (client: SupabaseClient<Database>,username: string) => {
   const { data, error } = await client
-    .from("posts")
+    .from("community_post_list_view")
     .select("*")
-    .eq("username", username)
+    .eq("author_username", username)
     .order("created_at", { ascending: false });
   if (error) throw error;
   return data;

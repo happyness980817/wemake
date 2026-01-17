@@ -2,9 +2,10 @@ import { Button } from "~/common/components/ui/button";
 import { ProductCard } from "../components/product-card";
 import type { Route } from "./+types/leaderboards-page";
 import { Hero } from "~/common/components/hero";
-import { Link } from "react-router";
+import { data, Link } from "react-router";
 import { getProductsByDateRange } from "../queries";
 import { DateTime } from "luxon";
+import { makeSSRClient } from "~/supa-client";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -13,7 +14,8 @@ export const meta: Route.MetaFunction = () => {
   ];
 };
 
-export const loader = async () => {
+export const loader = async ({ request }: Route.LoaderArgs) => {
+  const { serverSideClient: client, headers } = makeSSRClient(request);
   const [
     dailyProducts,
     weeklyProducts,
@@ -22,39 +24,42 @@ export const loader = async () => {
     allProducts,
   ] = await Promise.all([
     // 병렬 처리
-    getProductsByDateRange({
+    getProductsByDateRange(client, {
       startDate: DateTime.now().startOf("day"),
       endDate: DateTime.now().endOf("day"),
       limit: 7,
     }),
-    getProductsByDateRange({
+    getProductsByDateRange(client, {
       startDate: DateTime.now().startOf("week"),
       endDate: DateTime.now().endOf("week"),
       limit: 7,
     }),
-    getProductsByDateRange({
+    getProductsByDateRange(client, {
       startDate: DateTime.now().startOf("month"),
       endDate: DateTime.now().endOf("month"),
       limit: 7,
     }),
-    getProductsByDateRange({
+    getProductsByDateRange(client, {
       startDate: DateTime.now().startOf("year"),
       endDate: DateTime.now().endOf("year"),
       limit: 7,
     }),
-    getProductsByDateRange({
+    getProductsByDateRange(client, {
       startDate: DateTime.now().minus({ years: 100 }).startOf("day"),
       endDate: DateTime.now().endOf("day"),
       limit: 7,
     }),
   ]);
-  return {
+  return data(
+    {
     dailyProducts,
     weeklyProducts,
     monthlyProducts,
     yearlyProducts,
     allProducts,
-  };
+    },
+    { headers }
+  );
 };
 
 export default function LeaderboardsPage({ loaderData }: Route.ComponentProps) {

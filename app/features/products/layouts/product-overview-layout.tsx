@@ -1,10 +1,11 @@
-import { NavLink, Outlet } from "react-router";
+import { data, NavLink, Outlet } from "react-router";
 import { Button, buttonVariants } from "~/common/components/ui/button";
 import { StarIcon } from "lucide-react";
 import { ChevronUpIcon } from "lucide-react";
 import { cn } from "~/lib/utils";
 import type { Route } from "./+types/product-overview-layout";
 import { getProductById } from "../queries";
+import { makeSSRClient } from "~/supa-client";
 
 export const meta: Route.MetaFunction = ({ data }: Route.MetaArgs) => {
   return [
@@ -13,10 +14,11 @@ export const meta: Route.MetaFunction = ({ data }: Route.MetaArgs) => {
   ];
 };
 
-export const loader = async ({ params }: Route.LoaderArgs) => {
+export const loader = async ({ params, request }: Route.LoaderArgs) => {
+  const { serverSideClient: client, headers } = makeSSRClient(request);
   const { productId } = params;
-  const product = await getProductById(parseInt(productId));
-  return { product };
+  const product = await getProductById(client, parseInt(productId));
+  return data({ product }, { headers });
 };
 
 export default function ProductOverviewLayout({
