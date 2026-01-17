@@ -27,7 +27,7 @@ export const meta: Route.MetaFunction = ({ params }: Route.MetaArgs) => {
 };
 
 export const loader = async ({ params, request }: Route.LoaderArgs) => {
-  const { serverSideClient: client, headers } = makeSSRClient(request);
+  const { client, headers } = makeSSRClient(request);
   const post = await getPostById(client, Number(params.postId));
   const replies = await getReplies(client, Number(params.postId));
   return data({ post, replies }, { headers });

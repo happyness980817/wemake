@@ -33,7 +33,7 @@ const searchParamsSchema = z.object({
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
   const url = new URL(request.url);
-  const { serverSideClient: client, headers } = makeSSRClient(request);
+  const { client, headers } = makeSSRClient(request);
   const { success, data: parsedData } = searchParamsSchema.safeParse(
     Object.fromEntries(url.searchParams)
   );

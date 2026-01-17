@@ -15,7 +15,7 @@ export const meta: Route.MetaFunction = () => {
 };
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
-  const { serverSideClient: client, headers } = makeSSRClient(request);
+  const { client, headers } = makeSSRClient(request);
   const limit = 10;
   const url = new URL(request.url);
   const products = await getAllTimeProductsByLikes(client, {

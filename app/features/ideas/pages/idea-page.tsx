@@ -16,7 +16,7 @@ export const meta: Route.MetaFunction = ({
 };
 
 export const loader = async ({ params, request }: Route.LoaderArgs) => {
-  const { serverSideClient: client, headers } = makeSSRClient(request);
+  const { client, headers } = makeSSRClient(request);
   const idea = await getIdea(client, params.ideaId);
   return data({ idea }, { headers });
 };

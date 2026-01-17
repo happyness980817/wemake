@@ -22,7 +22,7 @@ const paramsSchema = z.object({
 });
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
-  const { serverSideClient: client, headers } = makeSSRClient(request);
+  const { client, headers } = makeSSRClient(request);
   const url = new URL(request.url);
   // console.log(url);
   // console.log(Object.fromEntries(url.searchParams), url.searchParams);

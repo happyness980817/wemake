@@ -29,7 +29,7 @@ export const meta: Route.MetaFunction = ({ params }) => {
 };
 
 export const loader = async ({ params, request }: Route.LoaderArgs) => {
-  const { serverSideClient: client, headers } = makeSSRClient(request);
+  const { client, headers } = makeSSRClient(request);
   const { success, data: parsedData } = paramsSchema.safeParse(params);
   if (!success) {
     throw data(

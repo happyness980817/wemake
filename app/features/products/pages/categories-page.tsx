@@ -13,7 +13,7 @@ export const meta: Route.MetaFunction = ({}: Route.MetaArgs) => {
 };
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
-  const { serverSideClient: client, headers } = makeSSRClient(request);
+  const { client, headers } = makeSSRClient(request);
   const categories = await getCategories(client);
   return data({ categories }, { headers });
 };

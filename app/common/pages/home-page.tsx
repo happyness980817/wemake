@@ -21,21 +21,21 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export const loader = async ({ request }:Route.LoaderArgs) => {
-  const {serverSideClient: client, headers} = makeSSRClient(request);
+export const loader = async ({ request }: Route.LoaderArgs) => {
+  const { client, headers } = makeSSRClient(request);
   const [products, posts, ideas, jobs, teams] = await Promise.all([
-    getProductsByDateRange(client,{
+    getProductsByDateRange(client, {
       startDate: DateTime.now().startOf("day"),
       endDate: DateTime.now().endOf("day"),
       limit: 7,
     }),
-    getPosts(client,{
+    getPosts(client, {
       limit: 7,
       sorting: "newest",
     }),
-    getIdeas(client,{ limit: 7 }),
-    getJobs(client,{ limit: 11 }),
-    getTeams(client,{ limit: 7 }),
+    getIdeas(client, { limit: 7 }),
+    getJobs(client, { limit: 11 }),
+    getTeams(client, { limit: 7 }),
   ]);
   return data({ products, posts, ideas, jobs, teams }, { headers });
 };

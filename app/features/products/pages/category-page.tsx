@@ -22,7 +22,7 @@ const categoryIdSchema = z.coerce.number().int();
 const pageSchema = z.coerce.number().int().min(1).optional().default(1);
 
 export const loader = async ({ params, request }: Route.LoaderArgs) => {
-  const { serverSideClient: client, headers } = makeSSRClient(request);
+  const { client, headers } = makeSSRClient(request);
   const url = new URL(request.url);
 
   const { success: isCategoryIdValid, data: categoryId } =

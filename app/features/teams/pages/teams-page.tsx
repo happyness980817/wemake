@@ -10,7 +10,7 @@ export const meta: Route.MetaFunction = () => {
 };
 
 export const loader = async ({ request }: Route.LoaderArgs) => {
-  const { serverSideClient: client, headers } = makeSSRClient(request);
+  const { client, headers } = makeSSRClient(request);
   const teams = await getTeams(client, { limit: 11 });
   return data({ teams }, { headers });
 };

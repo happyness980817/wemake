@@ -73,5 +73,5 @@ export const makeSSRClient = (request: Request) => {
       },
     } // 두 가지 method - 요청으로부터 특정 supabase 쿠키를 가져오는 기능 + supabase 가 유저의 쿠키를 설정하게 하는 기능
   );
-  return {serverSideClient, headers}; // 헤더도 유저에게 보내줘야 (유저의) 브라우저에서 쿠키를 설정 가능 
+  return {client: serverSideClient, headers}; // 헤더도 유저에게 보내줘야 (유저의) 브라우저에서 쿠키를 설정 가능 
 };

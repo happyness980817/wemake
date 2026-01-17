@@ -21,7 +21,7 @@ import { getUserProfile } from "../queries";
 import { makeSSRClient } from "~/supa-client";
 
 export const loader = async ({ params, request }: Route.LoaderArgs) => {
-  const { serverSideClient: client, headers } = makeSSRClient(request);
+  const { client, headers } = makeSSRClient(request);
   const user = await getUserProfile(client, params.username);
   return data({ user }, { headers });
 };
