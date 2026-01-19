@@ -15,24 +15,24 @@ export default [
         index("features/products/pages/leaderboards-page.tsx"),
         route(
           "/yearly/:year",
-          "features/products/pages/yearly-leaderboards-page.tsx"
+          "features/products/pages/yearly-leaderboards-page.tsx",
         ),
         route(
           "/monthly/:year/:month",
-          "features/products/pages/monthly-leaderboards-page.tsx"
+          "features/products/pages/monthly-leaderboards-page.tsx",
         ),
         route(
           "/weekly/:year/:week",
-          "features/products/pages/weekly-leaderboards-page.tsx"
+          "features/products/pages/weekly-leaderboards-page.tsx",
         ),
         route(
           "/daily/:year/:month/:day",
-          "features/products/pages/daily-leaderboards-page.tsx"
+          "features/products/pages/daily-leaderboards-page.tsx",
         ),
         route("/all-time", "features/products/pages/all-leaderboards-page.tsx"),
         route(
           "/:period",
-          "features/products/pages/leaderboards-redirection-page.tsx"
+          "features/products/pages/leaderboards-redirection-page.tsx",
         ),
       ]),
     ]),
@@ -75,6 +75,7 @@ export default [
         route("/complete", "features/auth/pages/social-complete-page.tsx"),
       ]),
     ]),
+    route("/logout", "features/auth/pages/logout-page.tsx"),
   ]),
   ...prefix("/community", [
     index("features/community/pages/community-page.tsx"),
@@ -93,7 +94,7 @@ export default [
         route("/ideas", "features/users/pages/dashboard-ideas-page.tsx"),
         route(
           "/products/:productId",
-          "features/users/pages/dashboard-product-page.tsx"
+          "features/users/pages/dashboard-product-page.tsx",
         ),
       ]),
     ]),

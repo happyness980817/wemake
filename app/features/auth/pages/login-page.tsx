@@ -12,13 +12,12 @@ export const meta: Route.MetaFunction = () => {
 };
 
 const formSchema = z.object({
-  email: z.string().email("Email address not valid."),
+  email: z.string().email(),
   password: z.string().min(8, "Password must be at least 8 characters long."),
 });
 
 export const action = async ({ request }: Route.ActionArgs) => {
   const formData = await request.formData();
-  console.log(Object.fromEntries(formData)); // { email: "", password: "" }
   const { success, data, error } = formSchema.safeParse(
     Object.fromEntries(formData),
   );
@@ -46,7 +45,9 @@ export const action = async ({ request }: Route.ActionArgs) => {
 
 export default function LoginPage({ actionData }: Route.ComponentProps) {
   const navigation = useNavigation();
-  const isSubmitting = navigation.state === "submitting";
+  const isSubmitting =
+    navigation.state === "submitting" || // 폼 제출시 로딩 표시
+    navigation.state === "loading"; // 홈페이지 로드 시 로딩 표시
   return (
     <div className="flex flex-col relative items-center justify-center h-full">
       <Button variant="link" asChild className="absolute top-8 right-8">
