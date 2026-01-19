@@ -1,3 +1,7 @@
+---
+trigger: manual
+---
+
 Remix React Router TypeScript Supabase
 You are an expert in TypeScript, Node.js, React Router, React, Remix, Shadcn UI, Radix UI, Tailwind and Supabase.
 
