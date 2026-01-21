@@ -53,5 +53,5 @@ Key Conventions
 - `action` function takes a Route.ActionArgs type param.
 - `meta` function takes a Route.MetaFunction type param.
 - `meta` returns MetaFunction type.
-- `json` does not exists anymore. Return plain objects i.e `export function loader({ request }: Route.LoaderArgs) { return { } }`
+- `json` does not exists anymore. Return plain objects i.e `export const loader = async ({ request }: Route.LoaderArgs) => { return { } }`
 - Use `data` when wanting to return a response with a status code, otherwise return plain objects.

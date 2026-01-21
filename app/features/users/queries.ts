@@ -2,7 +2,30 @@ import { productColumns } from "../products/queries";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "~/supa-client";
 
-export const getUserProfile = async (client: SupabaseClient<Database>,username: string) => {
+export const getUserById = async (
+  client: SupabaseClient<Database>,
+  { id }: { id: string },
+) => {
+  const { data, error } = await client
+    .from("profiles")
+    .select(
+      `
+      profile_id,
+      name,
+      username,
+      avatar
+      `,
+    )
+    .eq("profile_id", id)
+    .single();
+  if (error) throw error;
+  return data;
+};
+
+export const getUserProfile = async (
+  client: SupabaseClient<Database>,
+  username: string,
+) => {
   const { data, error } = await client
     .from("profiles")
     .select(
@@ -14,7 +37,7 @@ export const getUserProfile = async (client: SupabaseClient<Database>,username: 
       role,
       headline,
       bio
-      `
+      `,
     )
     .eq("username", username)
     .single();
@@ -22,7 +45,10 @@ export const getUserProfile = async (client: SupabaseClient<Database>,username: 
   return data;
 };
 
-export const getUserProducts = async (client: SupabaseClient<Database>,username: string) => {
+export const getUserProducts = async (
+  client: SupabaseClient<Database>,
+  username: string,
+) => {
   const { data, error } = await client
     .from("products")
     .select(
@@ -31,7 +57,7 @@ export const getUserProducts = async (client: SupabaseClient<Database>,username:
       profiles!products_profile_id_profiles_profile_id_fk!inner (
         profile_id
       )
-      `
+      `,
     )
     .eq("profiles.username", username)
     .order("created_at", { ascending: false });
@@ -39,7 +65,10 @@ export const getUserProducts = async (client: SupabaseClient<Database>,username:
   return data;
 };
 
-export const getUserPosts = async (client: SupabaseClient<Database>,username: string) => {
+export const getUserPosts = async (
+  client: SupabaseClient<Database>,
+  username: string,
+) => {
   const { data, error } = await client
     .from("community_post_list_view")
     .select("*")
