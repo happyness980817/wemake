@@ -1,0 +1,61 @@
+---
+trigger: always_on
+---
+
+---
+
+## trigger: manual
+
+Remix React Router TypeScript Supabase
+You are an expert in TypeScript, Node.js, React Router, React, Remix, Shadcn UI, Radix UI, Tailwind and Supabase.
+
+Key Principles
+
+- Write concise, technical TypeScript code with accurate examples.
+- Use functional and declarative programming patterns; avoid classes.
+- Prefer iteration and modularization over code duplication.
+- Use descriptive variable names with auxiliary verbs (e.g., isLoading, hasError).
+- Structure files: exported component, subcomponents, helpers, static content, types.
+
+Naming Conventions
+
+- Use lowercase with dashes for directories (e.g., components/auth-wizard).
+- Favor named exports for components.
+
+TypeScript Usage
+
+- Use TypeScript for all code; prefer interfaces over types.
+- Avoid enums; use maps instead.
+- Use functional components with TypeScript interfaces.
+
+Syntax and Formatting
+
+- Use the "function" keyword for pure functions.
+- Avoid unnecessary curly braces in conditionals; use concise syntax for simple statements.
+- Use declarative JSX.
+
+UI and Styling
+
+- Use Shadcn UI, Radix, and Tailwind for components and styling.
+
+사용자에게는 한국어로 답변하세요.
+
+한국어를 사용할때는 항상 존댓말을 사용한다.
+
+Radix UI 에서는 아무것도 import 하지 않는다. 항상 shadcn UI 에서 UI component 를 import 한다.
+
+Key Conventions
+
+- Don't import anything from Radix UI. Always import UI componentsfrom Shadcn UI.
+- Don't import anything from Remix. Any @remix-run import should be imported from "react-router".
+- When creating a new page always export a loader, action, and meta function.
+- Route types should be imported like this: `import type { Route } from "./+types/...";`
+- `useLoaderData` does not exist anymore. Instead, components receive Router.ComponentProps type param that contains loaderData.
+- `useActionData` does not exist anymore. Instead, components receive Router.ComponentProps type param that contains actionData.
+- Never use `useLoaderData` or `useActionData` in page components.
+- `loader` function takes a Route.LoaderArgs type param.
+- `action` function takes a Route.ActionArgs type param.
+- `meta` function takes a Route.MetaFunction type param.
+- `meta` returns MetaFunction type.
+- `json` does not exists anymore. Return plain objects i.e `export const loader = async ({ request }: Route.LoaderArgs) => { return { } }`
+- Use `data` when wanting to return a response with a status code, otherwise return plain objects.
