@@ -31,7 +31,7 @@ export const createPost = async (
       topic_id: categoryData.topic_id,
       profile_id: userId,
     })
-    .select()
+    .select("*")
     .single();
   if (error) throw error;
   return data;

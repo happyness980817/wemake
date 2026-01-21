@@ -1,5 +1,11 @@
 import { Label } from "~/common/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 import { useState } from "react";
 
 export default function SelectPair({
@@ -24,7 +30,12 @@ export default function SelectPair({
         {label}
         <small className="text-muted-foreground">{description}</small>
       </Label>
-      <Select open={open} onOpenChange={setOpen} name={name} required={required}>
+      <Select
+        open={open}
+        onOpenChange={setOpen}
+        name={name}
+        required={required}
+      >
         <SelectTrigger>
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>

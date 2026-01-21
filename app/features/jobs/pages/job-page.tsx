@@ -12,8 +12,8 @@ const paramsSchema = z.object({
   jobId: z.coerce.number(),
 });
 
-export const meta: Route.MetaFunction = () => {
-  return [{ title: "Job | Wemake" }];
+export const meta: Route.MetaFunction = ({ loaderData }) => {
+  return [{ title: `${loaderData.job.position} | Wemake` }];
 };
 
 export const loader = async ({ params, request }: Route.LoaderArgs) => {
@@ -25,7 +25,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
         error_code: "INVALID_PARAMS",
         message: "Invalid parameters",
       },
-      { status: 400 }
+      { status: 400 },
     );
   }
   const job = await getJobById(client, parsedData.jobId);
