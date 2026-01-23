@@ -43,14 +43,16 @@ export const createReply = async (
     postId,
     reply,
     userId,
+    topLevelId,
   }: {
     postId: number;
     reply: string;
     userId: string;
+    topLevelId?: number;
   },
 ) => {
   const { error } = await client.from("post_replies").insert({
-    post_id: postId,
+    ...(topLevelId ? { parent_id: topLevelId } : { post_id: postId }),
     reply,
     profile_id: userId,
   });

@@ -59,6 +59,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
 
 const formSchema = z.object({
   reply: z.string().min(1, "Reply cannot be empty"),
+  topLevelId: z.coerce.number().optional(),
 });
 
 export const action = async ({ request, params }: Route.ActionArgs) => {
@@ -75,11 +76,12 @@ export const action = async ({ request, params }: Route.ActionArgs) => {
       formErrors: error.flatten().fieldErrors,
     };
   }
-  const { reply } = data;
+  const { reply, topLevelId } = data;
   await createReply(client, {
     postId: Number(params.postId),
     reply,
     userId,
+    topLevelId,
   });
   return { ok: true };
 };
@@ -162,7 +164,7 @@ export default function PostPage({
                 >
                   <Avatar className="size-10">
                     <AvatarFallback>{name?.[0].toUpperCase()}</AvatarFallback>
-                    <AvatarImage src={avatar} />
+                    {avatar ? <AvatarImage src={avatar} /> : null}
                   </Avatar>
                   <div className="flex flex-col gap-5 items-end w-full">
                     <Textarea
@@ -183,11 +185,13 @@ export default function PostPage({
                   {loaderData.replies.map((reply) => (
                     <Reply
                       key={reply.post_reply_id}
-                      username={reply.user.name}
+                      name={reply.user.name}
+                      username={reply.user.username}
                       avatarURL={reply.user.avatar}
                       timestamp={reply.created_at}
                       content={reply.reply}
                       topLevel={true}
+                      topLevelId={reply.post_reply_id}
                       replies={reply.post_replies}
                     />
                   ))}
