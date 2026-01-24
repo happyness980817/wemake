@@ -41,7 +41,7 @@ export default function MessagePage({}: Route.ComponentProps) {
             key={index}
             avatarURL="https://github.com/shadcn.png"
             avatarFallback="S"
-            message="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos. Lorem ipsum dolor sit amet consectetur adipisicing elit."
+            message="Lorem ipsum"
             isFromMe={index % 2 === 0}
           />
         ))}

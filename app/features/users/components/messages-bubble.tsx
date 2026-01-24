@@ -28,9 +28,9 @@ export function MessagesBubble({
       </Avatar>
       <div
         className={cn({
-          "bg-accent rounded-md p-4 text-sm w-1/3": true,
-          "bg-accent": !isFromMe,
-          "bg-primary text-primary-foreground": isFromMe,
+          "bg-accent rounded-2xl p-4 text-sm w-1/3": true,
+          "bg-accent rounded-bl-none": !isFromMe,
+          "bg-primary text-primary-foreground rounded-br-none": isFromMe,
         })}
       >
         <p>{message}</p>

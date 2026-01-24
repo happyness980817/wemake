@@ -829,13 +829,22 @@ export type Database = {
       ideas_view: {
         Row: {
           claimed: boolean | null
+          claimed_by: string | null
           created_at: string | null
           idea: string | null
           idea_id: number | null
           likes: number | null
           views: number | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "ideas_claimed_by_profiles_profile_id_fk"
+            columns: ["claimed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["profile_id"]
+          },
+        ]
       }
       product_overview_view: {
         Row: {

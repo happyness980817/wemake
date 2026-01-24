@@ -3,7 +3,7 @@ import type { Database } from "~/supa-client";
 
 export const getIdeas = async (
   client: SupabaseClient<Database>,
-  { limit }: { limit: number }
+  { limit }: { limit: number },
 ) => {
   const { data, error } = await client
     .from("ideas_view")
@@ -15,13 +15,31 @@ export const getIdeas = async (
 
 export const getIdea = async (
   client: SupabaseClient<Database>,
-  ideaId: string
+  ideaId: string,
 ) => {
   const { data, error } = await client
     .from("ideas_view")
     .select("*")
     .eq("idea_id", parseInt(ideaId))
     .single();
+  if (error) throw error;
+  return data;
+};
+
+export const getClaimedIdeas = async (
+  client: SupabaseClient<Database>,
+  { userId }: { userId: string },
+) => {
+  const { data, error } = await client
+    .from("ideas")
+    .select(
+      `
+      idea_id,
+      claimed_at,
+      idea
+      `,
+    )
+    .eq("claimed_by", userId);
   if (error) throw error;
   return data;
 };
