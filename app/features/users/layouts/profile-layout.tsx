@@ -1,4 +1,11 @@
-import { data, Form, Link, Outlet, NavLink } from "react-router";
+import {
+  data,
+  Form,
+  Link,
+  Outlet,
+  NavLink,
+  useOutletContext,
+} from "react-router";
 import type { Route } from "./+types/profile-layout";
 import {
   Avatar,
@@ -26,7 +33,14 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
   return data({ user }, { headers });
 };
 
-export default function ProfileLayout({ loaderData }: Route.ComponentProps) {
+export default function ProfileLayout({
+  loaderData,
+  params,
+}: Route.ComponentProps) {
+  const { isLoggedIn, username } = useOutletContext<{
+    isLoggedIn: boolean;
+    username?: string;
+  }>();
   const tabs = [
     { label: "About", to: `/users/${loaderData.user.username}` },
     { label: "Products", to: `/users/${loaderData.user.username}/products` },
@@ -47,31 +61,37 @@ export default function ProfileLayout({ loaderData }: Route.ComponentProps) {
         <div className="space-y-4">
           <div className="flex gap-2">
             <h1 className="text-2xl font-semibold">{loaderData.user.name}</h1>
-            <Button variant="outline" asChild>
-              <Link to="/my/settings">Edit Profile</Link>
-            </Button>
-            <Button variant="secondary">Follow</Button>
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="secondary">Message</Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Message</DialogTitle>
-                </DialogHeader>
-                <DialogDescription>
-                  <span>Send a message to {loaderData.user.name}</span>
-                  <Form className="mt-2 space-y-4">
-                    <Textarea
-                      placeholder="Write a message..."
-                      className="resize-none"
-                      rows={4}
-                    />
-                    <Button type="submit">Send</Button>
-                  </Form>
-                </DialogDescription>
-              </DialogContent>
-            </Dialog>
+            {isLoggedIn && username === params.username ? (
+              <Button variant="outline" asChild>
+                <Link to="/my/settings">Edit Profile</Link>
+              </Button>
+            ) : null}
+            {isLoggedIn && username !== params.username ? (
+              <>
+                <Button variant="secondary">Follow</Button>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant="secondary">Message</Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Message</DialogTitle>
+                    </DialogHeader>
+                    <DialogDescription>
+                      <span>Send a message to {loaderData.user.name}</span>
+                      <Form className="mt-2 space-y-4">
+                        <Textarea
+                          placeholder="Write a message..."
+                          className="resize-none"
+                          rows={4}
+                        />
+                        <Button type="submit">Send</Button>
+                      </Form>
+                    </DialogDescription>
+                  </DialogContent>
+                </Dialog>
+              </>
+            ) : null}
           </div>
           <div className="flex items-center gap-2">
             <span className="text-sm text-muted-foreground">
@@ -90,7 +110,7 @@ export default function ProfileLayout({ loaderData }: Route.ComponentProps) {
             className={({ isActive }) =>
               cn(
                 buttonVariants({ variant: "outline" }),
-                isActive && "bg-accent text-foreground"
+                isActive && "bg-accent text-foreground",
               )
             }
             to={item.to}
