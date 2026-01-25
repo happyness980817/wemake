@@ -9,6 +9,7 @@ import { makeSSRClient } from "~/supa-client";
 import { getLoggedInUserId } from "~/features/users/queries";
 import { z } from "zod";
 import { createProductReview } from "../mutations";
+import { useState, useEffect } from "react";
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -24,7 +25,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
 };
 
 const formSchema = z.object({
-  rating: z.number().min(1).max(5),
+  rating: z.coerce.number().min(1).max(5),
   review: z.string().min(1).max(1000),
 });
 
@@ -53,10 +54,17 @@ export const action = async ({ request, params }: Route.ActionArgs) => {
 
 export default function ProductReviewsPage({
   loaderData,
+  actionData,
 }: Route.ComponentProps) {
   const { review_count } = useOutletContext<{ review_count: string }>();
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    if (actionData?.ok) {
+      setOpen(false);
+    }
+  }, [actionData]);
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <div className="space-y-10 max-w-xl">
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold">

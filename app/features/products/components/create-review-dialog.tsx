@@ -13,7 +13,7 @@ import {
 } from "~/common/components/ui/dialog";
 import { Label } from "~/common/components/ui/label";
 import { useActionData } from "react-router";
-import { action } from "../pages/product-reviews-page";
+import type { action } from "../pages/product-reviews-page";
 
 export default function CreateReviewDialog() {
   const [rating, setRating] = useState<number>(0);
