@@ -32,7 +32,7 @@ export const products = pgTable("products", {
     () => categories.category_id,
     {
       onDelete: "set null", // category 없이도 제품은 존재할 수 있다.
-    }
+    },
   ),
   created_at: timestamp().notNull().defaultNow(),
   updated_at: timestamp().notNull().defaultNow(),
@@ -55,13 +55,13 @@ export const product_likes = pgTable(
       () => products.product_id,
       {
         onDelete: "cascade",
-      }
+      },
     ), // product 삭제 시 like도 삭제
     profile_id: uuid().references(() => profiles.profile_id, {
       onDelete: "cascade",
     }), // profile 삭제 시 like도 삭제
   },
-  (table) => [primaryKey({ columns: [table.product_id, table.profile_id] })]
+  (table) => [primaryKey({ columns: [table.product_id, table.profile_id] })],
 );
 
 /* composite primary key : 
@@ -75,19 +75,20 @@ export const reviews = pgTable(
     review_id: bigint({ mode: "number" })
       .primaryKey()
       .generatedAlwaysAsIdentity(),
-    product_id: bigint({ mode: "number" }).references(
-      () => products.product_id,
-      {
+    product_id: bigint({ mode: "number" })
+      .references(() => products.product_id, {
         onDelete: "cascade",
-      }
-    ),
-    profile_id: uuid().references(() => profiles.profile_id, {
-      onDelete: "cascade",
-    }),
+      })
+      .notNull(),
+    profile_id: uuid()
+      .references(() => profiles.profile_id, {
+        onDelete: "cascade",
+      })
+      .notNull(),
     rating: integer().notNull(),
     review: text().notNull(),
     created_at: timestamp().notNull().defaultNow(),
     updated_at: timestamp().notNull().defaultNow(),
   },
-  (table) => [check("rating_check", sql`${table.rating} BETWEEN 1 AND 5`)]
+  (table) => [check("rating_check", sql`${table.rating} BETWEEN 1 AND 5`)],
 );

@@ -1,9 +1,7 @@
 import type { Route } from "./+types/product-redirect-page";
 import { redirect } from "react-router";
-import { makeSSRClient } from "~/supa-client";
 
-export const loader = ({ params, request }: Route.LoaderArgs) => {
-  const { headers } = makeSSRClient(request);
+export const loader = ({ params }: Route.LoaderArgs) => {
   const { productId } = params;
-  return redirect(`/products/${productId}/overview`, { headers });
+  return redirect(`/products/${productId}/overview`);
 };

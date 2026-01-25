@@ -7,9 +7,9 @@ import type { Route } from "./+types/product-overview-layout";
 import { getProductById } from "../queries";
 import { makeSSRClient } from "~/supa-client";
 
-export const meta: Route.MetaFunction = ({ data }: Route.MetaArgs) => {
+export const meta: Route.MetaFunction = ({ loaderData }: Route.MetaArgs) => {
   return [
-    { title: `${data.product.name} - Overview | Wemake` },
+    { title: `${loaderData.product.name} - Overview | Wemake` },
     { name: "description", content: "Product overview page" },
   ];
 };
@@ -71,7 +71,7 @@ export default function ProductOverviewLayout({
           className={({ isActive }) =>
             cn(
               buttonVariants({ variant: "outline" }),
-              isActive && "bg-accent text-foreground"
+              isActive && "bg-accent text-foreground",
             )
           }
           to={`/products/${loaderData.product.product_id}/overview`}
@@ -82,7 +82,7 @@ export default function ProductOverviewLayout({
           className={({ isActive }) =>
             cn(
               buttonVariants({ variant: "outline" }),
-              isActive && "bg-accent text-foreground"
+              isActive && "bg-accent text-foreground",
             )
           }
           to={`/products/${loaderData.product.product_id}/reviews`}
