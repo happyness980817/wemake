@@ -44,7 +44,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
   );
   if (!success) {
     return {
-      fieldErrors: error.flatten().fieldErrors,
+      fieldErrors: z.flattenError(error).fieldErrors,
     };
   }
   const { job_id } = await createJob(client, data);

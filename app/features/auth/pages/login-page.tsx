@@ -24,7 +24,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
   if (!success) {
     return {
       loginError: null,
-      formError: error.flatten().fieldErrors,
+      formErrors: z.flattenError(error).fieldErrors,
     };
   }
   const { email, password } = data;
@@ -35,7 +35,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
   });
   if (loginError) {
     return {
-      formError: null,
+      formErrors: null,
       loginError: loginError.message,
     };
   }
@@ -65,9 +65,9 @@ export default function LoginPage({ actionData }: Route.ComponentProps) {
             required
             placeholder="Enter your email"
           />
-          {actionData && "formError" in actionData && (
+          {actionData && "formErrors" in actionData && (
             <p className="text-sm text-red-500">
-              {actionData?.formError?.email?.join(", ")}
+              {actionData?.formErrors?.email?.join(", ")}
             </p>
           )}
           <InputPair
@@ -79,9 +79,9 @@ export default function LoginPage({ actionData }: Route.ComponentProps) {
             required
             placeholder="Enter your password"
           />
-          {actionData && "formError" in actionData && (
+          {actionData && "formErrors" in actionData && (
             <p className="text-sm text-red-500">
-              {actionData?.formError?.password?.join(", ")}
+              {actionData?.formErrors?.password?.join(", ")}
             </p>
           )}
           <Button className="w-full h-10" type="submit" disabled={isSubmitting}>

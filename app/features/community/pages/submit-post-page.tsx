@@ -42,7 +42,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
     Object.fromEntries(formData),
   );
   if (!success) {
-    return { fieldErrors: error.flatten().fieldErrors };
+    return { fieldErrors: z.flattenError(error).fieldErrors };
   }
   const { title, category, content } = data;
   const { post_id } = await createPost(client, {

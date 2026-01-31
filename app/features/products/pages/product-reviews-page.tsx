@@ -7,7 +7,7 @@ import { useOutletContext } from "react-router";
 import { getReviews } from "../queries";
 import { makeSSRClient } from "~/supa-client";
 import { getLoggedInUserId } from "~/features/users/queries";
-import { z } from "zod";
+import z from "zod";
 import { createProductReview } from "../mutations";
 import { useState, useEffect } from "react";
 
@@ -38,7 +38,7 @@ export const action = async ({ request, params }: Route.ActionArgs) => {
   );
   if (!success) {
     return {
-      formError: error.flatten().fieldErrors,
+      formErrors: z.flattenError(error).fieldErrors,
     };
   }
   await createProductReview(client, {

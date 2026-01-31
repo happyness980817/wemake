@@ -9,7 +9,7 @@ import { Button } from "~/common/components/ui/button";
 import { makeSSRClient } from "~/supa-client";
 import { getLoggedInUserId, getUserById } from "../queries";
 import z from "zod";
-import { updateUser } from "../mutations";
+import { updateUser, updateUserAvatar } from "../mutations";
 import {
   Alert,
   AlertDescription,
@@ -38,12 +38,67 @@ export const action = async ({ request }: Route.ActionArgs) => {
   const { client } = makeSSRClient(request);
   const userId = await getLoggedInUserId(client);
   const formData = await request.formData();
+  const avatar = formData.get("avatar");
+  if (avatar && avatar instanceof File) {
+    // upload avatar
+    if (avatar.size <= 2 * 1024 * 1024 && avatar.type.startsWith("image/")) {
+      // update user with avatar url
+      const { data, error } = await client.storage
+        .from("avatars")
+        .upload(userId, avatar, {
+          contentType: avatar.type,
+          upsert: true, // overwrite 허용
+        });
+      if (error) {
+        console.log(error);
+        return {
+          formErrors: {
+            avatar: ["Failed to upload avatar"],
+          },
+        };
+      }
+      const {
+        data: { publicUrl },
+      } = await client.storage.from("avatars").getPublicUrl(data.path);
+      // update user with avatar url
+      await updateUserAvatar(client, {
+        id: userId,
+        avatarUrl: publicUrl,
+      });
+    } else {
+      return {
+        formErrors: {
+          avatar: ["File must be an image, less than 2MB"],
+        },
+      };
+    }
+  } else {
+    const { success, error, data } = formSchema.safeParse(
+      Object.fromEntries(formData),
+    );
+    if (!success) {
+      return {
+        formErrors: z.flattenError(error).fieldErrors,
+      };
+    }
+    const { name, role, headline, bio } = data;
+    await updateUser(client, {
+      id: userId,
+      name,
+      role,
+      headline,
+      bio,
+    });
+    return {
+      ok: true,
+    };
+  }
   const { success, error, data } = formSchema.safeParse(
     Object.fromEntries(formData),
   );
   if (!success) {
     return {
-      formError: error.flatten().fieldErrors,
+      formErrors: z.flattenError(error).fieldErrors,
     };
   }
   const { name, role, headline, bio } = data;
@@ -93,11 +148,11 @@ export default function SettingsPage({
               name="name"
               placeholder="i.e. John Doe"
             />
-            {actionData?.formError?.name ? (
+            {actionData?.formErrors && "name" in actionData.formErrors ? (
               <Alert>
                 <AlertTitle>Error</AlertTitle>
                 <AlertDescription>
-                  {actionData.formError.name.join(", ")}
+                  {actionData.formErrors.name?.join(", ")}
                 </AlertDescription>
               </Alert>
             ) : null}
@@ -115,11 +170,11 @@ export default function SettingsPage({
               ]}
               defaultValue={loaderData.user.role}
             />
-            {actionData?.formError?.role ? (
+            {actionData?.formErrors && "role" in actionData.formErrors ? (
               <Alert>
                 <AlertTitle>Error</AlertTitle>
                 <AlertDescription>
-                  {actionData.formError.role.join(", ")}
+                  {actionData.formErrors.role?.join(", ")}
                 </AlertDescription>
               </Alert>
             ) : null}
@@ -132,11 +187,11 @@ export default function SettingsPage({
               name="headline"
               placeholder="i.e. A passionate backend developer."
             />
-            {actionData?.formError?.headline ? (
+            {actionData?.formErrors && "headline" in actionData.formErrors ? (
               <Alert>
                 <AlertTitle>Error</AlertTitle>
                 <AlertDescription>
-                  {actionData.formError.headline.join(", ")}
+                  {actionData.formErrors.headline?.join(", ")}
                 </AlertDescription>
               </Alert>
             ) : null}
@@ -150,11 +205,11 @@ export default function SettingsPage({
               placeholder="i.e. I'm a software engineer at Google."
               textArea
             />
-            {actionData?.formError?.bio ? (
+            {actionData?.formErrors && "bio" in actionData.formErrors ? (
               <Alert>
                 <AlertTitle>Error</AlertTitle>
                 <AlertDescription>
-                  {actionData.formError.bio.join(", ")}
+                  {actionData.formErrors.bio?.join(", ")}
                 </AlertDescription>
               </Alert>
             ) : null}
@@ -163,7 +218,11 @@ export default function SettingsPage({
             </Button>
           </Form>
         </div>
-        <aside className="col-span-2 p-6 rounded-lg border shadow-md">
+        <Form
+          className="col-span-2 p-6 rounded-lg border shadow-md"
+          method="post"
+          encType="multipart/form-data"
+        >
           <Label className="flex flex-col gap-1">
             Avatar
             <small className="text-muted-foreground">
@@ -186,8 +245,15 @@ export default function SettingsPage({
               onChange={onChangeAvatar}
               required
               name="avatar"
-              multiple
             />
+            {actionData?.formErrors && "avatar" in actionData.formErrors ? (
+              <Alert>
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>
+                  {actionData.formErrors.avatar.join(", ")}
+                </AlertDescription>
+              </Alert>
+            ) : null}
             <div className="flex flex-col gap-1 text-xs text-muted-foreground">
               <span>Recommended size: 128x128</span>
               <span>Allowed formats: SVG, PNG, JPG</span>
@@ -195,7 +261,7 @@ export default function SettingsPage({
             </div>
             <Button className="w-full">Update Avatar</Button>
           </div>
-        </aside>
+        </Form>
       </div>
     </div>
   );

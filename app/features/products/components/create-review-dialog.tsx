@@ -65,9 +65,9 @@ export default function CreateReviewDialog() {
               </label>
             ))}
           </div>
-          {actionData?.formError?.rating && (
+          {actionData?.formErrors?.rating && (
             <p className="text-red-500">
-              {actionData.formError.rating.join(", ")}
+              {actionData.formErrors.rating.join(", ")}
             </p>
           )}
         </div>
@@ -79,9 +79,9 @@ export default function CreateReviewDialog() {
           required
           textArea
         />
-        {actionData?.formError?.review && (
+        {actionData?.formErrors?.review && (
           <p className="text-red-500">
-            {actionData.formError.review.join(", ")}
+            {actionData.formErrors.review.join(", ")}
           </p>
         )}
         <DialogFooter>

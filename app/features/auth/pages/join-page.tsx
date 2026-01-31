@@ -27,13 +27,13 @@ export const action = async ({ request }: Route.ActionArgs) => {
     Object.fromEntries(formData),
   );
   if (!success) {
-    return { formError: error.flatten().fieldErrors };
+    return { formErrors: z.flattenError(error).fieldErrors };
   }
   const usernameExists = await checkUsernameExists(request, {
     username: data.username,
   });
   if (usernameExists) {
-    return { formError: { username: ["Username already exists"] } };
+    return { formErrors: { username: ["Username already exists"] } };
   }
   const { client, headers } = makeSSRClient(request);
   const { error: signUpError } = await client.auth.signUp({
@@ -77,9 +77,9 @@ export default function JoinPage({ actionData }: Route.ComponentProps) {
             required
             placeholder="Enter your name"
           />
-          {actionData && "formError" in actionData && (
+          {actionData && "formErrors" in actionData && (
             <p className="text-sm text-red-500">
-              {actionData?.formError?.name}
+              {actionData?.formErrors?.name}
             </p>
           )}
           <InputPair
@@ -91,9 +91,9 @@ export default function JoinPage({ actionData }: Route.ComponentProps) {
             required
             placeholder="Enter your username"
           />
-          {actionData && "formError" in actionData && (
+          {actionData && "formErrors" in actionData && (
             <p className="text-sm text-red-500">
-              {actionData?.formError?.username}
+              {actionData?.formErrors?.username}
             </p>
           )}
           <InputPair
@@ -105,9 +105,9 @@ export default function JoinPage({ actionData }: Route.ComponentProps) {
             required
             placeholder="Enter your email"
           />
-          {actionData && "formError" in actionData && (
+          {actionData && "formErrors" in actionData && (
             <p className="text-sm text-red-500">
-              {actionData?.formError?.email}
+              {actionData?.formErrors?.email}
             </p>
           )}
           <InputPair
@@ -119,9 +119,9 @@ export default function JoinPage({ actionData }: Route.ComponentProps) {
             required
             placeholder="Enter your password"
           />
-          {actionData && "formError" in actionData && (
+          {actionData && "formErrors" in actionData && (
             <p className="text-sm text-red-500">
-              {actionData?.formError?.password}
+              {actionData?.formErrors?.password}
             </p>
           )}
           <InputPair

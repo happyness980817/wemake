@@ -7,7 +7,7 @@ import { Button } from "~/common/components/ui/button";
 import { PRODUCT_STAGES } from "../constants";
 import { makeSSRClient } from "~/supa-client";
 import { getLoggedInUserId } from "~/features/users/queries";
-import { z } from "zod";
+import z from "zod";
 import { createTeam } from "../mutations";
 
 export const meta: Route.MetaFunction = () => {
@@ -48,7 +48,7 @@ export const action = async ({ request }: Route.ActionArgs) => {
     Object.fromEntries(formData),
   );
   if (!success) {
-    return { fieldErrors: error.flatten().fieldErrors };
+    return { fieldErrors: z.flattenError(error).fieldErrors };
   }
   const { team_id } = await createTeam(client, userId, {
     ...data,

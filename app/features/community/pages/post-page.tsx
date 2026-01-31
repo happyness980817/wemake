@@ -23,7 +23,7 @@ import { makeSSRClient } from "~/supa-client";
 import { DateTime } from "luxon";
 import { getLoggedInUserId } from "~/features/users/queries";
 import { useOutletContext } from "react-router";
-import { z } from "zod";
+import z from "zod";
 import { createReply } from "../mutations";
 import { useEffect, useRef } from "react";
 
@@ -73,7 +73,7 @@ export const action = async ({ request, params }: Route.ActionArgs) => {
   );
   if (!success) {
     return {
-      formErrors: error.flatten().fieldErrors,
+      formErrors: z.flattenError(error).fieldErrors,
     };
   }
   const { reply, topLevelId } = data;
