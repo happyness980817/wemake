@@ -45,9 +45,9 @@ export const action = async ({ request }: Route.ActionArgs) => {
       // update user with avatar url
       const { data, error } = await client.storage
         .from("avatars")
-        .upload(userId, avatar, {
+        .upload(`${userId}/${Date.now()}`, avatar, {
           contentType: avatar.type,
-          upsert: true, // overwrite 허용
+          upsert: false,
         });
       if (error) {
         console.log(error);
@@ -118,7 +118,7 @@ export default function SettingsPage({
   loaderData,
   actionData,
 }: Route.ComponentProps) {
-  const [avatar, setAvatar] = useState<string | null>(null);
+  const [avatar, setAvatar] = useState<string | null>(loaderData.user.avatar);
   const onChangeAvatar = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const file = event.target.files[0];
@@ -219,7 +219,7 @@ export default function SettingsPage({
           </Form>
         </div>
         <Form
-          className="col-span-2 p-6 rounded-lg border shadow-md"
+          className="col-span-2 p-6 rounded-lg border shadow-md space-y-2"
           method="post"
           encType="multipart/form-data"
         >
