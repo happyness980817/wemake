@@ -35,7 +35,7 @@ const formSchema = z.object({
 });
 
 export const action = async ({ request }: Route.ActionArgs) => {
-  const { client } = makeSSRClient(request);
+  const { client } = makeSSRClient(request); // 서버에서 client 를 만드는 경우에는 항상 request 를 전달해야 함
   const userId = await getLoggedInUserId(client);
   const formData = await request.formData();
   const { success, data, error } = formSchema.safeParse(

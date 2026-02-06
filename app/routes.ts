@@ -29,7 +29,10 @@ export default [
           "/daily/:year/:month/:day",
           "features/products/pages/daily-leaderboards-page.tsx",
         ),
-        route("/all-time", "features/products/pages/all-leaderboards-page.tsx"),
+        route(
+          "/all-time",
+          "features/products/pages/all-time-leaderboards-page.tsx",
+        ),
         route(
           "/:period",
           "features/products/pages/leaderboards-redirection-page.tsx",

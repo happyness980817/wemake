@@ -26,6 +26,7 @@ import { useOutletContext } from "react-router";
 import z from "zod";
 import { createReply } from "../mutations";
 import { useEffect, useRef } from "react";
+import { cn } from "~/lib/utils";
 
 export const meta: Route.MetaFunction = ({ params }: Route.MetaArgs) => {
   return [{ title: `Post #${params.postId} | Wemake` }];
@@ -132,7 +133,13 @@ export default function PostPage({
       <div className="grid grid-cols-1 lg:grid-cols-6 gap-40 items-start">
         <div className="col-span-1 lg:col-span-4 space-y-10">
           <div className="flex w-full items-start gap-10">
-            <Button variant="outline" className="flex flex-col h-14">
+            <Button
+              variant="outline"
+              className={cn(
+                "flex flex-col h-14",
+                loaderData.post.is_upvoted ? "border-primary text-primary" : "",
+              )}
+            >
               <ChevronUpIcon className="w-4 h-4 shrink-0" />
               <span>{loaderData.post.upvotes}</span>
             </Button>

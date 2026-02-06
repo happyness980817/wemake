@@ -57,7 +57,7 @@ export const getProductsPagesByDateRange = async (
   return 1;
 };
 
-export const getAllTimeProductsByLikes = async (
+export const getAllTimeProducts = async (
   client: SupabaseClient<Database>,
   {
     limit,
@@ -70,7 +70,7 @@ export const getAllTimeProductsByLikes = async (
   const { data, error } = await client
     .from("products")
     .select(productColumns)
-    .order("stats->>likes", { ascending: false })
+    .order("created_at", { ascending: false })
     .range((page - 1) * limit, page * limit - 1);
   if (error) throw error;
   return data;

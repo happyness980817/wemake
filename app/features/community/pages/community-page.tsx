@@ -35,7 +35,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
   const url = new URL(request.url);
   const { client, headers } = makeSSRClient(request);
   const { success, data: parsedData } = searchParamsSchema.safeParse(
-    Object.fromEntries(url.searchParams)
+    Object.fromEntries(url.searchParams),
   );
   if (!success) {
     throw data(
@@ -43,7 +43,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
         error_code: "invalid_search_params",
         message: "Invalid search parameters",
       },
-      { status: 400 }
+      { status: 400 },
     );
   }
   // console.log(parsedData);
@@ -153,6 +153,7 @@ export default function CommunityPage({ loaderData }: Route.ComponentProps) {
                 category={post.topic}
                 timestamp={post.created_at}
                 votesCount={post.upvotes}
+                isUpvoted={post.is_upvoted}
                 expanded
               />
             ))}
