@@ -6,7 +6,7 @@ import {
   BreadcrumbSeparator,
 } from "~/common/components/ui/breadcrumb";
 import type { Route } from "./+types/post-page";
-import { data, Form, Link } from "react-router";
+import { data, Form, Link, useFetcher } from "react-router";
 import { Button } from "~/common/components/ui/button";
 import { ChevronUpIcon, DotIcon } from "lucide-react";
 import { Textarea } from "~/common/components/ui/textarea";
@@ -91,6 +91,7 @@ export default function PostPage({
   loaderData,
   actionData,
 }: Route.ComponentProps) {
+  const fetcher = useFetcher();
   const { isLoggedIn, name, username, avatar } = useOutletContext<{
     isLoggedIn: boolean;
     name?: string;
@@ -133,16 +134,28 @@ export default function PostPage({
       <div className="grid grid-cols-1 lg:grid-cols-6 gap-40 items-start">
         <div className="col-span-1 lg:col-span-4 space-y-10">
           <div className="flex w-full items-start gap-10">
-            <Button
-              variant="outline"
-              className={cn(
-                "flex flex-col h-14",
-                loaderData.post.is_upvoted ? "border-primary text-primary" : "",
-              )}
+            <fetcher.Form
+              method="post"
+              action={`/community/${loaderData.post.post_id}/upvote`}
             >
-              <ChevronUpIcon className="w-4 h-4 shrink-0" />
-              <span>{loaderData.post.upvotes}</span>
-            </Button>
+              <input
+                type="hidden"
+                name="postId"
+                value={loaderData.post.post_id}
+              />
+              <Button
+                variant="outline"
+                className={cn(
+                  "flex flex-col h-14",
+                  loaderData.post.is_upvoted
+                    ? "border-primary text-primary"
+                    : "",
+                )}
+              >
+                <ChevronUpIcon className="w-4 h-4 shrink-0" />
+                <span>{loaderData.post.upvotes}</span>
+              </Button>
+            </fetcher.Form>
             <div className="space-y-20 w-full">
               <div className="space-y-2">
                 <h2 className="text-2xl font-semibold leading-none tracking-tight">

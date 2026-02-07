@@ -116,9 +116,8 @@ export function Reply({
         replies &&
         replies.length > 0 &&
         replies.map((reply) => (
-          <div className="pl-10 w-full">
+          <div key={reply.post_reply_id} className="pl-10 w-full">
             <Reply
-              key={reply.post_reply_id}
               name={reply.user.name}
               username={reply.user.username}
               avatarURL={reply.user.avatar}
