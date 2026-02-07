@@ -14,6 +14,7 @@ import {
 import { ChevronUpIcon } from "lucide-react";
 import { cn } from "~/lib/utils";
 import { DateTime } from "luxon";
+import { useFetcher } from "react-router";
 
 interface PostCardProps {
   id: number;
@@ -38,6 +39,20 @@ export function PostCard({
   votesCount = 0,
   isUpvoted = false,
 }: PostCardProps) {
+  const fetcher = useFetcher();
+  const absorbClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    // call the upvote action
+    fetcher.submit(
+      {
+        postId: id,
+      },
+      {
+        method: "post",
+        action: `/community/${id}/upvote`,
+      },
+    );
+  };
   return (
     <Link to={`/community/${id}`} className="block">
       <Card
@@ -76,6 +91,7 @@ export function PostCard({
         {expanded && (
           <CardFooter className="flex justify-end">
             <Button
+              onClick={absorbClick}
               variant="outline"
               className={cn(
                 "flex flex-col h-14",
