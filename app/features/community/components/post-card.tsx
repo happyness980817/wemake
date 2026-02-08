@@ -15,6 +15,7 @@ import { ChevronUpIcon } from "lucide-react";
 import { cn } from "~/lib/utils";
 import { DateTime } from "luxon";
 import { useFetcher } from "react-router";
+import { useState, useEffect } from "react";
 
 interface PostCardProps {
   id: number;
@@ -40,18 +41,30 @@ export function PostCard({
   isUpvoted = false,
 }: PostCardProps) {
   const fetcher = useFetcher();
+  const [optimistic, setOptimistic] = useState({
+    isUpvoted,
+    votesCount,
+  });
+  // fetcher가 idle로 돌아오면 서버 값으로 동기화
+  useEffect(() => {
+    if (fetcher.state === "idle") {
+      setOptimistic({ isUpvoted, votesCount });
+    }
+  }, [fetcher.state, isUpvoted, votesCount]);
+  const optimisticVotesCount = optimistic.votesCount;
+  const optimisticIsUpvoted = optimistic.isUpvoted;
   const absorbClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    // 이전 optimistic 상태 기준으로 토글
+    setOptimistic((prev) => ({
+      isUpvoted: !prev.isUpvoted,
+      votesCount: prev.isUpvoted ? prev.votesCount - 1 : prev.votesCount + 1,
+    }));
     // call the upvote action
-    fetcher.submit(
-      {
-        postId: id,
-      },
-      {
-        method: "post",
-        action: `/community/${id}/upvote`,
-      },
-    );
+    fetcher.submit(null, {
+      method: "post",
+      action: `/community/${id}/upvote`,
+    });
   };
   return (
     <Link to={`/community/${id}`} className="block">
@@ -95,11 +108,11 @@ export function PostCard({
               variant="outline"
               className={cn(
                 "flex flex-col h-14",
-                isUpvoted ? "border-primary text-primary" : "",
+                optimisticIsUpvoted ? "border-primary text-primary" : "",
               )}
             >
               <ChevronUpIcon className="w-4 h-4 shrink-0" />
-              <span>{votesCount}</span>
+              <span>{optimisticVotesCount}</span>
             </Button>
           </CardFooter>
         )}
