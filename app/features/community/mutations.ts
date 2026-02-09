@@ -64,7 +64,7 @@ export const toggleUpvote = async (
   { postId, userId }: { postId: number; userId: string },
 ) => {
   // toggle upvote
-  await new Promise((resolve) => setTimeout(resolve, 5000));
+  // await new Promise((resolve) => setTimeout(resolve, 5000));
   const { count } = await client
     .from("post_upvotes")
     .select("*", { count: "exact", head: true })

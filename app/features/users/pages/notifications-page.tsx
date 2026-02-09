@@ -5,7 +5,7 @@ export const meta: Route.MetaFunction = () => {
   return [{ title: "Notifications | Wemake" }];
 };
 
-export default function NotificationsPage({}: Route.ComponentProps) {
+export default function NotificationsPage({}) {
   return (
     <div className="space-y-20">
       <h1 className="text-4xl font-bold">Notifications</h1>

@@ -9,6 +9,7 @@ import {
   bigint,
   primaryKey,
   integer,
+  boolean,
 } from "drizzle-orm/pg-core";
 import { products } from "../products/schema";
 import { posts } from "../community/schema";
@@ -43,12 +44,16 @@ export const profiles = pgTable("profiles", {
 });
 
 export const follows = pgTable("follows", {
-  follower_id: uuid().references(() => profiles.profile_id, {
-    onDelete: "cascade",
-  }),
-  following_id: uuid().references(() => profiles.profile_id, {
-    onDelete: "cascade",
-  }),
+  follower_id: uuid()
+    .references(() => profiles.profile_id, {
+      onDelete: "cascade",
+    })
+    .notNull(),
+  following_id: uuid()
+    .references(() => profiles.profile_id, {
+      onDelete: "cascade",
+    })
+    .notNull(),
   created_at: timestamp().notNull().defaultNow(),
 });
 
@@ -77,8 +82,8 @@ export const notifications = pgTable("notifications", {
       onDelete: "cascade",
     })
     .notNull(), // 유저 (팔로우 당한 사람)
+  seen: boolean().default(false).notNull(),
   type: notificationTypes().notNull(),
-  message: text().notNull(),
   created_at: timestamp().notNull().defaultNow(),
 });
 
@@ -96,7 +101,7 @@ export const messageRoomMembers = pgTable(
       () => messageRooms.message_room_id,
       {
         onDelete: "cascade",
-      }
+      },
     ),
     profile_id: uuid().references(() => profiles.profile_id, {
       onDelete: "cascade",
@@ -105,7 +110,7 @@ export const messageRoomMembers = pgTable(
   },
   (table) => [
     primaryKey({ columns: [table.message_room_id, table.profile_id] }),
-  ]
+  ],
 );
 
 export const messages = pgTable("messages", {
@@ -116,7 +121,7 @@ export const messages = pgTable("messages", {
     () => messageRooms.message_room_id,
     {
       onDelete: "cascade",
-    }
+    },
   ),
   sender_id: uuid().references(() => profiles.profile_id, {
     onDelete: "cascade",
