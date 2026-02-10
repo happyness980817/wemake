@@ -87,3 +87,36 @@ export const getLoggedInUserId = async (client: SupabaseClient<Database>) => {
   if (error || data.user == null) throw redirect("/auth/login");
   return data.user.id;
 };
+
+export const getNotifications = async (
+  client: SupabaseClient<Database>,
+  { userId }: { userId: string },
+) => {
+  const { data, error } = await client
+    .from("notifications")
+    .select(
+      `
+      notification_id,
+      type,
+      profiles!source_id(
+        profile_id,
+        name,
+        avatar
+      ),
+      product:products!product_id(
+        product_id,
+        name
+      ),
+      post:posts!post_id(
+        post_id,
+        title,
+        content
+      ),
+      seen,
+      created_at
+      `,
+    )
+    .eq("target_id", userId);
+  if (error) throw error;
+  return data;
+};

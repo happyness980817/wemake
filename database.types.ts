@@ -41,18 +41,18 @@ export type Database = {
       follows: {
         Row: {
           created_at: string
-          follower_id: string | null
-          following_id: string | null
+          follower_id: string
+          following_id: string
         }
         Insert: {
           created_at?: string
-          follower_id?: string | null
-          following_id?: string | null
+          follower_id: string
+          following_id: string
         }
         Update: {
           created_at?: string
-          follower_id?: string | null
-          following_id?: string | null
+          follower_id?: string
+          following_id?: string
         }
         Relationships: [
           {
@@ -290,30 +290,30 @@ export type Database = {
       notifications: {
         Row: {
           created_at: string
-          message: string
           notification_id: number
           post_id: number | null
           product_id: number | null
+          seen: boolean
           source_id: string | null
           target_id: string
           type: Database["public"]["Enums"]["notification_type"]
         }
         Insert: {
           created_at?: string
-          message: string
           notification_id?: never
           post_id?: number | null
           product_id?: number | null
+          seen?: boolean
           source_id?: string | null
           target_id: string
           type: Database["public"]["Enums"]["notification_type"]
         }
         Update: {
           created_at?: string
-          message?: string
           notification_id?: never
           post_id?: number | null
           product_id?: number | null
+          seen?: boolean
           source_id?: string | null
           target_id?: string
           type?: Database["public"]["Enums"]["notification_type"]
@@ -485,9 +485,9 @@ export type Database = {
           content: string
           created_at: string
           post_id: number
-          profile_id: string | null
+          profile_id: string
           title: string
-          topic_id: number | null
+          topic_id: number
           updated_at: string
           upvotes: number | null
         }
@@ -495,9 +495,9 @@ export type Database = {
           content: string
           created_at?: string
           post_id?: never
-          profile_id?: string | null
+          profile_id: string
           title: string
-          topic_id?: number | null
+          topic_id: number
           updated_at?: string
           upvotes?: number | null
         }
@@ -505,9 +505,9 @@ export type Database = {
           content?: string
           created_at?: string
           post_id?: never
-          profile_id?: string | null
+          profile_id?: string
           title?: string
-          topic_id?: number | null
+          topic_id?: number
           updated_at?: string
           upvotes?: number | null
         }
@@ -674,8 +674,8 @@ export type Database = {
       reviews: {
         Row: {
           created_at: string
-          product_id: number | null
-          profile_id: string | null
+          product_id: number
+          profile_id: string
           rating: number
           review: string
           review_id: number
@@ -683,8 +683,8 @@ export type Database = {
         }
         Insert: {
           created_at?: string
-          product_id?: number | null
-          profile_id?: string | null
+          product_id: number
+          profile_id: string
           rating: number
           review: string
           review_id?: never
@@ -692,8 +692,8 @@ export type Database = {
         }
         Update: {
           created_at?: string
-          product_id?: number | null
-          profile_id?: string | null
+          product_id?: number
+          profile_id?: string
           rating?: number
           review?: string
           review_id?: never
@@ -876,7 +876,7 @@ export type Database = {
         | "internship"
         | "contract"
       location_type: "remote" | "on-site" | "hybrid"
-      notification_type: "follow" | "review" | "reply" | "mention"
+      notification_type: "follow" | "review" | "reply"
       role: "developer" | "designer" | "salesperson" | "other"
       salary_range:
         | "$0 - $50,000"
@@ -1019,7 +1019,7 @@ export const Constants = {
         "contract",
       ],
       location_type: ["remote", "on-site", "hybrid"],
-      notification_type: ["follow", "review", "reply", "mention"],
+      notification_type: ["follow", "review", "reply"],
       role: ["developer", "designer", "salesperson", "other"],
       salary_range: [
         "$0 - $50,000",
