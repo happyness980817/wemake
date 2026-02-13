@@ -40,3 +40,15 @@ export const updateUserAvatar = async (
     .eq("profile_id", id);
   if (error) throw error;
 };
+
+export const checkNotification = async (
+  client: SupabaseClient<Database>,
+  { userId, notificationId }: { userId: string; notificationId: number },
+) => {
+  const { data, error } = await client
+    .from("notifications")
+    .update({ seen: true })
+    .eq("notification_id", notificationId)
+    .eq("target_id", userId);
+  if (error) throw error;
+};

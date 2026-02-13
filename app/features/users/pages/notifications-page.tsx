@@ -24,6 +24,7 @@ export default function NotificationsPage({
       <div className="flex flex-col gap-4">
         {loaderData.notifications.map((notification) => (
           <NotificationCard
+            notificationId={notification.notification_id}
             key={notification.notification_id}
             avatarURL={notification.profiles?.avatar ?? ""}
             avatarFallback={notification.profiles?.name?.[0] ?? ""}

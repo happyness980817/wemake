@@ -112,6 +112,10 @@ export default [
     route("/profile", "features/users/pages/my-profile-page.tsx"),
     route("/settings", "features/users/pages/settings-page.tsx"),
     route("/notifications", "features/users/pages/notifications-page.tsx"),
+    route(
+      "/notifications/:notificationId/check",
+      "features/users/pages/check-notification-page.tsx",
+    ),
   ]),
   ...prefix("/users/:username", [
     layout("features/users/layouts/profile-layout.tsx", [
