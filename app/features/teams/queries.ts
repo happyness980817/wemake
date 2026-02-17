@@ -3,7 +3,7 @@ import type { Database } from "~/supa-client";
 
 export const getTeams = async (
   client: SupabaseClient<Database>,
-  { limit }: { limit: number }
+  { limit }: { limit: number },
 ) => {
   const { data, error } = await client
     .from("teams")
@@ -16,7 +16,7 @@ export const getTeams = async (
     username,
     avatar
     )
-    `
+    `,
     )
     .limit(limit);
   if (error) throw error;
@@ -25,7 +25,7 @@ export const getTeams = async (
 
 export const getTeamById = async (
   client: SupabaseClient<Database>,
-  teamId: number
+  teamId: number,
 ) => {
   const { data, error } = await client
     .from("teams")
@@ -34,9 +34,10 @@ export const getTeamById = async (
       team_leader:profiles!inner(
         name,
         avatar,
-        role
+        role,
+        username
       )
-      `
+      `,
     )
     .eq("team_id", teamId)
     .single();

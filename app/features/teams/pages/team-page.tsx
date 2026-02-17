@@ -36,7 +36,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
         error_code: "INVALID_PARAMS",
         message: "Invalid parameters",
       },
-      { status: 400 }
+      { status: 400 },
     );
   }
   const team = await getTeamById(client, parsedData.teamId);
@@ -114,10 +114,14 @@ export default function TeamPage({ loaderData }: Route.ComponentProps) {
               </Badge>
             </div>
           </div>
-          <Form className="space-y-5">
+          <Form
+            className="space-y-5"
+            method="post"
+            action={`/users/${loaderData.team.team_leader.username}/messages`}
+          >
             <InputPair
               label="Introduce yourself"
-              name="introduction"
+              name="content"
               id="introduction"
               description="Introduce yourself to the team"
               required

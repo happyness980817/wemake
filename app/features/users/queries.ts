@@ -28,7 +28,7 @@ export const getUserById = async (
 
 export const getUserProfile = async (
   client: SupabaseClient<Database>,
-  username: string,
+  { username }: { username: string },
 ) => {
   const { data, error } = await client
     .from("profiles")
@@ -51,7 +51,7 @@ export const getUserProfile = async (
 
 export const getUserProducts = async (
   client: SupabaseClient<Database>,
-  username: string,
+  { username }: { username: string },
 ) => {
   const { data, error } = await client
     .from("products")
@@ -71,7 +71,7 @@ export const getUserProducts = async (
 
 export const getUserPosts = async (
   client: SupabaseClient<Database>,
-  username: string,
+  { username }: { username: string },
 ) => {
   const { data, error } = await client
     .from("community_post_list_view")

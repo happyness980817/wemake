@@ -10,7 +10,7 @@ export const meta: Route.MetaFunction = () => {
 
 export const loader = async ({ params, request }: Route.LoaderArgs) => {
   const { client, headers } = makeSSRClient(request);
-  const posts = await getUserPosts(client, params.username);
+  const posts = await getUserPosts(client, { username: params.username });
   return data({ posts }, { headers });
 };
 

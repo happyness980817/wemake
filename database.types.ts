@@ -866,7 +866,12 @@ export type Database = {
       }
     }
     Functions: {
-      [_ in never]: never
+      get_room: {
+        Args: { from_user_id: string; to_user_id: string }
+        Returns: {
+          message_room_id: number
+        }[]
+      }
     }
     Enums: {
       job_type:
@@ -883,7 +888,7 @@ export type Database = {
         | "$50,000 - $100,000"
         | "$100,000 - $200,000"
         | "$200,000+"
-      team_stage: "idea" | "prototype" | "mvp" | "product" | "enterprise"
+      team_stage: "idea" | "prototype" | "MVP" | "product" | "enterprise"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1027,7 +1032,7 @@ export const Constants = {
         "$100,000 - $200,000",
         "$200,000+",
       ],
-      team_stage: ["idea", "prototype", "mvp", "product", "enterprise"],
+      team_stage: ["idea", "prototype", "MVP", "product", "enterprise"],
     },
   },
 } as const

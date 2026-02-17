@@ -9,7 +9,7 @@ export const PRODUCT_STAGES = [
   },
   {
     label: "MVP",
-    value: "mvp",
+    value: "MVP",
   },
   {
     label: "Product",
