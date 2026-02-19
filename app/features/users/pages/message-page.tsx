@@ -15,10 +15,22 @@ import { Textarea } from "~/common/components/ui/textarea";
 import { Button } from "~/common/components/ui/button";
 import { SendIcon } from "lucide-react";
 import { MessagesBubble } from "../components/messages-bubble";
+// import { makeSSRClient } from "~/supa-client";
+// import { getLoggedInUserId, getMessagesByRoomId } from "../queries";
 
 export const meta: Route.MetaFunction = () => {
   return [{ title: "Message | Wemake" }];
 };
+
+// export const loader = async ({ request, params }: Route.LoaderArgs) => {
+//   const { client } = makeSSRClient(request);
+//   const userId = await getLoggedInUserId(client);
+//   const messages = await getMessagesByRoomId(client, {
+//     messageRoomId: params.messageRoomId,
+//     userId, // user 가 room 에 속하지 않은 경우에는 해당 message 들을 가져올 수 없어야 한다
+//   });
+//   return { messages };
+// };
 
 export default function MessagePage({}: Route.ComponentProps) {
   return (

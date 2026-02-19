@@ -134,3 +134,28 @@ export const countNotifications = async (
   if (error) throw error;
   return count ?? 0;
 };
+
+export const getMessages = async (
+  client: SupabaseClient<Database>,
+  { userId }: { userId: string },
+) => {
+  const { data, error } = await client
+    .from("messages_view")
+    .select("*")
+    .eq("profile_id", userId);
+  if (error) throw error;
+  return data;
+};
+
+export const getMessagesByRoomId = async (
+  client: SupabaseClient<Database>,
+  { messageRoomId, userId }: { messageRoomId: string; userId: string },
+) => {
+  const { data, error } = await client
+    .from("messages_view")
+    .select("*")
+    .eq("message_room_id", Number(messageRoomId))
+    .eq("profile_id", userId);
+  if (error) throw error;
+  return data;
+};

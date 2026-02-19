@@ -35,8 +35,8 @@ export function MessagesCard({
             </Avatar>
             <div className="flex flex-col">
               <span className="text-sm font-medium">{name}</span>
-              <span className="text-xs text-muted-foreground">
-                {lastMessage}
+              <span className="text-xs text-muted-foreground truncate">
+                {lastMessage.slice(0, 20)}
               </span>
             </div>
           </div>

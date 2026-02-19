@@ -12,6 +12,11 @@ export type Database = MergeDeep<
   {
     public: {
       Views: {
+        messages_view: {
+          Row: SetNonNullable<
+            SupabaseDatabase["public"]["Views"]["messages_view"]["Row"]
+          >;
+        };
         community_post_list_view: {
           Row: SetFieldType<
             SetNonNullable<
@@ -43,7 +48,7 @@ export type Database = MergeDeep<
 
 export const browserClient = createBrowserClient<Database>(
   process.env.SUPABASE_URL!,
-  process.env.SUPABASE_ANON_KEY!
+  process.env.SUPABASE_ANON_KEY!,
 );
 
 export const makeSSRClient = (request: Request) => {
@@ -55,23 +60,24 @@ export const makeSSRClient = (request: Request) => {
       cookies: {
         getAll() {
           const cookies = parseCookieHeader(
-            request.headers.get("Cookie") ?? ""
+            request.headers.get("Cookie") ?? "",
           );
           return cookies.map(({ name, value }) => ({
             name,
             value: value ?? "",
           }));
         },
-        setAll(cookies) { // 쿠키를 헤더에 담아서 유저에게 전달
+        setAll(cookies) {
+          // 쿠키를 헤더에 담아서 유저에게 전달
           cookies.forEach(({ name, value, options }) => {
             headers.append(
               "Set-Cookie", // Set-Cookie 헤더를 주면 유저의 브라우저에 자동으로 쿠키를 만들어 준다
-              serializeCookieHeader(name, value, options) // supabase 가 보낸 쿠키를 브라우저에서 사용할 수 있는 쿠키로 변환
+              serializeCookieHeader(name, value, options), // supabase 가 보낸 쿠키를 브라우저에서 사용할 수 있는 쿠키로 변환
             );
           });
         },
       },
-    } // 두 가지 method - 요청으로부터 특정 supabase 쿠키를 가져오는 기능 + supabase 가 유저의 쿠키를 설정하게 하는 기능
+    }, // 두 가지 method - 요청으로부터 특정 supabase 쿠키를 가져오는 기능 + supabase 가 유저의 쿠키를 설정하게 하는 기능
   );
-  return {client: serverSideClient, headers}; // 헤더도 유저에게 보내줘야 (유저의) 브라우저에서 쿠키를 설정 가능 
+  return { client: serverSideClient, headers }; // 헤더도 유저에게 보내줘야 (유저의) 브라우저에서 쿠키를 설정 가능
 };
