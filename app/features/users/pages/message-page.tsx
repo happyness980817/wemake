@@ -20,28 +20,78 @@ import {
   getLoggedInUserId,
   getMessagesByRoomId,
   getRoomRecipient,
+  sendMessageToRoom,
 } from "../queries";
+import { z } from "zod";
+import { useEffect, useRef } from "react";
 
 export const meta: Route.MetaFunction = () => {
   return [{ title: "Message | Wemake" }];
 };
 
+const paramsSchema = z.object({
+  messageRoomId: z.string().min(1),
+});
+
+const formSchema = z.object({
+  message: z.string().min(1, "Content must be at least 1 character long"),
+});
+
 export const loader = async ({ request, params }: Route.LoaderArgs) => {
   const { client } = makeSSRClient(request);
   const userId = await getLoggedInUserId(client);
-  const messages = await getMessagesByRoomId(client, {
+  const { data, success } = paramsSchema.safeParse({
     messageRoomId: params.messageRoomId,
+  });
+  if (!success) {
+    throw new Error("Invalid room ID");
+  }
+  const { messageRoomId } = data;
+  const messages = await getMessagesByRoomId(client, {
+    messageRoomId,
     userId, // user 가 room 에 속하지 않은 경우에는 해당 message 들을 가져올 수 없어야 한다
   });
   const recipient = await getRoomRecipient(client, {
-    messageRoomId: params.messageRoomId,
+    messageRoomId,
     userId,
   });
   return { messages, recipient };
 };
 
-export default function MessagePage({ loaderData }: Route.ComponentProps) {
+export const action = async ({ request, params }: Route.ActionArgs) => {
+  const { messageRoomId } = params;
+  const { client } = makeSSRClient(request);
+  const userId = await getLoggedInUserId(client);
+  const formData = await request.formData();
+  const { data: parsedData, success } = formSchema.safeParse(
+    Object.fromEntries(formData),
+  );
+  if (!success) {
+    throw new Error("Invalid message content");
+  }
+  const { message } = parsedData;
+  await sendMessageToRoom(client, {
+    messageRoomId: params.messageRoomId,
+    message,
+    userId,
+  });
+  return {
+    ok: true,
+  };
+};
+
+export default function MessagePage({
+  loaderData,
+  actionData,
+}: Route.ComponentProps) {
   const { userId } = useOutletContext<{ userId: string }>();
+  const formRef = useRef<HTMLFormElement>(null);
+  useEffect(() => {
+    if (actionData?.ok) {
+      // TODO: refresh messages
+      formRef.current?.reset();
+    }
+  }, [actionData]);
   return (
     <div className="h-full flex flex-col justify-between">
       <Card>
@@ -71,11 +121,17 @@ export default function MessagePage({ loaderData }: Route.ComponentProps) {
       </div>
       <Card>
         <CardHeader>
-          <Form className="relative flex justify-end items-center">
+          <Form
+            ref={formRef}
+            method="post"
+            className="relative flex justify-end items-center"
+          >
             <Textarea
               placeholder="Write a message..."
               className="resize-none"
               rows={2}
+              name="message"
+              required
             />
             <Button type="submit" size="icon" className="absolute right-2">
               <SendIcon className="w-4 h-4" />
