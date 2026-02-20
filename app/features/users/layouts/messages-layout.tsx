@@ -1,4 +1,4 @@
-import { Outlet } from "react-router";
+import { Outlet, useOutletContext } from "react-router";
 import {
   SidebarProvider,
   Sidebar,
@@ -19,6 +19,7 @@ export const loader = async ({ request }: Route.LoaderArgs) => {
 };
 
 export default function MessagesLayout({ loaderData }: Route.ComponentProps) {
+  const { userId } = useOutletContext<{ userId: string }>();
   return (
     <SidebarProvider className="max-h-[calc(100vh-14rem)] h-[calc(100vh-14rem)] overflow-hidden min-h-full">
       <Sidebar className="pt-16" variant="floating">
@@ -39,7 +40,7 @@ export default function MessagesLayout({ loaderData }: Route.ComponentProps) {
         </SidebarContent>
       </Sidebar>
       <div className="w-full h-full">
-        <Outlet />
+        <Outlet context={{ userId }} />
       </div>
     </SidebarProvider>
   );

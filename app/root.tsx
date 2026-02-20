@@ -91,6 +91,7 @@ export default function App({ loaderData }: Route.ComponentProps) {
         context={{
           isLoggedIn,
           name: loaderData.profile?.name,
+          userId: loaderData.user?.id,
           avatar: loaderData.profile?.avatar,
           username: loaderData.profile?.username,
         }}
