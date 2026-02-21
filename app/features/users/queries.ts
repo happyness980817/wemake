@@ -162,16 +162,7 @@ export const getMessagesByRoomId = async (
   }
   const { data, error } = await client
     .from("messages")
-    .select(
-      `
-      *,
-      sender:profiles!sender_id!inner(
-        name,
-        avatar,
-        profile_id
-      )
-    `,
-    )
+    .select("*")
     .eq("message_room_id", Number(messageRoomId))
     .order("created_at", { ascending: true });
   if (error) throw error;
@@ -196,6 +187,7 @@ export const getRoomRecipient = async (
     .select(
       `
       profile:profiles!profile_id!inner(
+        profile_id,
         name,
         avatar
       )

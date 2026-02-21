@@ -10,12 +10,16 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "~/common/components/ui/avatar";
-import { Form, useOutletContext } from "react-router";
+import {
+  Form,
+  useOutletContext,
+  type ShouldRevalidateFunctionArgs,
+} from "react-router";
 import { Textarea } from "~/common/components/ui/textarea";
 import { Button } from "~/common/components/ui/button";
 import { SendIcon } from "lucide-react";
 import { MessagesBubble } from "../components/messages-bubble";
-import { makeSSRClient } from "~/supa-client";
+import { browserClient, makeSSRClient, type Database } from "~/supa-client";
 import {
   getLoggedInUserId,
   getMessagesByRoomId,
@@ -23,7 +27,7 @@ import {
   sendMessageToRoom,
 } from "../queries";
 import { z } from "zod";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export const meta: Route.MetaFunction = () => {
   return [{ title: "Message | Wemake" }];
@@ -84,14 +88,50 @@ export default function MessagePage({
   loaderData,
   actionData,
 }: Route.ComponentProps) {
-  const { userId } = useOutletContext<{ userId: string }>();
+  const [messages, setMessages] = useState(loaderData.messages);
+  useEffect(() => {
+    setMessages(loaderData.messages);
+  }, [loaderData.messages]);
+  const { userId, name, avatar } = useOutletContext<{
+    userId: string;
+    name: string;
+    avatar: string;
+  }>();
   const formRef = useRef<HTMLFormElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (actionData?.ok) {
-      // TODO: refresh messages
       formRef.current?.reset();
     }
   }, [actionData]);
+  useEffect(() => {
+    const changes = browserClient
+      .channel(`room:${userId}-${loaderData.recipient.profile.profile_id}`)
+      .on(
+        "postgres_changes",
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "messages",
+        },
+        (payload) => {
+          setMessages((prev) => [
+            ...prev,
+            payload.new as Database["public"]["Tables"]["messages"]["Row"],
+          ]);
+        },
+      )
+      .subscribe();
+    return () => {
+      changes.unsubscribe();
+    };
+  }, [loaderData.recipient.profile.profile_id]);
+  useEffect(() => {
+    scrollRef.current?.scrollTo({
+      top: scrollRef.current.scrollHeight,
+      behavior: "smooth",
+    });
+  }, [messages]);
   return (
     <div className="h-full flex flex-col justify-between">
       <Card>
@@ -108,14 +148,25 @@ export default function MessagePage({
           </div>
         </CardHeader>
       </Card>
-      <div className="py-10 overflow-y-scroll space-y-4 flex flex-col justify-start h-full">
-        {loaderData.messages.map((message) => (
+      <div
+        ref={scrollRef}
+        className="py-10 overflow-y-scroll space-y-4 flex flex-col justify-start h-full"
+      >
+        {messages.map((message) => (
           <MessagesBubble
             key={message.message_id}
-            avatarURL={message.sender.avatar ?? ""}
-            avatarFallback={message.sender.name[0]}
+            avatarURL={
+              message.sender_id === userId
+                ? avatar
+                : loaderData.recipient.profile.avatar || ""
+            }
+            avatarFallback={
+              message.sender_id === userId
+                ? name[0]
+                : loaderData.recipient.profile.name[0]
+            }
             message={message.content}
-            isFromMe={message.sender.profile_id === userId}
+            isFromMe={message.sender_id === userId}
           />
         ))}
       </div>
@@ -142,3 +193,14 @@ export default function MessagePage({
     </div>
   );
 }
+
+export const shouldRevalidate = ({
+  currentParams,
+  nextParams,
+  defaultShouldRevalidate,
+}: ShouldRevalidateFunctionArgs) => {
+  if (currentParams.messageRoomId !== nextParams.messageRoomId) {
+    return true;
+  }
+  return false;
+};
